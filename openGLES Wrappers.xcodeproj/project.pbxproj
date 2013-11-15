@@ -8,14 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		34128DA318369F0800FDEBE2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34128DA218369F0800FDEBE2 /* Foundation.framework */; };
-		34128DA818369F0800FDEBE2 /* openGLES_Wrappers.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34128DA718369F0800FDEBE2 /* openGLES_Wrappers.h */; };
-		34128DAA18369F0800FDEBE2 /* openGLES_Wrappers.m in Sources */ = {isa = PBXBuildFile; fileRef = 34128DA918369F0800FDEBE2 /* openGLES_Wrappers.m */; };
 		34128DB218369F0800FDEBE2 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34128DB118369F0800FDEBE2 /* SenTestingKit.framework */; };
 		34128DB418369F0800FDEBE2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34128DB318369F0800FDEBE2 /* UIKit.framework */; };
 		34128DB518369F0800FDEBE2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34128DA218369F0800FDEBE2 /* Foundation.framework */; };
 		34128DB818369F0800FDEBE2 /* libopenGLES Wrappers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34128D9F18369F0800FDEBE2 /* libopenGLES Wrappers.a */; };
 		34128DBE18369F0800FDEBE2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 34128DBC18369F0800FDEBE2 /* InfoPlist.strings */; };
 		34128DC118369F0800FDEBE2 /* openGLES_WrappersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 34128DC018369F0800FDEBE2 /* openGLES_WrappersTests.m */; };
+		34128DCD18369FFC00FDEBE2 /* GLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 34128DCC18369FFC00FDEBE2 /* GLContext.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +34,6 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
-				34128DA818369F0800FDEBE2 /* openGLES_Wrappers.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,8 +43,6 @@
 		34128D9F18369F0800FDEBE2 /* libopenGLES Wrappers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libopenGLES Wrappers.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34128DA218369F0800FDEBE2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		34128DA618369F0800FDEBE2 /* openGLES Wrappers-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "openGLES Wrappers-Prefix.pch"; sourceTree = "<group>"; };
-		34128DA718369F0800FDEBE2 /* openGLES_Wrappers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = openGLES_Wrappers.h; sourceTree = "<group>"; };
-		34128DA918369F0800FDEBE2 /* openGLES_Wrappers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = openGLES_Wrappers.m; sourceTree = "<group>"; };
 		34128DB018369F0800FDEBE2 /* openGLES WrappersTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "openGLES WrappersTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34128DB118369F0800FDEBE2 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		34128DB318369F0800FDEBE2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -54,6 +50,8 @@
 		34128DBD18369F0800FDEBE2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		34128DBF18369F0800FDEBE2 /* openGLES_WrappersTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = openGLES_WrappersTests.h; sourceTree = "<group>"; };
 		34128DC018369F0800FDEBE2 /* openGLES_WrappersTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = openGLES_WrappersTests.m; sourceTree = "<group>"; };
+		34128DCB18369FFC00FDEBE2 /* GLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLContext.h; sourceTree = "<group>"; };
+		34128DCC18369FFC00FDEBE2 /* GLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLContext.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +80,8 @@
 		34128D9618369F0800FDEBE2 = {
 			isa = PBXGroup;
 			children = (
-				34128DA418369F0800FDEBE2 /* openGLES Wrappers */,
+				34128DCA18369FE600FDEBE2 /* src */,
+				34128DA518369F0800FDEBE2 /* Supporting Files */,
 				34128DB918369F0800FDEBE2 /* openGLES WrappersTests */,
 				34128DA118369F0800FDEBE2 /* Frameworks */,
 				34128DA018369F0800FDEBE2 /* Products */,
@@ -108,22 +107,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		34128DA418369F0800FDEBE2 /* openGLES Wrappers */ = {
-			isa = PBXGroup;
-			children = (
-				34128DA718369F0800FDEBE2 /* openGLES_Wrappers.h */,
-				34128DA918369F0800FDEBE2 /* openGLES_Wrappers.m */,
-				34128DA518369F0800FDEBE2 /* Supporting Files */,
-			);
-			path = "openGLES Wrappers";
-			sourceTree = "<group>";
-		};
 		34128DA518369F0800FDEBE2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
 				34128DA618369F0800FDEBE2 /* openGLES Wrappers-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			path = "openGLES Wrappers";
 			sourceTree = "<group>";
 		};
 		34128DB918369F0800FDEBE2 /* openGLES WrappersTests */ = {
@@ -143,6 +133,15 @@
 				34128DBC18369F0800FDEBE2 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		34128DCA18369FE600FDEBE2 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				34128DCB18369FFC00FDEBE2 /* GLContext.h */,
+				34128DCC18369FFC00FDEBE2 /* GLContext.m */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,7 +242,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34128DAA18369F0800FDEBE2 /* openGLES_Wrappers.m in Sources */,
+				34128DCD18369FFC00FDEBE2 /* GLContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

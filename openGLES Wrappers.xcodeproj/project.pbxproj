@@ -1,0 +1,416 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		34128DA318369F0800FDEBE2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34128DA218369F0800FDEBE2 /* Foundation.framework */; };
+		34128DA818369F0800FDEBE2 /* openGLES_Wrappers.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34128DA718369F0800FDEBE2 /* openGLES_Wrappers.h */; };
+		34128DAA18369F0800FDEBE2 /* openGLES_Wrappers.m in Sources */ = {isa = PBXBuildFile; fileRef = 34128DA918369F0800FDEBE2 /* openGLES_Wrappers.m */; };
+		34128DB218369F0800FDEBE2 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34128DB118369F0800FDEBE2 /* SenTestingKit.framework */; };
+		34128DB418369F0800FDEBE2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34128DB318369F0800FDEBE2 /* UIKit.framework */; };
+		34128DB518369F0800FDEBE2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34128DA218369F0800FDEBE2 /* Foundation.framework */; };
+		34128DB818369F0800FDEBE2 /* libopenGLES Wrappers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34128D9F18369F0800FDEBE2 /* libopenGLES Wrappers.a */; };
+		34128DBE18369F0800FDEBE2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 34128DBC18369F0800FDEBE2 /* InfoPlist.strings */; };
+		34128DC118369F0800FDEBE2 /* openGLES_WrappersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 34128DC018369F0800FDEBE2 /* openGLES_WrappersTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		34128DB618369F0800FDEBE2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 34128D9718369F0800FDEBE2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 34128D9E18369F0800FDEBE2;
+			remoteInfo = "openGLES Wrappers";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		34128D9D18369F0800FDEBE2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+				34128DA818369F0800FDEBE2 /* openGLES_Wrappers.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		34128D9F18369F0800FDEBE2 /* libopenGLES Wrappers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libopenGLES Wrappers.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		34128DA218369F0800FDEBE2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		34128DA618369F0800FDEBE2 /* openGLES Wrappers-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "openGLES Wrappers-Prefix.pch"; sourceTree = "<group>"; };
+		34128DA718369F0800FDEBE2 /* openGLES_Wrappers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = openGLES_Wrappers.h; sourceTree = "<group>"; };
+		34128DA918369F0800FDEBE2 /* openGLES_Wrappers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = openGLES_Wrappers.m; sourceTree = "<group>"; };
+		34128DB018369F0800FDEBE2 /* openGLES WrappersTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "openGLES WrappersTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		34128DB118369F0800FDEBE2 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		34128DB318369F0800FDEBE2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		34128DBB18369F0800FDEBE2 /* openGLES WrappersTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "openGLES WrappersTests-Info.plist"; sourceTree = "<group>"; };
+		34128DBD18369F0800FDEBE2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		34128DBF18369F0800FDEBE2 /* openGLES_WrappersTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = openGLES_WrappersTests.h; sourceTree = "<group>"; };
+		34128DC018369F0800FDEBE2 /* openGLES_WrappersTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = openGLES_WrappersTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		34128D9C18369F0800FDEBE2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34128DA318369F0800FDEBE2 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34128DAC18369F0800FDEBE2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34128DB218369F0800FDEBE2 /* SenTestingKit.framework in Frameworks */,
+				34128DB418369F0800FDEBE2 /* UIKit.framework in Frameworks */,
+				34128DB518369F0800FDEBE2 /* Foundation.framework in Frameworks */,
+				34128DB818369F0800FDEBE2 /* libopenGLES Wrappers.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		34128D9618369F0800FDEBE2 = {
+			isa = PBXGroup;
+			children = (
+				34128DA418369F0800FDEBE2 /* openGLES Wrappers */,
+				34128DB918369F0800FDEBE2 /* openGLES WrappersTests */,
+				34128DA118369F0800FDEBE2 /* Frameworks */,
+				34128DA018369F0800FDEBE2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		34128DA018369F0800FDEBE2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				34128D9F18369F0800FDEBE2 /* libopenGLES Wrappers.a */,
+				34128DB018369F0800FDEBE2 /* openGLES WrappersTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		34128DA118369F0800FDEBE2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				34128DA218369F0800FDEBE2 /* Foundation.framework */,
+				34128DB118369F0800FDEBE2 /* SenTestingKit.framework */,
+				34128DB318369F0800FDEBE2 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		34128DA418369F0800FDEBE2 /* openGLES Wrappers */ = {
+			isa = PBXGroup;
+			children = (
+				34128DA718369F0800FDEBE2 /* openGLES_Wrappers.h */,
+				34128DA918369F0800FDEBE2 /* openGLES_Wrappers.m */,
+				34128DA518369F0800FDEBE2 /* Supporting Files */,
+			);
+			path = "openGLES Wrappers";
+			sourceTree = "<group>";
+		};
+		34128DA518369F0800FDEBE2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				34128DA618369F0800FDEBE2 /* openGLES Wrappers-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		34128DB918369F0800FDEBE2 /* openGLES WrappersTests */ = {
+			isa = PBXGroup;
+			children = (
+				34128DBF18369F0800FDEBE2 /* openGLES_WrappersTests.h */,
+				34128DC018369F0800FDEBE2 /* openGLES_WrappersTests.m */,
+				34128DBA18369F0800FDEBE2 /* Supporting Files */,
+			);
+			path = "openGLES WrappersTests";
+			sourceTree = "<group>";
+		};
+		34128DBA18369F0800FDEBE2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				34128DBB18369F0800FDEBE2 /* openGLES WrappersTests-Info.plist */,
+				34128DBC18369F0800FDEBE2 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		34128D9E18369F0800FDEBE2 /* openGLES Wrappers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 34128DC418369F0800FDEBE2 /* Build configuration list for PBXNativeTarget "openGLES Wrappers" */;
+			buildPhases = (
+				34128D9B18369F0800FDEBE2 /* Sources */,
+				34128D9C18369F0800FDEBE2 /* Frameworks */,
+				34128D9D18369F0800FDEBE2 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "openGLES Wrappers";
+			productName = "openGLES Wrappers";
+			productReference = 34128D9F18369F0800FDEBE2 /* libopenGLES Wrappers.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		34128DAF18369F0800FDEBE2 /* openGLES WrappersTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 34128DC718369F0800FDEBE2 /* Build configuration list for PBXNativeTarget "openGLES WrappersTests" */;
+			buildPhases = (
+				34128DAB18369F0800FDEBE2 /* Sources */,
+				34128DAC18369F0800FDEBE2 /* Frameworks */,
+				34128DAD18369F0800FDEBE2 /* Resources */,
+				34128DAE18369F0800FDEBE2 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				34128DB718369F0800FDEBE2 /* PBXTargetDependency */,
+			);
+			name = "openGLES WrappersTests";
+			productName = "openGLES WrappersTests";
+			productReference = 34128DB018369F0800FDEBE2 /* openGLES WrappersTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		34128D9718369F0800FDEBE2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = denis;
+			};
+			buildConfigurationList = 34128D9A18369F0800FDEBE2 /* Build configuration list for PBXProject "openGLES Wrappers" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 34128D9618369F0800FDEBE2;
+			productRefGroup = 34128DA018369F0800FDEBE2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				34128D9E18369F0800FDEBE2 /* openGLES Wrappers */,
+				34128DAF18369F0800FDEBE2 /* openGLES WrappersTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		34128DAD18369F0800FDEBE2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34128DBE18369F0800FDEBE2 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		34128DAE18369F0800FDEBE2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		34128D9B18369F0800FDEBE2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34128DAA18369F0800FDEBE2 /* openGLES_Wrappers.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34128DAB18369F0800FDEBE2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34128DC118369F0800FDEBE2 /* openGLES_WrappersTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		34128DB718369F0800FDEBE2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 34128D9E18369F0800FDEBE2 /* openGLES Wrappers */;
+			targetProxy = 34128DB618369F0800FDEBE2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		34128DBC18369F0800FDEBE2 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				34128DBD18369F0800FDEBE2 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		34128DC218369F0800FDEBE2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		34128DC318369F0800FDEBE2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		34128DC518369F0800FDEBE2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/openGLES_Wrappers.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "openGLES Wrappers/openGLES Wrappers-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		34128DC618369F0800FDEBE2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/openGLES_Wrappers.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "openGLES Wrappers/openGLES Wrappers-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		34128DC818369F0800FDEBE2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "openGLES Wrappers/openGLES Wrappers-Prefix.pch";
+				INFOPLIST_FILE = "openGLES WrappersTests/openGLES WrappersTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		34128DC918369F0800FDEBE2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "openGLES Wrappers/openGLES Wrappers-Prefix.pch";
+				INFOPLIST_FILE = "openGLES WrappersTests/openGLES WrappersTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		34128D9A18369F0800FDEBE2 /* Build configuration list for PBXProject "openGLES Wrappers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34128DC218369F0800FDEBE2 /* Debug */,
+				34128DC318369F0800FDEBE2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		34128DC418369F0800FDEBE2 /* Build configuration list for PBXNativeTarget "openGLES Wrappers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34128DC518369F0800FDEBE2 /* Debug */,
+				34128DC618369F0800FDEBE2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		34128DC718369F0800FDEBE2 /* Build configuration list for PBXNativeTarget "openGLES WrappersTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34128DC818369F0800FDEBE2 /* Debug */,
+				34128DC918369F0800FDEBE2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 34128D9718369F0800FDEBE2 /* Project object */;
+}

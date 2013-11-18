@@ -60,7 +60,13 @@
 
 - (BOOL)isBound;
 
+@end
+
 // private api:
+@interface GLObject () {
+@protected
+    GLuint  _uId;
+}
 
 @property (nonatomic, assign)   GLuint      uId;
 // we should definitely retain prev object as context no more owns it

@@ -12,17 +12,20 @@
 use cases:
 get compile log
 reuse vshader
+ 
+gets retained by shader programm in opengl, so must be retained here as well
+ 
 */
 
-@interface GLVertexShader : GLObject
+@interface GLVertexShader : NSObject
 
-// way to identify shader?
+// way to identify shader? to identify it in from some shader cache?
 @property (nonatomic, copy)     NSString    *name;
+
+- (GLuint)uId;
 
 - (BOOL)compileSource:(NSString *)source;
 
 - (NSString *)compileLog;
-
-+ (id)object;
 
 @end

@@ -32,7 +32,8 @@
 }
 
 - (GLObject *)activeObjectOfClass:(Class)theClass {
-    return self.dict[@([[theClass glType] hash])];
+    NSNumber *key = @([[theClass glType] hash]);
+    return self.dict[key];
 }
 
 - (GLObject *)activeObjectOfObject:(GLObject *)object {
@@ -40,7 +41,8 @@
 }
 
 - (void)setActiveObject:(GLObject *)object {
-    self.dict[@([[object.class glType] hash])] = object;
+    NSNumber *key = @([[object.class glType] hash]);
+    self.dict[key] = object;
 }
 
 @end

@@ -38,6 +38,11 @@
     DECL_UNIFORM(argCount, type, GLtype) { glUniform##argCount##type([self uniformLocation:uniform], UNIFORM_CALL_ARGS_##argCount); }   \
     DECL_UNIFORM_V(argCount, type, GLtype) { glUniform##argCount##type##v([self uniformLocation:uniform], count, v); }
 
+#define IMPL_UNIFORM_MATRIX(GLtype, type, argCount) \
+    DECL_UNIFORM_MATRIX_V(GLtype, type, argCount) {  \
+        glUniformMatrix##argCount##type##v([self uniformLocation:uniform], count, transpose, value); \
+    }
+
 #define UNIFORM_CALL_ARGS_1 x
 #define UNIFORM_CALL_ARGS_2 UNIFORM_CALL_ARGS_1, y
 #define UNIFORM_CALL_ARGS_3 UNIFORM_CALL_ARGS_2, z
@@ -45,6 +50,10 @@
 
 DECL_FOUR_METHODS(GLint, i, IMPL_UNIFORM);
 DECL_FOUR_METHODS(GLfloat, f, IMPL_UNIFORM);
+
+IMPL_UNIFORM_MATRIX(GLfloat, f, 2);
+IMPL_UNIFORM_MATRIX(GLfloat, f, 3);
+IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
 
 #pragma mark -
 #pragma mark Attribute setters

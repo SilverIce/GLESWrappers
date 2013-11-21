@@ -51,6 +51,10 @@
 #define DECL_UNIFORM_V(argCount, type, GLtype)  \
     - (void)setUniform:(NSString *)uniform to##argCount##type##v :(const GLtype *)v count:(GLsizei)count
 
+#define DECL_UNIFORM_MATRIX_V(GLtype, type, argCount)  \
+    - (void)setUniform:(NSString *)uniform toMatrix##argCount##type##v  \
+            :(GLsizei)count transpose:(GLboolean)transpose value:(const GLtype *)value
+
 #define UNIFORM_ARGS_1(GLtype) :(GLtype)x
 #define UNIFORM_ARGS_2(GLtype) UNIFORM_ARGS_1(GLtype) :(GLtype)y
 #define UNIFORM_ARGS_3(GLtype) UNIFORM_ARGS_2(GLtype) :(GLtype)z
@@ -58,6 +62,10 @@
 
 DECL_FOUR_METHODS(GLint, i, DECL_UNIFORM_PAIR);
 DECL_FOUR_METHODS(GLfloat, f, DECL_UNIFORM_PAIR);
+
+DECL_UNIFORM_MATRIX_V(GLfloat, f, 2);
+DECL_UNIFORM_MATRIX_V(GLfloat, f, 3);
+DECL_UNIFORM_MATRIX_V(GLfloat, f, 4);
 
 /// Attribute setters:
 

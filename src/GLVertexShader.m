@@ -18,7 +18,7 @@
 #pragma mark Initialization and Deallocation
 
 - (void)dealloc {
-    glDeleteShader(_uId);
+    glDeleteShader(self.uId);
     [super dealloc];
 }
 

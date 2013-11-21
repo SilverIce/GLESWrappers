@@ -35,11 +35,18 @@
 #pragma mark Uniform setters
 
 #define IMPL_UNIFORM(argCount, type, GLtype) \
-    DECL_UNIFORM(argCount, type, GLtype) { glUniform##argCount##type([self uniformLocation:uniform], UNIFORM_CALL_ARGS_##argCount); }   \
-    DECL_UNIFORM_V(argCount, type, GLtype) { glUniform##argCount##type##v([self uniformLocation:uniform], count, v); }
+    DECL_UNIFORM(argCount, type, GLtype) {  \
+        assert([self isBound]); \
+        glUniform##argCount##type([self uniformLocation:uniform], UNIFORM_CALL_ARGS_##argCount);    \
+    }   \
+    DECL_UNIFORM_V(argCount, type, GLtype) {    \
+        assert([self isBound]); \
+        glUniform##argCount##type##v([self uniformLocation:uniform], count, v); \
+    }
 
 #define IMPL_UNIFORM_MATRIX(GLtype, type, argCount) \
     DECL_UNIFORM_MATRIX_V(GLtype, type, argCount) {  \
+        assert([self isBound]); \
         glUniformMatrix##argCount##type##v([self uniformLocation:uniform], count, transpose, value); \
     }
 
@@ -69,7 +76,7 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
 
 - (BOOL)link {
     glLinkProgram(self.uId);
-    
+
     return [self linkStatus];
 }
 

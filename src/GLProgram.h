@@ -12,6 +12,41 @@
 
 // holds per program uniform data
 
+
+// Private tools:
+
+#define DECL_FOUR_METHODS(GLtype, type, method) \
+    method(1, type, GLtype)   \
+    method(2, type, GLtype)   \
+    method(3, type, GLtype)   \
+    method(4, type, GLtype)
+
+#define DECL_UNIFORM_PAIR(argCount, type, GLtype)   \
+    DECL_UNIFORM(argCount, type, GLtype);    DECL_UNIFORM_V(argCount, type, GLtype);
+
+#define DECL_UNIFORM(argCount, type, GLtype)  \
+    - (void)setUniform:(NSString *)uniform to##argCount##type UNIFORM_ARGS_##argCount(GLtype)
+
+#define DECL_UNIFORM_V(argCount, type, GLtype)  \
+    - (void)setUniform:(NSString *)uniform to##argCount##type##v :(const GLtype *)v count:(GLsizei)count
+
+#define DECL_UNIFORM_MATRIX_V(GLtype, type, argCount)  \
+    - (void)setUniform:(NSString *)uniform toMatrix##argCount##type##v  \
+        :(GLsizei)count transpose:(GLboolean)transpose value:(const GLtype *)value
+
+#define UNIFORM_ARGS_1(GLtype) :(GLtype)x
+#define UNIFORM_ARGS_2(GLtype) UNIFORM_ARGS_1(GLtype) :(GLtype)y
+#define UNIFORM_ARGS_3(GLtype) UNIFORM_ARGS_2(GLtype) :(GLtype)z
+#define UNIFORM_ARGS_4(GLtype) UNIFORM_ARGS_3(GLtype) :(GLtype)w
+
+#define DECL_ATTRIB_PAIR(argCount, type, GLtype)    DECL_ATTRIB(argCount, type, GLtype); DECL_ATTRIB_V(argCount, type, GLtype);
+
+#define DECL_ATTRIB(argCount, type, GLtype) \
+    - (void)setAttrib:(NSString *)attribute to##argCount##type UNIFORM_ARGS_##argCount(GLtype)
+
+#define DECL_ATTRIB_V(argCount, type, GLtype) \
+    - (void)setAttrib:(NSString *)attribute to##argCount##type##v :(const GLtype *)v
+
 @interface GLProgram : GLObject
 
 @property (nonatomic, retain)   GLVertexShader  *vertShader;
@@ -35,30 +70,7 @@
 - (GLint)uniformLocation:(NSString *)uniform;
 
 /// Uniform setters:
-
-#define DECL_FOUR_METHODS(GLtype, type, method) \
-    method(1, type, GLtype)   \
-    method(2, type, GLtype)   \
-    method(3, type, GLtype)   \
-    method(4, type, GLtype)
-
-#define DECL_UNIFORM_PAIR(argCount, type, GLtype)   \
-    DECL_UNIFORM(argCount, type, GLtype);    DECL_UNIFORM_V(argCount, type, GLtype);
-
-#define DECL_UNIFORM(argCount, type, GLtype)  \
-    - (void)setUniform:(NSString *)uniform to##argCount##type UNIFORM_ARGS_##argCount(GLtype)
-
-#define DECL_UNIFORM_V(argCount, type, GLtype)  \
-    - (void)setUniform:(NSString *)uniform to##argCount##type##v :(const GLtype *)v count:(GLsizei)count
-
-#define DECL_UNIFORM_MATRIX_V(GLtype, type, argCount)  \
-    - (void)setUniform:(NSString *)uniform toMatrix##argCount##type##v  \
-            :(GLsizei)count transpose:(GLboolean)transpose value:(const GLtype *)value
-
-#define UNIFORM_ARGS_1(GLtype) :(GLtype)x
-#define UNIFORM_ARGS_2(GLtype) UNIFORM_ARGS_1(GLtype) :(GLtype)y
-#define UNIFORM_ARGS_3(GLtype) UNIFORM_ARGS_2(GLtype) :(GLtype)z
-#define UNIFORM_ARGS_4(GLtype) UNIFORM_ARGS_3(GLtype) :(GLtype)w
+// all these methods requires program to be bound
 
 DECL_FOUR_METHODS(GLint, i, DECL_UNIFORM_PAIR);
 DECL_FOUR_METHODS(GLfloat, f, DECL_UNIFORM_PAIR);
@@ -68,14 +80,7 @@ DECL_UNIFORM_MATRIX_V(GLfloat, f, 3);
 DECL_UNIFORM_MATRIX_V(GLfloat, f, 4);
 
 /// Attribute setters:
-
-#define DECL_ATTRIB_PAIR(argCount, type, GLtype)    DECL_ATTRIB(argCount, type, GLtype); DECL_ATTRIB_V(argCount, type, GLtype);
-
-#define DECL_ATTRIB(argCount, type, GLtype) \
-    - (void)setAttrib:(NSString *)attribute to##argCount##type UNIFORM_ARGS_##argCount(GLtype)
-
-#define DECL_ATTRIB_V(argCount, type, GLtype) \
-    - (void)setAttrib:(NSString *)attribute to##argCount##type##v :(const GLtype *)v
+// all these methods requires program to be bound
 
 DECL_FOUR_METHODS(GLfloat, f, DECL_ATTRIB_PAIR);
 

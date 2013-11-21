@@ -34,12 +34,6 @@
 #pragma mark -
 #pragma mark Uniform setters
 
-#define UNIFORM_IMPL_FOUR(GLtype, type) \
-    IMPL_UNIFORM(1, type, GLtype)   \
-    IMPL_UNIFORM(2, type, GLtype)   \
-    IMPL_UNIFORM(3, type, GLtype)   \
-    IMPL_UNIFORM(4, type, GLtype)
-
 #define IMPL_UNIFORM(argCount, type, GLtype) \
     DECL_UNIFORM(argCount, type, GLtype) { glUniform##argCount##type([self uniformLocation:uniform], UNIFORM_CALL_ARGS_##argCount); }   \
     DECL_UNIFORM_V(argCount, type, GLtype) { glUniform##argCount##type##v([self uniformLocation:uniform], count, v); }
@@ -49,8 +43,17 @@
 #define UNIFORM_CALL_ARGS_3 UNIFORM_CALL_ARGS_2, z
 #define UNIFORM_CALL_ARGS_4 UNIFORM_CALL_ARGS_3, w
 
-UNIFORM_IMPL_FOUR(GLint, i);
-UNIFORM_IMPL_FOUR(GLfloat, f);
+DECL_FOUR_METHODS(GLint, i, IMPL_UNIFORM);
+DECL_FOUR_METHODS(GLfloat, f, IMPL_UNIFORM);
+
+#pragma mark -
+#pragma mark Attribute setters
+
+#define IMPL_ATTRIB(argCount, type, GLtype) \
+    DECL_ATTRIB(argCount, type, GLtype) { glVertexAttrib##argCount##type([self attribLocation:attribute], UNIFORM_CALL_ARGS_##argCount); }   \
+    DECL_ATTRIB_V(argCount, type, GLtype) { glVertexAttrib##argCount##type##v([self attribLocation:attribute], v); }
+
+DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
 
 #pragma mark -
 #pragma mark Etc
@@ -74,14 +77,14 @@ UNIFORM_IMPL_FOUR(GLfloat, f);
     return status == GL_TRUE;
 }
 
-- (GLint)attribLocation:(const GLchar *)attribute {
+- (GLint)attribLocation:(NSString *)attribute {
     assert(attribute);
-    return glGetAttribLocation(self.uId, attribute);
+    return glGetAttribLocation(self.uId, attribute.UTF8String);
 }
 
-- (void)setAttrib:(const GLchar *)attribute location:(GLuint)location {
+- (void)setAttrib:(NSString *)attribute location:(GLuint)location {
     assert(attribute);
-    glBindAttribLocation(self.uId, location, attribute);
+    glBindAttribLocation(self.uId, location, attribute.UTF8String);
 }
 
 - (GLint)uniformLocation:(NSString *)uniform {

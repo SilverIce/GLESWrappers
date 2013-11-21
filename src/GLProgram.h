@@ -14,10 +14,6 @@
 
 @interface GLProgram : GLObject
 
-// TODO: add various uniform* methods
-
-// private api
-
 @property (nonatomic, retain)   GLVertexShader  *vertShader;
 
 - (BOOL)link;
@@ -29,20 +25,22 @@
 // gets filled after program being lined or validated
 - (NSString *)infoLog;
 
-- (GLint)attribLocation:(const GLchar *)attribute;
+- (GLint)attribLocation:(NSString *)attribute;
 
 // must be used before program will be linked.
 // may be issued before any vertex shader objects are attached to a program object.
-- (void)setAttrib:(const GLchar *)attribute
+- (void)setAttrib:(NSString *)attribute
          location:(GLuint)location;
 
 - (GLint)uniformLocation:(NSString *)uniform;
 
-#define DECL_FOUR_UNIFORMS(GLtype, type) \
-    DECL_UNIFORM_PAIR(1, type, GLtype)   \
-    DECL_UNIFORM_PAIR(2, type, GLtype)   \
-    DECL_UNIFORM_PAIR(3, type, GLtype)   \
-    DECL_UNIFORM_PAIR(4, type, GLtype)
+/// Uniform setters:
+
+#define DECL_FOUR_METHODS(GLtype, type, method) \
+    method(1, type, GLtype)   \
+    method(2, type, GLtype)   \
+    method(3, type, GLtype)   \
+    method(4, type, GLtype)
 
 #define DECL_UNIFORM_PAIR(argCount, type, GLtype)   \
     DECL_UNIFORM(argCount, type, GLtype);    DECL_UNIFORM_V(argCount, type, GLtype);
@@ -58,7 +56,19 @@
 #define UNIFORM_ARGS_3(GLtype) UNIFORM_ARGS_2(GLtype) :(GLtype)z
 #define UNIFORM_ARGS_4(GLtype) UNIFORM_ARGS_3(GLtype) :(GLtype)w
 
-DECL_FOUR_UNIFORMS(GLint, i);
-DECL_FOUR_UNIFORMS(GLfloat, f);
+DECL_FOUR_METHODS(GLint, i, DECL_UNIFORM_PAIR);
+DECL_FOUR_METHODS(GLfloat, f, DECL_UNIFORM_PAIR);
+
+/// Attribute setters:
+
+#define DECL_ATTRIB_PAIR(argCount, type, GLtype)    DECL_ATTRIB(argCount, type, GLtype); DECL_ATTRIB_V(argCount, type, GLtype);
+
+#define DECL_ATTRIB(argCount, type, GLtype) \
+    - (void)setAttrib:(NSString *)attribute to##argCount##type UNIFORM_ARGS_##argCount(GLtype)
+
+#define DECL_ATTRIB_V(argCount, type, GLtype) \
+    - (void)setAttrib:(NSString *)attribute to##argCount##type##v :(const GLtype *)v
+
+DECL_FOUR_METHODS(GLfloat, f, DECL_ATTRIB_PAIR);
 
 @end

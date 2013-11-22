@@ -15,19 +15,13 @@
 @class GLObject;
 @class GLActiveObjects;
 
+typedef Class GLObjectType;
+
 @interface GLContext : NSObject
 
 - (GLFramebuffer *)framebuffer;
 
 - (GLProgram *)program;
-
-// texture at current active slot
-- (GLTexture *)texture;
-// current active texture slot
-- (NSUInteger)textureSlot;
-
-- (void)attachTexture:(GLTexture *)texture ontoSlot:(NSUInteger)slot;
-- (GLTexture *)textureInSlot:(NSUInteger)slot;
 
 // internals:
 @property (nonatomic, retain)   GLActiveObjects     *objectSet;
@@ -36,7 +30,9 @@
 
 // internal class:
 @interface GLActiveObjects : NSObject
-- (GLObject *)activeObjectOfClass:(Class)theClass;
+@property (nonatomic, assign)   GLuint      slotIdx;
+
+- (GLObject *)activeObjectOfClass:(GLObjectType)theClass;
 - (GLObject *)activeObjectOfObject:(GLObject *)object;
 - (void)setActiveObject:(GLObject *)object;
 
@@ -47,13 +43,11 @@
 - (GLContext *)context;
 
 // type identifier. can be overridden
-+ (Class)glType;
++ (GLObjectType)glType;
+- (GLObjectType)glType;
 
 - (void)bind;
 - (void)unbind;
-
-- (void)nestedBind;
-- (void)nestedUnbind;
 
 // should be overridden
 - (void)internalBind:(BOOL)bind;
@@ -62,15 +56,24 @@
 
 @end
 
-
-
 // private api:
 @interface GLObject () {
 @protected
     GLuint  _uId;
 }
 
-@property (nonatomic, assign)   GLuint      uId;
+@property (nonatomic, assign)   GLuint              uId;
+@property (nonatomic, retain)   GLActiveObjects     *objectSet;
+
+@end
+
+@interface GLNestedObject : GLObject
+- (void)nestedBind;
+- (void)nestedUnbind;
+
+@end
+
+@interface GLNestedObject ()
 // we should definitely retain prev object as context no more owns it
 @property (nonatomic, retain)   GLObject    *prevBound;
 @property (nonatomic, assign)   BOOL        nestedBound;

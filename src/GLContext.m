@@ -7,8 +7,11 @@
 //
 
 #import "GLContext.h"
+#import "GLContext+GLTextureManagement.hpp"
 
 @implementation GLContext
+
+
 
 @end
 
@@ -31,17 +34,17 @@
     return self;
 }
 
-- (GLObject *)activeObjectOfClass:(Class)theClass {
-    NSNumber *key = @([[theClass glType] hash]);
+- (GLObject *)activeObjectOfClass:(GLObjectType)theClass {
+    NSNumber *key = @([theClass hash]);
     return self.dict[key];
 }
 
 - (GLObject *)activeObjectOfObject:(GLObject *)object {
-    return [self activeObjectOfClass:object.class];
+    return [self activeObjectOfClass:object.glType];
 }
 
 - (void)setActiveObject:(GLObject *)object {
-    NSNumber *key = @([[object.class glType] hash]);
+    NSNumber *key = @([[object glType] hash]);
     self.dict[key] = object;
 }
 
@@ -53,6 +56,10 @@
     return self;
 }
 
+- (Class)glType {
+    return [[self class] glType];
+}
+
 - (void)bind {
     assert(self.isBound == NO);
     
@@ -60,12 +67,18 @@
     [self internalBind:YES];
 }
 
-- (void)unbind {
-    assert(self.isBound && self.nestedBound == NO);
-    
+- (void)unbind { 
     [self.context.objectSet setActiveObject:nil];
     [self internalBind:NO];
 }
+
+- (BOOL)isBound {
+    return [self.context.objectSet activeObjectOfObject:self] == self;
+}
+
+@end
+
+@implementation GLNestedObject
 
 - (void)nestedBind {
     assert(self.isBound == NO);
@@ -93,10 +106,6 @@
     
     self.nestedBound = NO;
     self.prevBound = nil;
-}
-
-- (BOOL)isBound {
-    return [self.context.objectSet activeObjectOfObject:self] == self;
 }
 
 @end

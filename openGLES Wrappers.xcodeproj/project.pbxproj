@@ -21,6 +21,7 @@
 		349FD931183ACC6E00983660 /* GLVertexShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 349FD930183ACC6E00983660 /* GLVertexShader.m */; };
 		34F3CCE4183F46F1000F0242 /* GLContext+GLTextureManagement.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 34F3CCE3183F46F1000F0242 /* GLContext+GLTextureManagement.hpp */; };
 		34F3CCE7183F66D4000F0242 /* GLTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 34F3CCE6183F66D4000F0242 /* GLTexture.m */; };
+		34F3CCEA183FAFE1000F0242 /* GLWeakReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 34F3CCE9183FAFE1000F0242 /* GLWeakReference.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,8 @@
 		34F3CCE3183F46F1000F0242 /* GLContext+GLTextureManagement.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = "GLContext+GLTextureManagement.hpp"; sourceTree = "<group>"; wrapsLines = 1; };
 		34F3CCE5183F66D4000F0242 /* GLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLTexture.h; sourceTree = "<group>"; };
 		34F3CCE6183F66D4000F0242 /* GLTexture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLTexture.m; sourceTree = "<group>"; };
+		34F3CCE8183FAFE1000F0242 /* GLWeakReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLWeakReference.h; sourceTree = "<group>"; };
+		34F3CCE9183FAFE1000F0242 /* GLWeakReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLWeakReference.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +173,8 @@
 				349FD930183ACC6E00983660 /* GLVertexShader.m */,
 				345BB7EF183CC0DD0058E64E /* GLProgram.h */,
 				345BB7F0183CC0DD0058E64E /* GLProgram.m */,
+				34F3CCE8183FAFE1000F0242 /* GLWeakReference.h */,
+				34F3CCE9183FAFE1000F0242 /* GLWeakReference.m */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -278,6 +283,7 @@
 				345BB7F1183CC0DD0058E64E /* GLProgram.m in Sources */,
 				34128DD01836A8EE00FDEBE2 /* GLFramebuffer.m in Sources */,
 				34F3CCE7183F66D4000F0242 /* GLTexture.m in Sources */,
+				34F3CCEA183FAFE1000F0242 /* GLWeakReference.m in Sources */,
 				349FD931183ACC6E00983660 /* GLVertexShader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

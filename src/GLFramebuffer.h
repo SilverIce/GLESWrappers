@@ -8,6 +8,6 @@
 
 #import "GLContext.h"
 
-@interface GLFramebuffer : GLObject
+@interface GLFramebuffer : GLNestedObject
 
 @end

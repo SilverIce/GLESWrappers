@@ -13,7 +13,7 @@
 // bind & put something into texture
 // bind onto less active slot & do somthing & restore previous
 
-// bind -> make it be current texture -
+// bind -> make it current texture -
 
 @interface GLTexture : GLObject
 

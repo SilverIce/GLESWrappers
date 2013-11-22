@@ -46,6 +46,7 @@ typedef Class GLObjectType;
 + (GLObjectType)glType;
 - (GLObjectType)glType;
 
+// should be overridden
 - (void)bind;
 - (void)unbind;
 

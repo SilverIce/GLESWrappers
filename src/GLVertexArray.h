@@ -10,7 +10,7 @@
 
 // create it with init or objectWithUsage method
 // data buffer stored in GPU memory
-@interface GLBufferObject : GLObject
+@interface GLBufferObject : GLNestedObject
 
 - (GLsizei)dataSize;
 
@@ -32,7 +32,7 @@
 
 // the data that gets passed into vertex shader
 // vertex array with underlying Buffer object
-@interface GLVertexArray : GLObject
+@interface GLVertexArray : GLNestedObject
 
 typedef struct {
     GLint           identifier;

@@ -47,7 +47,7 @@
 #define DECL_ATTRIB_V(argCount, type, GLtype) \
     - (void)setAttrib:(NSString *)attribute to##argCount##type##v :(const GLtype *)v
 
-@interface GLProgram : GLObject
+@interface GLProgram : GLNestedObject
 
 @property (nonatomic, retain)   GLVertexShader  *vertShader;
 

@@ -56,6 +56,8 @@
         // it assumes that we are trying activate textures of same type
         assert(textureType == texture.glType);
         
+        ++texture.useCount;
+        
         if (texture.slot) {
             continue;
         }
@@ -82,11 +84,13 @@
     assert(texture);
     
     if (texture.slot) {
-        self.activeSlot = textures.slot;
+        self.activeSlot = texture.slot;
     } else {
         GLActiveObjects *lessActive = [[self sortSlotsByUse:texture.glType] lastObject];
         [self putTexture:texture ontoSlot:lessActive];
     }
+    
+    ++texture.useCount;
 }
 
 - (NSArray *)sortSlotsByUse:(GLObjectType)glType {
@@ -124,7 +128,6 @@
     
     self.activeSlot = slot;
     [texture internalBind:YES];
-    ++texture.useCount;
     texture.slot = slot;
 }
 

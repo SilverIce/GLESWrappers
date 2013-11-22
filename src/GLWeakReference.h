@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface GLWeakReference : NSObject
-@property (nonatomic, assign)   id target;
+@property (nonatomic, assign, readonly)   id target;
 
 + (id)getReferenceFor:(id)object;
 + (id)referenceFor:(id)object;

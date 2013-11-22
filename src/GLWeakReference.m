@@ -11,6 +11,10 @@
 
 static const char __kGLWeakRef__;
 
+@interface GLWeakReference ()
+@property (nonatomic, assign)   id target;
+@end
+
 @implementation GLWeakReference
 
 @synthesize target  = _target;
@@ -26,7 +30,7 @@ static void _IDPDeallocMethod(id _self, SEL _cmd) {
 }
 
 static Class _IDPGetSubclass(Class class) {
-    const char *cName = [[NSStringFromClass(class) stringByAppendingString:@"_GLWeakArrayRef"] cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *cName = [[NSStringFromClass(class) stringByAppendingString:@"_GLWeakRef"] cStringUsingEncoding:NSASCIIStringEncoding];
     
     Class subClass = objc_getClass(cName);
     if (subClass) {
@@ -70,6 +74,7 @@ static Class _IDPGetSubclass(Class class) {
 
 - (void)dealloc {
     if (self.target) {
+        // actually no sense to do that: if dealloc is called then target no more own weak reference
         objc_setAssociatedObject(self.target, &__kGLWeakRef__, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         self.target = nil;
     }

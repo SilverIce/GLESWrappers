@@ -9,9 +9,13 @@
 #import "GLContext+GLTextureManagement.h"
 #import "GLTexture.h"
 
-@interface GLContext ()
+@interface GLContext () {
+    GLActiveObjects     *_activeSlot;
+}
+
 // array of GLActiveObjects instances
 @property (nonatomic, retain)   NSArray             *slots;
+@property (nonatomic, assign)   GLActiveObjects     *activeSlot;
 
 @end
 
@@ -28,6 +32,15 @@
     }
     
     self.slots = [[slots copy] autorelease];
+}
+
+- (void)setActiveSlot:(GLActiveObjects *)activeSlot {
+    assert(activeSlot);
+    
+    if (activeSlot != _activeSlot) {
+        _activeSlot = activeSlot;
+        glActiveTexture(GL_TEXTURE0 + activeSlot.slotIdx);
+    }
 }
 
 - (void)activateTextures:(NSArray *)textures {
@@ -65,6 +78,17 @@
     }
 }
 
+- (void)activateTexture:(GLTexture *)texture {
+    assert(texture);
+    
+    if (texture.slot) {
+        self.activeSlot = textures.slot;
+    } else {
+        GLActiveObjects *lessActive = [[self sortSlotsByUse:texture.glType] lastObject];
+        [self putTexture:texture ontoSlot:lessActive];
+    }
+}
+
 - (NSArray *)sortSlotsByUse:(GLObjectType)glType {
     NSArray *sortedSlots = [self.slots sortedArrayUsingComparator:^NSComparisonResult(GLActiveObjects *obj1, GLActiveObjects *obj2) {
         GLuint useCount1 = [(GLTexture *)[obj1 activeObjectOfClass:glType] useCount];
@@ -80,9 +104,12 @@
         return NSOrderedSame;
     }];
     
+    assert(sortedSlots.count > 0);
+    
     return sortedSlots;
 }
 
+// activate slot & put it into slot
 - (void)putTexture:(GLTexture *)texture ontoSlot:(GLActiveObjects *)slot {
     assert(texture);
     assert(slot);
@@ -95,7 +122,7 @@
         prevTexture.slot = nil;
     }
     
-    glActiveTexture(GL_TEXTURE0 + slot.slotIdx);
+    self.activeSlot = slot;
     [texture internalBind:YES];
     ++texture.useCount;
     texture.slot = slot;

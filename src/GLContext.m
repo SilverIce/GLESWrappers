@@ -61,24 +61,36 @@
 }
 
 - (void)bind {
+    assert(false);
+}
+
+- (void)unbind {
+    assert(false);
+}
+
+- (void)internalBind:(BOOL)bind {
+    assert(false);
+}
+
+@end
+
+@implementation GLNestedObject
+
+- (BOOL)isBound {
+    return [self.context.objectSet activeObjectOfObject:self] == self;
+}
+
+- (void)bind {
     assert(self.isBound == NO);
     
     [self.context.objectSet setActiveObject:self];
     [self internalBind:YES];
 }
 
-- (void)unbind { 
+- (void)unbind {
     [self.context.objectSet setActiveObject:nil];
     [self internalBind:NO];
 }
-
-- (BOOL)isBound {
-    return [self.context.objectSet activeObjectOfObject:self] == self;
-}
-
-@end
-
-@implementation GLNestedObject
 
 - (void)nestedBind {
     assert(self.isBound == NO);

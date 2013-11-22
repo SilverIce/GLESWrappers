@@ -8,14 +8,24 @@
 
 #import "GLContext.h"
 
+// use cases:
+
+// bind & put something into texture
+// bind onto less active slot & do somthing & restore previous
+
+// bind -> make it be current texture -
+
 @interface GLTexture : GLObject
+
+- (void)bind;
+- (void)unbind;
 
 @end
 
 @interface GLTexture ()
 // private api:
 @property (nonatomic, assign)   GLuint              uId;
-@property (nonatomic, assign)   GLActiveObjects     *slot;
 @property (nonatomic, assign)   GLuint              useCount;
+@property (nonatomic, assign)   GLActiveObjects     *slot;
 
 @end

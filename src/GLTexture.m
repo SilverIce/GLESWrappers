@@ -7,7 +7,16 @@
 //
 
 #import "GLTexture.h"
+#import "GLContext+GLTextureManagement.h"
 
 @implementation GLTexture
+
+- (void)bind {
+    [self.context activateTexture:self];
+}
+
+- (void)unbind {
+    // nothing to do
+}
 
 @end

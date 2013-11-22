@@ -52,8 +52,6 @@ typedef Class GLObjectType;
 // should be overridden
 - (void)internalBind:(BOOL)bind;
 
-- (BOOL)isBound;
-
 @end
 
 // private api:
@@ -63,7 +61,7 @@ typedef Class GLObjectType;
 }
 
 @property (nonatomic, assign)   GLuint              uId;
-@property (nonatomic, retain)   GLActiveObjects     *objectSet;
+@property (nonatomic, assign)   GLContext           *context;
 
 @end
 

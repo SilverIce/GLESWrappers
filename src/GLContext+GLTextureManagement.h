@@ -14,4 +14,6 @@
 // it assumes that we are trying activate textures of same type
 - (void)activateTextures:(NSArray *)array;
 
+- (void)activateTexture:(GLTexture *)texture;
+
 @end

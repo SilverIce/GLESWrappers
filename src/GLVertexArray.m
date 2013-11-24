@@ -111,11 +111,11 @@
     return self.buffer.dataSize / self.elementSize;
 }
 
-- (void)describeStructures:(const IDPVertexArrayStructDescription*)descriptors
+- (void)describeStructures:(const GLVertexArrayStructDescription*)descriptors
                structCount:(NSUInteger)count
 {
     for (NSUInteger i = 0; i < count; ++i) {
-        const IDPVertexArrayStructDescription *descr = &descriptors[i];
+        const GLVertexArrayStructDescription *descr = &descriptors[i];
         glEnableVertexAttribArray(descr->identifier);
         glVertexAttribPointer(descr->identifier,
                               descr->elementCount,

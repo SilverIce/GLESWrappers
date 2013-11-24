@@ -12,11 +12,15 @@
 @implementation GLTexture
 
 - (void)bind {
-    [self.context activateTexture:self];
+    [self.context bindTexture:self];
 }
 
 - (void)unbind {
     // nothing to do
+}
+
+- (BOOL)isBound {
+    return self.slot && self.slot == self.context.activeSlot;
 }
 
 @end

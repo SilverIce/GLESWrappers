@@ -49,6 +49,7 @@ typedef Class GLObjectType;
 // should be overridden
 - (void)bind;
 - (void)unbind;
+- (BOOL)isBound;
 
 // should be overridden
 - (void)internalBind:(BOOL)bind;
@@ -69,7 +70,7 @@ typedef Class GLObjectType;
 @interface GLNestedObject : GLObject
 - (void)nestedBind;
 - (void)nestedUnbind;
-- (BOOL)isBound;
+
 @end
 
 @interface GLNestedObject ()

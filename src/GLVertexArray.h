@@ -40,12 +40,12 @@ typedef struct {
     GLenum          elementType;
     GLboolean       normalized;
     GLsizei         ptrOffset;
-} IDPVertexArrayStructDescription;
+} GLVertexArrayStructDescription;
 
 - (NSUInteger)vertexCount;
 - (GLBufferObject *)buffer;
 
-- (void)describeStructures:(const IDPVertexArrayStructDescription *)descriptors
+- (void)describeStructures:(const GLVertexArrayStructDescription *)descriptors
                structCount:(NSUInteger)count;
 
 - (void)describeStructWithIdentifier:(GLint)identifier

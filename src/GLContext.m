@@ -72,6 +72,11 @@
     assert(false);
 }
 
+- (BOOL)isBound {
+    assert(NO);
+    return NO;
+}
+
 @end
 
 @implementation GLNestedObject

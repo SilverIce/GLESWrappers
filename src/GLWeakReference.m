@@ -83,3 +83,15 @@ static Class _IDPGetSubclass(Class class) {
 }
 
 @end
+
+@implementation NSObject (GLWeakReference)
+
+- (GLWeakReference *)weakReference {
+    return [GLWeakReference referenceFor:self];
+}
+
+- (GLWeakReference *)getWeakReference {
+    return [GLWeakReference getReferenceFor:self];
+}
+
+@end

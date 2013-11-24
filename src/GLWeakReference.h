@@ -15,3 +15,9 @@
 + (id)referenceFor:(id)object;
 
 @end
+
+@interface NSObject (GLWeakReference)
+- (GLWeakReference *)weakReference;
+- (GLWeakReference *)getWeakReference;
+
+@end

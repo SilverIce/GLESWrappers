@@ -32,6 +32,21 @@
     }
     
     self.slots = [[slots copy] autorelease];
+    
+    GLint textureSlot;
+    glGetIntegerv(GL_ACTIVE_TEXTURE, &textureSlot);
+    self.activeSlot = [self slotWithIndex:textureSlot - GL_TEXTURE0];
+}
+
+- (GLActiveObjects *)slotWithIndex:(GLuint)index {
+    for (GLActiveObjects *slotTmp in self.slots) {
+        if (slotTmp.slotIdx == index) {
+            return slotTmp;
+        }
+    }
+    
+    assert(false);
+    return nil;
 }
 
 - (void)setActiveSlot:(GLActiveObjects *)activeSlot {
@@ -80,13 +95,13 @@
     }
 }
 
-- (void)activateTexture:(GLTexture *)texture {
+- (void)bindTexture:(GLTexture *)texture {
     assert(texture);
     
     if (texture.slot) {
         self.activeSlot = texture.slot;
     } else {
-        GLActiveObjects *lessActive = [[self sortSlotsByUse:texture.glType] lastObject];
+        GLActiveObjects *lessActive = [[self sortSlotsByUse:texture.glType] objectAtIndex:0];
         [self putTexture:texture ontoSlot:lessActive];
     }
     

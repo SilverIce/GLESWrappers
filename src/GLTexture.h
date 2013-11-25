@@ -15,6 +15,9 @@
 
 // bind -> make it current texture -
 
+// TODO:
+// sometimes we'll have a huge texture and we'll want to free memory as fast as possible
+
 @interface GLTexture : GLObject
 
 - (void)bind;

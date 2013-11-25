@@ -7,7 +7,6 @@
 //
 
 #import "GLTexture.h"
-#import "GLContext+GLTextureManagement.h"
 
 @implementation GLTexture
 

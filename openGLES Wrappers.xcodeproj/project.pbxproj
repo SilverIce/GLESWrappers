@@ -19,7 +19,6 @@
 		34451702183E573C0088F513 /* GLVertexArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 34451700183E573C0088F513 /* GLVertexArray.m */; };
 		345BB7F1183CC0DD0058E64E /* GLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 345BB7F0183CC0DD0058E64E /* GLProgram.m */; };
 		349FD931183ACC6E00983660 /* GLVertexShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 349FD930183ACC6E00983660 /* GLVertexShader.m */; };
-		34F3CCE4183F46F1000F0242 /* GLContext+GLTextureManagement.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 34F3CCE3183F46F1000F0242 /* GLContext+GLTextureManagement.hpp */; };
 		34F3CCE7183F66D4000F0242 /* GLTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 34F3CCE6183F66D4000F0242 /* GLTexture.m */; };
 		34F3CCEA183FAFE1000F0242 /* GLWeakReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 34F3CCE9183FAFE1000F0242 /* GLWeakReference.m */; };
 /* End PBXBuildFile section */
@@ -67,8 +66,6 @@
 		345BB7F0183CC0DD0058E64E /* GLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLProgram.m; sourceTree = "<group>"; };
 		349FD92F183ACC6E00983660 /* GLVertexShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLVertexShader.h; sourceTree = "<group>"; };
 		349FD930183ACC6E00983660 /* GLVertexShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLVertexShader.m; sourceTree = "<group>"; };
-		34F3CCE2183F46F1000F0242 /* GLContext+GLTextureManagement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLContext+GLTextureManagement.h"; sourceTree = "<group>"; };
-		34F3CCE3183F46F1000F0242 /* GLContext+GLTextureManagement.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = "GLContext+GLTextureManagement.hpp"; sourceTree = "<group>"; wrapsLines = 1; };
 		34F3CCE5183F66D4000F0242 /* GLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLTexture.h; sourceTree = "<group>"; };
 		34F3CCE6183F66D4000F0242 /* GLTexture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLTexture.m; sourceTree = "<group>"; };
 		34F3CCE8183FAFE1000F0242 /* GLWeakReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLWeakReference.h; sourceTree = "<group>"; };
@@ -163,8 +160,6 @@
 				34451700183E573C0088F513 /* GLVertexArray.m */,
 				34128DCB18369FFC00FDEBE2 /* GLContext.h */,
 				34128DCC18369FFC00FDEBE2 /* GLContext.m */,
-				34F3CCE2183F46F1000F0242 /* GLContext+GLTextureManagement.h */,
-				34F3CCE3183F46F1000F0242 /* GLContext+GLTextureManagement.hpp */,
 				34F3CCE5183F66D4000F0242 /* GLTexture.h */,
 				34F3CCE6183F66D4000F0242 /* GLTexture.m */,
 				34128DCE1836A8EE00FDEBE2 /* GLFramebuffer.h */,
@@ -279,7 +274,6 @@
 			files = (
 				34451702183E573C0088F513 /* GLVertexArray.m in Sources */,
 				34128DCD18369FFC00FDEBE2 /* GLContext.m in Sources */,
-				34F3CCE4183F46F1000F0242 /* GLContext+GLTextureManagement.hpp in Sources */,
 				345BB7F1183CC0DD0058E64E /* GLProgram.m in Sources */,
 				34128DD01836A8EE00FDEBE2 /* GLFramebuffer.m in Sources */,
 				34F3CCE7183F66D4000F0242 /* GLTexture.m in Sources */,

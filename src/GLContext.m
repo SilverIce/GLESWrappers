@@ -19,8 +19,19 @@
 @implementation GLContext
 
 - (void)dealloc {
+    self.objectSet = nil;
     self.slots = nil;
     [super dealloc];
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.objectSet = [GLActiveObjects object];
+        [self setupSlots];
+    }
+    return self;
 }
 
 - (void)setupSlots {

@@ -17,15 +17,19 @@ gets retained by shader programm in opengl, so must be retained here as well
  
 */
 
-@interface GLVertexShader : NSObject
+@interface GLShader : NSObject
 
 // way to identify shader? to identify it in from some shader cache?
-@property (nonatomic, copy)     NSString    *name;
+//@property (nonatomic, copy)     NSString    *name;
 
 - (GLuint)uId;
+- (GLuint)shaderType;
 
 - (BOOL)compileSource:(NSString *)source;
 
 - (NSString *)compileLog;
+
++ (id)objectAsFragmentShader;
++ (id)objectAsVertexShader;
 
 @end

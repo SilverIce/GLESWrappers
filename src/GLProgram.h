@@ -8,7 +8,7 @@
 
 #import "GLContext.h"
 
-@class GLVertexShader;
+@class GLShader;
 
 // holds per program uniform data
 
@@ -49,8 +49,6 @@
 
 @interface GLProgram : GLNestedObject
 
-@property (nonatomic, retain)   GLVertexShader  *vertShader;
-
 - (BOOL)link;
 
 // will check for all the conditions that could lead to an INVALID_OPERATION error when rendering commands are issued
@@ -83,5 +81,14 @@ DECL_UNIFORM_MATRIX_V(GLfloat, f, 4);
 // all these methods requires program to be bound
 
 DECL_FOUR_METHODS(GLfloat, f, DECL_ATTRIB_PAIR);
+
++ (id)objectWithVertShaderName:(NSString *)vertexShader
+                    fragShader:(NSString *)fragmentShader;
+
+@end
+
+@interface GLProgram ()
+@property (nonatomic, retain)   GLShader  *vertShader;
+@property (nonatomic, retain)   GLShader  *fragShader;
 
 @end

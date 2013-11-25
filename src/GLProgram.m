@@ -7,12 +7,42 @@
 //
 
 #import "GLProgram.h"
-#import "GLVertexShader.h"
+#import "GLShader.h"
 
 @implementation GLProgram
 
+#pragma mark -
+#pragma mark Construction
+
+static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
+    NSString *path = [[NSBundle mainBundle] pathForResource:fileName ofType:extension];
+    NSString *source = [NSString stringWithContentsOfFile:path encoding:NSASCIIStringEncoding error:nil];
+    assert(source);
+    return source;
+}
+
++ (id)objectWithVertShaderName:(NSString *)vertexShader
+                  fragShader:(NSString *)fragmentShader
+{
+    GLShader *vShader = [GLShader objectAsVertexShader];
+    assert([vShader compileSource:GLShaderSource(vertexShader, nil)]);
+    
+    GLShader *fShader = [GLShader objectAsFragmentShader];
+    assert([fShader compileSource:GLShaderSource(fragmentShader, nil)]);
+    
+
+    GLProgram *me = [GLProgram object];
+    
+    me.vertShader = vShader;
+    me.fragShader = fShader;
+    
+    
+    return me;
+}
+
 - (void)dealloc {
     self.vertShader = nil;
+    self.fragShader = nil;
     glDeleteProgram(self.uId);
     [super dealloc];
 }
@@ -21,8 +51,6 @@
     self = [super init];
     if (self) {
         self.uId = glCreateProgram();
-        
-        [self setUniform:@"titt" to4f:0 :1 :0 :0];
     }
     return self;
 }
@@ -120,7 +148,7 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
     return [NSString stringWithUTF8String:buffer];
 }
 
-- (void)setVertShader:(GLVertexShader *)vertShader {
+- (void)setVertShader:(GLShader *)vertShader {
     if (vertShader != _vertShader) {
         if (_vertShader) {
             glDetachShader(self.uId, _vertShader.uId);
@@ -132,6 +160,21 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
         
         [_vertShader release];
         _vertShader = [vertShader retain];
+    }
+}
+
+- (void)setFragShader:(GLShader *)fragShader {
+    if (fragShader != _fragShader) {
+        if (_fragShader) {
+            glDetachShader(self.uId, _fragShader.uId);
+        }
+        
+        if (fragShader) {
+            glAttachShader(self.uId, fragShader.uId);
+        }
+        
+        [_fragShader release];
+        _fragShader = [fragShader retain];
     }
 }
 

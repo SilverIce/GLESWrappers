@@ -6,13 +6,27 @@
 //  Copyright (c) 2013 denis. All rights reserved.
 //
 
-#import "GLVertexShader.h"
+#import "GLShader.h"
 
-@interface GLVertexShader ()
+@interface GLShader ()
 @property (nonatomic, assign)   GLuint      uId;
+@property (nonatomic, assign)   GLuint      shaderType;
 @end
 
-@implementation GLVertexShader
+@implementation GLShader
+
++ (id)object {
+    assert(false);
+    return nil;
+}
+
++ (id)objectAsVertexShader {
+    return [[[self alloc] initWithType:GL_VERTEX_SHADER] autorelease];
+}
+
++ (id)objectAsFragmentShader {
+    return [[[self alloc] initWithType:GL_FRAGMENT_SHADER] autorelease];
+}
 
 #pragma mark -
 #pragma mark Initialization and Deallocation
@@ -22,10 +36,11 @@
     [super dealloc];
 }
 
-- (id)init {
+- (id)initWithType:(GLuint)shaderType {
     self = [super init];
     if (self) {
-        self.uId = glCreateShader(GL_VERTEX_SHADER);
+        self.shaderType = shaderType;
+        self.uId = glCreateShader(shaderType);
     }
     return self;
 }

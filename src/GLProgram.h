@@ -67,6 +67,7 @@
 - (void)setAttrib:(NSString *)attribute
          location:(GLuint)location;
 
+// may return -1 if uniform is inactive (or no such at all)
 - (GLint)uniformLocation:(NSString *)uniform;
 
 typedef struct {

@@ -9,6 +9,10 @@
 #import "GLProgram.h"
 #import "GLShader.h"
 
+@interface GLProgram ()
+@property (nonatomic, retain)   NSMutableDictionary     *uniformCache;
+@end
+
 @implementation GLProgram
 
 #pragma mark -
@@ -41,9 +45,11 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
 }
 
 - (void)dealloc {
+    glDeleteProgram(self.uId);
+    
     self.vertShader = nil;
     self.fragShader = nil;
-    glDeleteProgram(self.uId);
+    self.uniformCache = nil;
     [super dealloc];
 }
 
@@ -51,6 +57,7 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
     self = [super init];
     if (self) {
         self.uId = glCreateProgram();
+        self.uniformCache = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -104,7 +111,8 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
 
 - (BOOL)link {
     glLinkProgram(self.uId);
-
+    [self.uniformCache removeAllObjects];
+    
     return [self linkStatus];
 }
 
@@ -141,7 +149,16 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
 }
 
 - (GLint)uniformLocation:(NSString *)uniform {
-    return glGetUniformLocation(self.uId, uniform.UTF8String);
+    GLint location = -1;
+    NSNumber *locationNum = [self.uniformCache objectForKey:uniform];
+    if (locationNum) {
+        location = locationNum.integerValue;
+    } else {
+        location = glGetUniformLocation(self.uId, uniform.UTF8String);
+        self.uniformCache[uniform] = @(location);
+    }
+    
+    return location;
 }
 
 - (NSString *)infoLog {

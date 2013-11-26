@@ -219,6 +219,11 @@
 
 @end
 
+void assertBound(GLObject *object) {
+    assert(object);
+    assert([object isBound]);
+}
+
 @implementation GLObject
 
 + (id)objectWithContext:(GLContext *)context {

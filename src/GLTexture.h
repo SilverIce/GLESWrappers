@@ -20,8 +20,10 @@
 
 
 // Base class that implements bind, unbind behaviour.
-// Useless itself.
+// Useless by itself.
 @interface GLTexture : GLObject
+
+@property (nonatomic, assign)   GLuint      filter;
 
 - (void)bind;
 - (void)unbind;
@@ -34,3 +36,5 @@
 @property (nonatomic, assign)   GLActiveObjects     *slot;
 @property (nonatomic, assign)   GLuint              textureType;
 @end
+
+

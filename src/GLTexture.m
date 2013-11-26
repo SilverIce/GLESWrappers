@@ -39,4 +39,11 @@
     return self.slot && self.slot == self.context.activeSlot;
 }
 
+- (void)setFilter:(GLuint)filter {
+    assertBound(self);
+    
+    _filter = filter;
+    glTexParameteri(self.textureType, GL_TEXTURE_MIN_FILTER, filter);
+}
+
 @end

@@ -34,6 +34,7 @@ typedef Class GLObjectType;
 // trying to find less active textures & bind onto slots occupied by them
 // it assumes that we are trying activate textures of same type
 - (void)activateTextures:(NSArray *)array;
+// ensures that texture is in slot. may not activate slot
 - (void)activateTexture:(GLTexture *)texture;
 
 // find less active slot (put texture innto slot if it's not in slot yet), activate slot
@@ -71,6 +72,8 @@ typedef Class GLObjectType;
 + (id)objectWithContext:(GLContext *)context;
 
 @end
+
+void assertBound(GLObject *object);
 
 // private api:
 @interface GLObject () {

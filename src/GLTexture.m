@@ -10,6 +10,23 @@
 
 @implementation GLTexture
 
+- (void)dealloc {
+    glDeleteTextures(1, &_uId);
+    [super dealloc];
+}
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        glGenTextures(1, &_uId);
+    }
+    return self;
+}
+
+- (void)internalBind:(BOOL)bind {
+    glBindTexture(self.textureType, bind ? self.uId : 0);
+}
+
 - (void)bind {
     [self.context bindTexture:self];
 }

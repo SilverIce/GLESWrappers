@@ -18,6 +18,9 @@
 // TODO:
 // sometimes we'll have a huge texture and we'll want to free memory as fast as possible
 
+
+// Base class that implements bind, unbind behaviour.
+// Useless itself.
 @interface GLTexture : GLObject
 
 - (void)bind;
@@ -29,5 +32,5 @@
 // private api:
 @property (nonatomic, assign)   GLuint              useCount;
 @property (nonatomic, assign)   GLActiveObjects     *slot;
-
+@property (nonatomic, assign)   GLuint              textureType;
 @end

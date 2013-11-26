@@ -67,6 +67,14 @@
 
 - (GLint)uniformLocation:(NSString *)uniform;
 
+typedef struct {
+    const GLchar    *attrib;
+    GLuint          location;
+} GLProgramAttrib2Loc;
+
+- (void)associateAttributes:(const GLProgramAttrib2Loc *)associations
+                      count:(NSUInteger)count;
+
 /// Uniform setters:
 // all these methods requires program to be bound
 

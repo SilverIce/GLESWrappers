@@ -46,6 +46,7 @@ typedef Class GLObjectType;
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass;
 - (GLObject *)activeObjectOfObject:(GLObject *)object;
 - (void)setActiveObject:(GLObject *)object;
+- (void)resetActiveObject:(GLObject *)object;
 
 @end
 
@@ -64,6 +65,9 @@ typedef Class GLObjectType;
 
 // should be overridden
 - (void)internalBind:(BOOL)bind;
+
+// should we really pass&store context everywhere or just query current EAGLConext context?
++ (id)objectWithContext:(GLContext *)context;
 
 @end
 

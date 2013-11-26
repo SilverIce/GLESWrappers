@@ -9,6 +9,8 @@
 #import "GLContext.h"
 #import "GLTexture.h"
 
+#import "EAGLContext+GLContext.h"
+
 @interface GLContext ()
 // array of GLActiveObjects instances
 @property (nonatomic, retain)   NSArray             *slots;
@@ -36,7 +38,7 @@
 
 - (void)setupSlots {
     GLint slotCount = 0;
-    glGetIntegerv(GL_MAX_TEXTURE_UNITS, &slotCount);
+    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &slotCount);
     NSMutableArray *slots = [NSMutableArray arrayWithCapacity:slotCount];
     for (GLint i = 0; i < slotCount; ++i) {
         GLActiveObjects *objects = [[GLActiveObjects new] autorelease];
@@ -191,13 +193,26 @@
 }
 
 - (void)setActiveObject:(GLObject *)object {
+    assert(object);
     NSNumber *key = @([[object glType] hash]);
     self.dict[key] = object;
+}
+
+- (void)resetActiveObject:(GLObject *)object {
+    assert(object);
+    NSNumber *key = @([[object glType] hash]);
+    [self.dict removeObjectForKey:key];
 }
 
 @end
 
 @implementation GLObject
+
++ (id)objectWithContext:(GLContext *)context {
+    GLObject *me = [[self new] autorelease];
+    me.context = context;
+    return me;
+}
 
 + (Class)glType {
     return self;
@@ -205,6 +220,10 @@
 
 - (Class)glType {
     return [[self class] glType];
+}
+
+- (GLContext *)context {
+    return [[EAGLContext currentContext] context];
 }
 
 - (void)bind {
@@ -261,10 +280,13 @@
     
     GLObject *prev = self.prevBound;
     
-    [self.context.objectSet setActiveObject:prev];
     if (prev) {
+        assert(prev.glType == self.glType);
+        
+        [self.context.objectSet setActiveObject:prev];
         [prev internalBind:YES];
     } else {
+        [self.context.objectSet resetActiveObject:self];
         [self internalBind:NO];
     }
     

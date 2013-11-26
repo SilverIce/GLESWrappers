@@ -131,6 +131,15 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
     glBindAttribLocation(self.uId, location, attribute.UTF8String);
 }
 
+- (void)associateAttributes:(const GLProgramAttrib2Loc *)associations
+                      count:(NSUInteger)count
+{
+    for (NSUInteger i = 0; i < count; ++i) {
+        const GLProgramAttrib2Loc *assoc = &associations[i];
+        glBindAttribLocation(self.uId, assoc->location, assoc->attrib);
+    }
+}
+
 - (GLint)uniformLocation:(NSString *)uniform {
     return glGetUniformLocation(self.uId, uniform.UTF8String);
 }

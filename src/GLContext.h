@@ -34,6 +34,7 @@ typedef Class GLObjectType;
 // trying to find less active textures & bind onto slots occupied by them
 // it assumes that we are trying activate textures of same type
 - (void)activateTextures:(NSArray *)array;
+- (void)activateTexture:(GLTexture *)texture;
 
 // find less active slot (put texture innto slot if it's not in slot yet), activate slot
 - (void)bindTexture:(GLTexture *)texture;

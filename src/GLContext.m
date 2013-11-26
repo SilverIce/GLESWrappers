@@ -110,6 +110,19 @@
     }
 }
 
+- (void)activateTexture:(GLTexture *)texture {
+    assert(texture);
+    
+    ++texture.useCount;
+    
+    if (texture.slot) {
+        return;
+    }
+    
+    GLActiveObjects *lessActive = [[self sortSlotsByUse:texture.glType] objectAtIndex:0];
+    [self putTexture:texture ontoSlot:lessActive];
+}
+
 - (void)bindTexture:(GLTexture *)texture {
     assert(texture);
     

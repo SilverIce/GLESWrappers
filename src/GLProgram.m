@@ -154,7 +154,9 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
     GLchar *buffer = calloc(length, sizeof(GLchar));
     glGetProgramInfoLog(self.uId, length, &length, buffer);
     
-    return [NSString stringWithUTF8String:buffer];
+    NSString *log = [NSString stringWithUTF8String:buffer];
+    free(buffer);
+    return log;
 }
 
 - (void)setVertShader:(GLShader *)vertShader {

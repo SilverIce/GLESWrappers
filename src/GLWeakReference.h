@@ -11,8 +11,8 @@
 @interface GLWeakReference : NSObject
 @property (nonatomic, assign, readonly)   id target;
 
-+ (id)getReferenceFor:(id)object;
-+ (id)referenceFor:(id)object;
++ (id)getReferenceFor:(id)target;
++ (id)referenceFor:(id)target;
 
 @end
 

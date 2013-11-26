@@ -263,7 +263,7 @@
     [self internalBind:NO];
 }
 
-- (void)nestedBind {
+- (void)bindNested {
     assert(self.isBound == NO);
     
     self.nestedBound = YES;
@@ -273,7 +273,7 @@
     [self internalBind:YES];
 }
 
-- (void)nestedUnbind {
+- (void)unbindNested {
     assert(self.isBound && self.nestedBound == YES);
     
     // bind previous object

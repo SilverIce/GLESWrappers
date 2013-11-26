@@ -83,8 +83,8 @@ typedef Class GLObjectType;
 @end
 
 @interface GLNestedObject : GLObject
-- (void)nestedBind;
-- (void)nestedUnbind;
+- (void)bindNested;
+- (void)unbindNested;
 
 @end
 

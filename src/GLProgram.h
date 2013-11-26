@@ -47,6 +47,8 @@
 #define DECL_ATTRIB_V(argCount, type, GLtype) \
     - (void)setAttrib:(NSString *)attribute to##argCount##type##v :(const GLtype *)v
 
+// Private tools end
+
 @interface GLProgram : GLNestedObject
 
 - (BOOL)link;

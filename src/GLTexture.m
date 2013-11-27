@@ -8,7 +8,37 @@
 
 #import "GLTexture.h"
 
+@interface GLTexture ()
+@property (nonatomic, assign)   GLuint      textureType;
+@property (nonatomic, assign)   GLSizeI     size;
+@end
+
 @implementation GLTexture
+
++ (id)objectAs2DTextureWithSize:(GLSizeI)size
+                 internalFormat:(GLInternalFormat)internalFormat
+                           type:(GLenum)type
+                         pixels:(const GLvoid *)pixels
+{
+    GLTexture *me = [[self new] autorelease];
+    if (me) {
+        me.size = size;
+        me.textureType = GL_TEXTURE_2D;
+        
+        [me ensureActive];
+        glTexImage2D(me.textureType,
+                     0, // level
+                     internalFormat,
+                     size.width, size.height,
+                     0, // border, not supported on GLES
+                     internalFormat,
+                     type,
+                     pixels);
+    }
+    
+    assert(me);
+    return me;
+}
 
 - (void)dealloc {
     glDeleteTextures(1, &_uId);
@@ -23,9 +53,37 @@
     return self;
 }
 
-- (void)internalBind:(BOOL)bind {
-    glBindTexture(self.textureType, bind ? self.uId : 0);
+- (GLuint)width {
+    return self.size.width;
 }
+
+- (GLuint)height {
+    return self.size.height;
+}
+
+- (void)ensureActive {
+    [self.context activateTexture:self];
+}
+
+#pragma mark -
+#pragma mark Texture parameters
+
+static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLuint value, GLuint *field) {
+    assertBound(texture);
+    *field = value;
+    glTexParameteri(texture.textureType, param, value);
+}
+
+- (void)setMinFilter:(GLuint)filter {
+    _GLTextureSetParam(self, GL_TEXTURE_MIN_FILTER, filter, &_minFilter);
+}
+
+- (void)setMagFilter:(GLuint)magFilter {
+    _GLTextureSetParam(self, GL_TEXTURE_MAG_FILTER, magFilter, &_magFilter);
+}
+
+#pragma mark -
+#pragma mark GLObject
 
 - (void)bind {
     [self.context bindTexture:self];
@@ -39,11 +97,8 @@
     return self.slot && self.slot == self.context.activeSlot;
 }
 
-- (void)setFilter:(GLuint)filter {
-    assertBound(self);
-    
-    _filter = filter;
-    glTexParameteri(self.textureType, GL_TEXTURE_MIN_FILTER, filter);
+- (void)internalBind:(BOOL)bind {
+    glBindTexture(self.textureType, bind ? self.uId : 0);
 }
 
 @end

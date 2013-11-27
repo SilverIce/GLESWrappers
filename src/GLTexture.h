@@ -18,15 +18,43 @@
 // TODO:
 // sometimes we'll have a huge texture and we'll want to free memory as fast as possible
 
+typedef struct {
+    GLuint width, height;
+} GLSizeI;
+
+typedef struct {
+    GLuint  width;
+    GLuint  height;
+    GLvoid  *data;
+} GLPixelData;
+
+typedef enum {
+    kGLRGBA            = GL_RGBA,
+    kGLRGB             = GL_RGB,
+    kGLLuminance       = GL_LUMINANCE,
+    kGLLuminanceAlpha  = GL_LUMINANCE_ALPHA,
+} GLInternalFormat;
 
 // Base class that implements bind, unbind behaviour.
 // Useless by itself.
 @interface GLTexture : GLObject
 
-@property (nonatomic, assign)   GLuint      filter;
+@property (nonatomic, assign)   GLuint      minFilter;
+@property (nonatomic, assign)   GLuint      magFilter;
+
+- (GLuint)width;
+- (GLuint)height;
+- (GLSizeI)size;
 
 - (void)bind;
 - (void)unbind;
+// ensures that texture is belongs to some slot
+- (void)ensureActive;
+
++ (id)objectAs2DTextureWithSize:(GLSizeI)size
+                 internalFormat:(GLInternalFormat)internalFormat   //
+                           type:(GLenum)type
+                         pixels:(const GLvoid *)pixels;            // can be NULL
 
 @end
 
@@ -34,7 +62,6 @@
 // private api:
 @property (nonatomic, assign)   GLuint              useCount;
 @property (nonatomic, assign)   GLActiveObjects     *slot;
-@property (nonatomic, assign)   GLuint              textureType;
 @end
 
 

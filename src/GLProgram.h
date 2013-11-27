@@ -51,6 +51,7 @@
 
 @interface GLProgram : GLNestedObject
 
+// both fragment and vertex shaders should be attached
 - (BOOL)link;
 
 // will check for all the conditions that could lead to an INVALID_OPERATION error when rendering commands are issued
@@ -67,16 +68,18 @@
 - (void)setAttrib:(NSString *)attribute
          location:(GLuint)location;
 
-// may return -1 if uniform is inactive (or no such at all)
-- (GLint)uniformLocation:(NSString *)uniform;
-
 typedef struct {
     const GLchar    *attrib;
     GLuint          location;
 } GLProgramAttrib2Loc;
 
+// must be used before program will be linked.
+// may be issued before any vertex shader objects are attached to a program object.
 - (void)associateAttributes:(const GLProgramAttrib2Loc *)associations
                       count:(NSUInteger)count;
+
+// may return -1 if uniform is inactive (or no such at all)
+- (GLint)uniformLocation:(NSString *)uniform;
 
 /// Uniform setters:
 // all these methods requires program to be bound

@@ -21,11 +21,15 @@
 }
 
 + (id)objectAsVertexShader {
-    return [[[self alloc] initWithType:GL_VERTEX_SHADER] autorelease];
+    id me = [[[self alloc] initWithType:GL_VERTEX_SHADER] autorelease];
+    assert(me);
+    return me;
 }
 
 + (id)objectAsFragmentShader {
-    return [[[self alloc] initWithType:GL_FRAGMENT_SHADER] autorelease];
+    id me = [[[self alloc] initWithType:GL_FRAGMENT_SHADER] autorelease];
+    assert(me);
+    return me;
 }
 
 #pragma mark -

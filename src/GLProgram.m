@@ -40,7 +40,7 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
     me.vertShader = vShader;
     me.fragShader = fShader;
     
-    
+    assert(me);
     return me;
 }
 
@@ -110,6 +110,9 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
 #pragma mark Etc
 
 - (BOOL)link {
+    assert(self.vertShader);
+    assert(self.fragShader);
+    
     glLinkProgram(self.uId);
     [self.uniformCache removeAllObjects];
     

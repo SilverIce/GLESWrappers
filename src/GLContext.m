@@ -119,7 +119,7 @@
         return;
     }
     
-    GLActiveObjects *lessActive = [[self sortSlotsByUse:texture.glType] objectAtIndex:0];
+    GLActiveObjects *lessActive = [self lessActiveSlotFor:texture.glType];
     [self putTexture:texture ontoSlot:lessActive];
 }
 
@@ -129,11 +129,31 @@
     if (texture.slot) {
         self.activeSlot = texture.slot;
     } else {
-        GLActiveObjects *lessActive = [[self sortSlotsByUse:texture.glType] objectAtIndex:0];
+        GLActiveObjects *lessActive = [self lessActiveSlotFor:texture.glType];
         [self putTexture:texture ontoSlot:lessActive];
     }
     
     ++texture.useCount;
+}
+
+- (GLActiveObjects *)lessActiveSlotFor:(GLObjectType)objType {
+    GLActiveObjects *lessActive = nil;
+    GLuint useCountLast = 0;
+    
+    for (GLActiveObjects *slot in self.slots) {
+        GLuint useCountCurr = [(GLTexture *)[slot activeObjectOfClass:objType] useCount];
+        if (useCountCurr < useCountLast || !lessActive) {
+            lessActive = slot;
+            useCountLast = useCountCurr;
+        }
+        
+        if (useCountCurr == 0) {
+            break;
+        }
+    }
+    
+    assert(lessActive);
+    return lessActive;
 }
 
 - (NSArray *)sortSlotsByUse:(GLObjectType)glType {

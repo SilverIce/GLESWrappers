@@ -20,7 +20,7 @@ static const char __kGLWeakRef__;
 @synthesize target  = _target;
 
 static void _IDPDeallocMethod(id _self, SEL _cmd) {
-    GLWeakReference *ref = [GLWeakReference getReferenceFor:_self];
+    GLWeakReference *ref = [GLWeakReference referenceFor:_self];
     if (ref) {
         ref.target = nil;
     }
@@ -48,13 +48,13 @@ static Class _IDPGetSubclass(Class class) {
     return subClass;
 }
 
-+ (id)getReferenceFor:(id)object {
++ (id)referenceFor:(id)object {
     GLWeakReference *ref = objc_getAssociatedObject(object, &__kGLWeakRef__);
     return ref;
 }
 
-+ (id)referenceFor:(id)object {
-    GLWeakReference *ref = [self getReferenceFor:object];
++ (id)makeReferenceFor:(id)object {
+    GLWeakReference *ref = [self referenceFor:object];
     
     if (nil == ref) {
         ref = [[self new] autorelease];
@@ -86,12 +86,12 @@ static Class _IDPGetSubclass(Class class) {
 
 @implementation NSObject (GLWeakReference)
 
-- (GLWeakReference *)weakReference {
-    return [GLWeakReference referenceFor:self];
+- (GLWeakReference *)makeWeakReference {
+    return [GLWeakReference makeReferenceFor:self];
 }
 
-- (GLWeakReference *)getWeakReference {
-    return [GLWeakReference getReferenceFor:self];
+- (GLWeakReference *)weakReference {
+    return [GLWeakReference referenceFor:self];
 }
 
 @end

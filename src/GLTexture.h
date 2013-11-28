@@ -61,7 +61,7 @@ typedef enum {
 @interface GLTexture ()
 // private api:
 @property (nonatomic, assign)   GLuint              useCount;
-@property (nonatomic, assign)   GLActiveObjects     *slot;
+@property (nonatomic, assign)   GLSlot              *slot;
 @end
 
 

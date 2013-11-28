@@ -13,8 +13,8 @@
 
 @interface GLContext ()
 // array of GLActiveObjects instances
-@property (nonatomic, retain)   NSArray             *slots;
-@property (nonatomic, assign)   GLActiveObjects     *activeSlot;
+@property (nonatomic, retain)   NSArray     *slots;
+@property (nonatomic, assign)   GLSlot      *activeSlot;
 
 @end
 
@@ -41,7 +41,7 @@
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &slotCount);
     NSMutableArray *slots = [NSMutableArray arrayWithCapacity:slotCount];
     for (GLint i = 0; i < slotCount; ++i) {
-        GLActiveObjects *objects = [[GLActiveObjects new] autorelease];
+        GLSlot *objects = [[GLSlot new] autorelease];
         objects.slotIdx = i;
         [slots addObject:objects];
     }
@@ -53,8 +53,8 @@
     self.activeSlot = [self slotWithIndex:textureSlot - GL_TEXTURE0];
 }
 
-- (GLActiveObjects *)slotWithIndex:(GLuint)index {
-    for (GLActiveObjects *slotTmp in self.slots) {
+- (GLSlot *)slotWithIndex:(GLuint)index {
+    for (GLSlot *slotTmp in self.slots) {
         if (slotTmp.slotIdx == index) {
             return slotTmp;
         }
@@ -64,7 +64,7 @@
     return nil;
 }
 
-- (void)setActiveSlot:(GLActiveObjects *)activeSlot {
+- (void)setActiveSlot:(GLSlot *)activeSlot {
     assert(activeSlot);
     
     if (activeSlot != _activeSlot) {
@@ -96,8 +96,8 @@
             sortedSlots = [self sortSlotsByUse:textureType];
         }
         
-        GLActiveObjects *slot = nil;
-        for (GLActiveObjects *slotTmp in sortedSlots) {
+        GLSlot *slot = nil;
+        for (GLSlot *slotTmp in sortedSlots) {
             if ([textures containsObject:[slotTmp activeObjectOfClass:textureType]] == NO) {
                 slot = slotTmp;
                 break;
@@ -119,7 +119,7 @@
         return;
     }
     
-    GLActiveObjects *lessActive = [self lessActiveSlotFor:texture.glType];
+    GLSlot *lessActive = [self lessActiveSlotFor:texture.glType];
     [self putTexture:texture ontoSlot:lessActive];
 }
 
@@ -129,7 +129,7 @@
     if (texture.slot) {
         self.activeSlot = texture.slot;
     } else {
-        GLActiveObjects *lessActive = [self lessActiveSlotFor:texture.glType];
+        GLSlot *lessActive = [self lessActiveSlotFor:texture.glType];
         [self putTexture:texture ontoSlot:lessActive];
     }
     
@@ -140,7 +140,7 @@
     GLActiveObjects *lessActive = nil;
     GLuint useCountLast = 0;
     
-    for (GLActiveObjects *slot in self.slots) {
+    for (GLSlot *slot in self.slots) {
         GLuint useCountCurr = [(GLTexture *)[slot activeObjectOfClass:objType] useCount];
         if (useCountCurr < useCountLast || !lessActive) {
             lessActive = slot;
@@ -177,12 +177,12 @@
 }
 
 // activate slot & put it into slot
-- (void)putTexture:(GLTexture *)texture ontoSlot:(GLActiveObjects *)slot {
+- (void)putTexture:(GLTexture *)texture ontoSlot:(GLSlot *)slot {
     assert(texture);
     assert(slot);
     assert(texture.slot == nil);
     
-    GLTexture *prevTexture = (GLTexture *)[slot activeObjectOfObject:texture];
+    GLTexture *prevTexture = (GLTexture *)[slot activeObjectOfClass:texture.glType];
     assert(prevTexture != texture);
     if (prevTexture) {
         prevTexture.useCount = 0;
@@ -219,10 +219,6 @@
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass {
     NSNumber *key = @([theClass hash]);
     return self.dict[key];
-}
-
-- (GLObject *)activeObjectOfObject:(GLObject *)object {
-    return [self activeObjectOfClass:object.glType];
 }
 
 - (void)setActiveObject:(GLObject *)object {
@@ -286,7 +282,7 @@ void assertBound(GLObject *object) {
 @implementation GLNestedObject
 
 - (BOOL)isBound {
-    return [self.context.objectSet activeObjectOfObject:self] == self;
+    return [self.context.objectSet activeObjectOfClass:self.glType] == self;
 }
 
 - (void)bind {
@@ -305,7 +301,7 @@ void assertBound(GLObject *object) {
     assert(self.isBound == NO);
     
     self.nestedBound = YES;
-    self.prevBound = [self.context.objectSet activeObjectOfObject:self];
+    self.prevBound = [self.context.objectSet activeObjectOfClass:self.glType];
     [self.context.objectSet setActiveObject:self];
     
     [self internalBind:YES];

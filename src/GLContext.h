@@ -15,6 +15,7 @@
 @class GLObject;
 @class GLActiveObjects;
 
+typedef GLActiveObjects GLSlot;
 typedef Class GLObjectType;
 
 @interface GLContext : NSObject
@@ -29,7 +30,7 @@ typedef Class GLObjectType;
 @interface GLContext ()
 @property (nonatomic, retain)   GLActiveObjects     *objectSet;
 
-- (GLActiveObjects *)activeSlot;
+- (GLSlot *)activeSlot;
 
 // trying to find less active textures & bind onto slots occupied by them
 // it assumes that we are trying activate textures of same type
@@ -37,7 +38,7 @@ typedef Class GLObjectType;
 // ensures that texture is in slot. may not activate slot
 - (void)activateTexture:(GLTexture *)texture;
 
-// find less active slot (put texture innto slot if it's not in slot yet), activate slot
+// find less active slot (& put texture into slot if it's not in slot yet), activate slot
 - (void)bindTexture:(GLTexture *)texture;
 @end
 
@@ -46,7 +47,6 @@ typedef Class GLObjectType;
 @property (nonatomic, assign)   GLuint      slotIdx;
 
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass;
-- (GLObject *)activeObjectOfObject:(GLObject *)object;
 - (void)setActiveObject:(GLObject *)object;
 - (void)resetActiveObject:(GLObject *)object;
 
@@ -94,6 +94,8 @@ void assertBound(GLObject *object);
 
 @interface GLNestedObject ()
 // we should definitely retain prev object as context no more owns it
+// someone should need & retain them too however
+// TODO: should i use weak reference?
 @property (nonatomic, retain)   GLObject    *prevBound;
 @property (nonatomic, assign)   BOOL        nestedBound;
 

@@ -26,10 +26,7 @@ typedef Class GLObjectType;
 
 @end
 
-// internals:
-@interface GLContext ()
-@property (nonatomic, retain)   GLActiveObjects     *objectSet;
-
+@interface GLContext (GLTextureManagement)
 - (GLSlot *)activeSlot;
 
 // trying to find less active textures & bind onto slots occupied by them
@@ -40,9 +37,18 @@ typedef Class GLObjectType;
 
 // find less active slot (& put texture into slot if it's not in slot yet), activate slot
 - (void)bindTexture:(GLTexture *)texture;
+
 @end
 
-// internal class:
+// internals:
+@interface GLContext ()
+@property (nonatomic, retain)   GLActiveObjects     *objectSet;
+@end
+
+
+// internal class.
+// Associative key(GLObjectType)-value(GLObject*) container.
+// does not retain values
 @interface GLActiveObjects : NSObject
 @property (nonatomic, assign)   GLuint      slotIdx;
 
@@ -56,8 +62,9 @@ typedef Class GLObjectType;
 
 - (GLContext *)context;
 
-// type identifier. can be overridden
-+ (GLObjectType)glType;
+// gl object type identifier. can be overridden
+// objects should always have equal identifiers if they acting in same way
+// initially set to object class
 - (GLObjectType)glType;
 
 // should be overridden
@@ -83,7 +90,7 @@ void assertBound(GLObject *object);
 
 @property (nonatomic, assign)   GLuint              uId;
 @property (nonatomic, assign)   GLContext           *context;
-
+@property (nonatomic, assign)   GLObjectType        glType;
 @end
 
 @interface GLNestedObject : GLObject

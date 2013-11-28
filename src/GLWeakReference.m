@@ -24,7 +24,7 @@ static void _IDPDeallocMethod(id _self, SEL _cmd) {
     if (ref) {
         ref.target = nil;
     }
-    
+
     IMP superIMP = [[_self superclass] instanceMethodForSelector:@selector(dealloc)];
     superIMP(_self, _cmd);
 }

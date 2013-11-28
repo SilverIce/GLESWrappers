@@ -28,19 +28,41 @@ typedef struct {
     GLvoid  *data;
 } GLPixelData;
 
-typedef enum {
-    kGLRGBA            = GL_RGBA,
-    kGLRGB             = GL_RGB,
-    kGLLuminance       = GL_LUMINANCE,
-    kGLLuminanceAlpha  = GL_LUMINANCE_ALPHA,
-} GLInternalFormat;
+typedef NS_ENUM(GLenum, GLInternalFormat) {
+    GLInternalFormatRGBA            = GL_RGBA,
+    GLInternalFormatRGB             = GL_RGB,
+    GLInternalFormatLuminance       = GL_LUMINANCE,
+    GLInternalFormatLuminanceAlpha  = GL_LUMINANCE_ALPHA,
+};
+
+typedef NS_ENUM(GLenum, GLTextureMinFilter) {
+    GLTextureMinFilterNearest               = GL_NEAREST,
+    GLTextureMinFilterLinear                = GL_LINEAR,
+    GLTextureMinFilterNearestMipmapNearest  = GL_NEAREST_MIPMAP_NEAREST,
+    GLTextureMinFilterNearestMipmapLinear   = GL_NEAREST_MIPMAP_LINEAR,
+    GLTextureMinFilterLinearMipmapNearest   = GL_LINEAR_MIPMAP_NEAREST,
+    GLTextureMinFilterLinearMipmapLinear    = GL_LINEAR_MIPMAP_LINEAR,
+};
+
+typedef NS_ENUM(GLenum, GLTextureMagFilter) {
+    GLTextureMagFilterNearest   = GL_NEAREST,
+    GLTextureMagFilterLinear    = GL_LINEAR,
+};
+
+typedef NS_ENUM(GLenum, GLTextureWrap) {
+    GLTextureWrapClampToEdge    = GL_CLAMP_TO_EDGE,
+    GLTextureWrapRepeat         = GL_REPEAT,
+    GLTextureWrapMirroredRepeat = GL_MIRRORED_REPEAT,
+};
 
 // Base class that implements bind, unbind behaviour.
-// Useless by itself.
 @interface GLTexture : GLObject
 
-@property (nonatomic, assign)   GLuint      minFilter;
-@property (nonatomic, assign)   GLuint      magFilter;
+@property (nonatomic, assign)   GLTextureMinFilter      minFilter;
+@property (nonatomic, assign)   GLTextureMagFilter      magFilter;
+
+@property (nonatomic, assign)   GLTextureWrap           wrapS;
+@property (nonatomic, assign)   GLTextureWrap           wrapT;
 
 - (GLuint)width;
 - (GLuint)height;
@@ -50,11 +72,16 @@ typedef enum {
 - (void)unbind;
 // ensures that texture is belongs to some slot
 - (void)ensureActive;
+// returns -1 if inactive
+- (GLint)slotIndex;
 
 + (id)objectAs2DTextureWithSize:(GLSizeI)size
                  internalFormat:(GLInternalFormat)internalFormat   //
                            type:(GLenum)type
                          pixels:(const GLvoid *)pixels;            // can be NULL
+
+// should not be here as method references coregraphics framework methods. just for testing
++ (id)objectWithImagePath:(NSString *)path;
 
 @end
 

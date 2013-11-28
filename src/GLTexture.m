@@ -15,6 +15,40 @@
 
 @implementation GLTexture
 
+
++ (id)objectWithImagePath:(NSString *)path {
+    NSString *res = [[NSBundle mainBundle] pathForResource:path
+                                                    ofType:nil];
+
+    UIImage *img = [UIImage imageWithContentsOfFile:res];
+    assert(img);
+    CGImageRef image = img.CGImage;
+    
+    size_t width = CGImageGetWidth(image);
+    size_t height = CGImageGetHeight(image);
+    
+    GLubyte * spriteData = (GLubyte *) calloc(width*height*4, sizeof(GLubyte));
+    
+    CGContextRef spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width*4,
+                                                       CGImageGetColorSpace(image), kCGImageAlphaPremultipliedLast);
+    
+    CGContextDrawImage(spriteContext, CGRectMake(0, 0, width, height), image);
+    
+    CGContextRelease(spriteContext);
+    
+    GLTexture *me = [self objectAs2DTextureWithSize:(GLSizeI){width, height}
+                                     internalFormat:GLInternalFormatRGBA
+                                               type:GL_UNSIGNED_BYTE
+                                             pixels:spriteData];
+    
+    [me bind];
+    me.minFilter = GLTextureMinFilterNearest;
+    
+    free(spriteData);
+    
+    return me;
+}
+
 + (id)objectAs2DTextureWithSize:(GLSizeI)size
                  internalFormat:(GLInternalFormat)internalFormat
                            type:(GLenum)type
@@ -26,6 +60,7 @@
         me.textureType = GL_TEXTURE_2D;
         
         [me ensureActive];
+        
         glTexImage2D(me.textureType,
                      0, // level
                      internalFormat,
@@ -65,21 +100,37 @@
     [self.context activateTexture:self];
 }
 
+- (GLint)slotIndex {
+    if (self.slot) {
+        return self.slot.slotIdx;
+    }
+    
+    return -1;
+}
+
 #pragma mark -
 #pragma mark Texture parameters
 
-static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLuint value, GLuint *field) {
+static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, GLenum *field) {
     assertBound(texture);
     *field = value;
     glTexParameteri(texture.textureType, param, value);
 }
 
-- (void)setMinFilter:(GLuint)filter {
+- (void)setMinFilter:(GLTextureMinFilter)filter {
     _GLTextureSetParam(self, GL_TEXTURE_MIN_FILTER, filter, &_minFilter);
 }
 
-- (void)setMagFilter:(GLuint)magFilter {
+- (void)setMagFilter:(GLTextureMagFilter)magFilter {
     _GLTextureSetParam(self, GL_TEXTURE_MAG_FILTER, magFilter, &_magFilter);
+}
+
+- (void)setWrapS:(GLTextureWrap)wrapS {
+    _GLTextureSetParam(self, GL_TEXTURE_WRAP_S, wrapS, &_wrapS);
+}
+
+- (void)setWrapT:(GLTextureWrap)wrapT {
+    _GLTextureSetParam(self, GL_TEXTURE_WRAP_T, wrapT, &_wrapT);
 }
 
 #pragma mark -

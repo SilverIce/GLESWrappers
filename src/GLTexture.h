@@ -58,9 +58,9 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
 // Base class that implements bind, unbind behaviour.
 @interface GLTexture : GLObject
 
+// all properties setters requires this texture be a current bound texture
 @property (nonatomic, assign)   GLTextureMinFilter      minFilter;
 @property (nonatomic, assign)   GLTextureMagFilter      magFilter;
-
 @property (nonatomic, assign)   GLTextureWrap           wrapS;
 @property (nonatomic, assign)   GLTextureWrap           wrapT;
 
@@ -70,7 +70,8 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
 
 - (void)bind;
 - (void)unbind;
-// ensures that texture is belongs to some slot
+
+// ensures that texture attached to slot
 - (void)ensureActive;
 // returns -1 if inactive
 - (GLint)slotIndex;
@@ -80,7 +81,7 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
                            type:(GLenum)type
                          pixels:(const GLvoid *)pixels;            // can be NULL
 
-// should not be here as method references coregraphics framework methods. just for testing
+// should not be here since method references coregraphics framework methods. just for testing
 + (id)objectWithImagePath:(NSString *)path;
 
 @end

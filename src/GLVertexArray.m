@@ -36,6 +36,7 @@
           atOffset:(GLintptr)offset
 {
     assert(offset + size < self.dataSize);
+    assertBound(self);
     glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
 }
 
@@ -43,6 +44,7 @@
        withSize:(GLsizei)size
       withUsage:(GLenum)usage
 {
+    assertBound(self);
     self.dataSize = size;
     glBufferData(GL_ARRAY_BUFFER, size, data, usage);
 }
@@ -114,6 +116,7 @@
 - (void)describeStructures:(const GLVertexArrayStructDescription*)descriptors
                structCount:(NSUInteger)count
 {
+    assertBound(self);
     for (NSUInteger i = 0; i < count; ++i) {
         const GLVertexArrayStructDescription *descr = &descriptors[i];
         glEnableVertexAttribArray(descr->identifier);
@@ -132,6 +135,7 @@
                           normalized:(GLboolean)normalized
                            ptrOffset:(GLsizei)ptrOffset
 {
+    assertBound(self);
     glEnableVertexAttribArray(attribute);
     glVertexAttribPointer(attribute, size, type, normalized, self.elementSize, (GLvoid *)ptrOffset);
 }
@@ -141,15 +145,18 @@
 }
 
 - (void)drawTriangleStrip {
+    assertBound(self);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, self.vertexCount);
 }
 
 - (void)draw:(GLenum)mode {
+    assertBound(self);
     glDrawArrays(mode, 0, self.buffer.dataSize / self.elementSize);
 }
 
 - (void)draw:(GLenum)mode from:(NSUInteger)from count:(NSUInteger)count {
     assert(from + count <= self.vertexCount);
+    assertBound(self);
     glDrawArrays(mode, from, count);
 }
 

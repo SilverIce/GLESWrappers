@@ -75,6 +75,7 @@
 - (void)resetActiveObject:(GLObject *)object {
     assert(object);
     NSNumber *key = @([[object glType] hash]);
+    assert(object == [(GLWeakReference *)self.dict[key] target]);
     [self.dict removeObjectForKey:key];
 }
 
@@ -126,6 +127,11 @@ void assertBound(GLObject *object) {
 
 @implementation GLNestedObject
 
+- (void)dealloc {
+    self.prevBound = nil;
+    [super dealloc];
+}
+
 - (BOOL)isBound {
     return [self.context.objectSet activeObjectOfClass:self.glType] == self;
 }
@@ -138,7 +144,7 @@ void assertBound(GLObject *object) {
 }
 
 - (void)unbind {
-    [self.context.objectSet setActiveObject:nil];
+    [self.context.objectSet resetActiveObject:self];
     [self internalBind:NO];
 }
 

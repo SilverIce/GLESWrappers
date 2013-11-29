@@ -18,6 +18,18 @@
 typedef GLActiveObjects GLSlot;
 typedef Class GLObjectType;
 
+/*
+gl context issues:
+context is too imperative for me
+ 
+1. the shared state is much harder to maintain
+2. everything changes state, need keep in mind how each function changes that state
+
+
+ 
+hard to maintain state
+*/
+
 @interface GLContext : NSObject
 
 - (GLFramebuffer *)framebuffer;

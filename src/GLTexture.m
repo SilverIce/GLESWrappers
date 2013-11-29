@@ -7,10 +7,14 @@
 //
 
 #import "GLTexture.h"
+#import "GLWeakReference.h"
 
 @interface GLTexture ()
-@property (nonatomic, assign)   GLuint      textureType;
-@property (nonatomic, assign)   GLSizeI     size;
+@property (nonatomic, assign)   GLuint              textureType;
+@property (nonatomic, assign)   GLSizeI             size;
+
+@property (nonatomic, retain)   GLWeakReference     *prevBound;
+@property (nonatomic, assign)   BOOL                nestedBound;
 @end
 
 @implementation GLTexture
@@ -43,6 +47,7 @@
     
     [me bind];
     me.minFilter = GLTextureMinFilterNearest;
+    [me unbind];
     
     free(spriteData);
     
@@ -59,7 +64,7 @@
         me.size = size;
         me.textureType = GL_TEXTURE_2D;
         
-        [me ensureActive];
+        [me bind];
         
         glTexImage2D(me.textureType,
                      0, // level
@@ -69,6 +74,8 @@
                      internalFormat,
                      type,
                      pixels);
+        
+        [me unbind];
     }
     
     assert(me);
@@ -76,6 +83,7 @@
 }
 
 - (void)dealloc {
+    self.prevBound = nil;
     glDeleteTextures(1, &_uId);
     [super dealloc];
 }
@@ -150,6 +158,34 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 
 - (void)internalBind:(BOOL)bind {
     glBindTexture(self.textureType, bind ? self.uId : 0);
+}
+
+
+- (void)bindNested {
+    assert(self.isBound == NO);
+    
+    self.nestedBound = YES;
+    self.prevBound = [[self.context.activeSlot activeObjectOfClass:self.glType] makeWeakReference];
+    [self.context bindTexture:self];
+}
+
+- (void)unbindNested {
+    assert(self.isBound && self.nestedBound == YES);
+    
+    // bind previous object
+    
+    GLTexture *prev = [self.prevBound target];
+    
+    if (prev) {
+        assert(prev.glType == self.glType);
+        
+        [self.context activateTexture:prev];
+    } else {
+        ;
+    }
+    
+    self.nestedBound = NO;
+    self.prevBound = nil;
 }
 
 @end

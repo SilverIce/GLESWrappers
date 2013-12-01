@@ -73,7 +73,7 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
 
 // ensures that texture attached to slot
 - (void)ensureActive;
-// returns -1 if inactive
+// returns -1 if not attached to slot
 - (GLint)slotIndex;
 
 + (id)objectAs2DTextureWithSize:(GLSizeI)size
@@ -88,6 +88,7 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
 
 @interface GLTexture ()
 // private api:
+// a way to determine most used/active texture - how often it was bound
 @property (nonatomic, assign)   GLuint              useCount;
 @property (nonatomic, assign)   GLSlot              *slot;
 @end

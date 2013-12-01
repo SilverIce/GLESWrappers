@@ -160,7 +160,6 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
     glBindTexture(self.textureType, bind ? self.uId : 0);
 }
 
-
 - (void)bindNested {
     assert(self.isBound == NO);
     
@@ -175,6 +174,8 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
     // bind previous object
     
     GLTexture *prev = [self.prevBound target];
+    
+    // no need unbind current texture - context's activateTexture method does it if required
     
     if (prev) {
         assert(prev.glType == self.glType);

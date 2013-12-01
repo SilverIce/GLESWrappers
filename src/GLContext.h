@@ -84,9 +84,6 @@ hard to maintain state
 - (void)unbind;
 - (BOOL)isBound;
 
-// should be overridden
-- (void)internalBind:(BOOL)bind;
-
 // should we really pass&store context everywhere or just query current EAGLConext context?
 + (id)objectWithContext:(GLContext *)context;
 
@@ -103,6 +100,10 @@ void assertBound(GLObject *object);
 @property (nonatomic, assign)   GLuint              uId;
 @property (nonatomic, assign)   GLContext           *context;
 @property (nonatomic, assign)   GLObjectType        glType;
+
+// should be overridden
+- (void)internalBind:(BOOL)bind;
+
 @end
 
 @interface GLNestedObject : GLObject

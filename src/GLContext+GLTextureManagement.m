@@ -57,7 +57,7 @@
     return nil;
 }
 
-- (GLActiveObjects *)activeSlot {
+- (GLSlot *)activeSlot {
     return _activeSlot;
 }
 
@@ -133,8 +133,8 @@
     ++texture.useCount;
 }
 
-- (GLActiveObjects *)lessActiveSlotFor:(GLObjectType)objType {
-    GLActiveObjects *lessActive = nil;
+- (GLSlot *)lessActiveSlotFor:(GLObjectType)objType {
+    GLSlot *lessActive = nil;
     GLuint useCountLast = 0;
     
     for (GLSlot *slot in self.slots) {
@@ -155,18 +155,18 @@
 
 - (NSArray *)sortSlotsByUse:(GLObjectType)glType {
     NSArray *sortedSlots = [self.slots sortedArrayUsingComparator:^NSComparisonResult(GLActiveObjects *obj1, GLActiveObjects *obj2) {
-                            GLuint useCount1 = [(GLTexture *)[obj1 activeObjectOfClass:glType] useCount];
-                            GLuint useCount2 = [(GLTexture *)[obj2 activeObjectOfClass:glType] useCount];
-                            
-                            if (useCount1 < useCount2) {
-                            return NSOrderedDescending;
-                            }
-                            else if (useCount2 > useCount1) {
-                            return NSOrderedAscending;
-                            }
-                            
-                            return NSOrderedSame;
-                            }];
+        GLuint useCount1 = [(GLTexture *)[obj1 activeObjectOfClass:glType] useCount];
+        GLuint useCount2 = [(GLTexture *)[obj2 activeObjectOfClass:glType] useCount];
+        
+        if (useCount1 < useCount2) {
+            return NSOrderedDescending;
+        }
+        else if (useCount2 > useCount1) {
+            return NSOrderedAscending;
+        }
+        
+        return NSOrderedSame;
+    }];
     
     assert(sortedSlots.count > 0);
     

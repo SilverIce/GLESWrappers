@@ -13,8 +13,6 @@
 @property (nonatomic, assign)   GLuint              textureType;
 @property (nonatomic, assign)   GLSizeI             size;
 
-@property (nonatomic, retain)   GLWeakReference     *prevBound;
-@property (nonatomic, assign)   BOOL                nestedBound;
 @end
 
 @implementation GLTexture
@@ -83,7 +81,6 @@
 }
 
 - (void)dealloc {
-    self.prevBound = nil;
     glDeleteTextures(1, &_uId);
     [super dealloc];
 }
@@ -144,14 +141,6 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 #pragma mark -
 #pragma mark GLObject
 
-- (void)bind {
-    [self.context bindTexture:self];
-}
-
-- (void)unbind {
-    // nothing to do
-}
-
 - (BOOL)isBound {
     return self.slot && self.slot == self.context.activeSlot;
 }
@@ -160,20 +149,19 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
     glBindTexture(self.textureType, bind ? self.uId : 0);
 }
 
-- (void)bindNested {
-    assert(self.isBound == NO);
+- (void)bind {
+    //assert(self.isBound == NO);
     
-    self.nestedBound = YES;
-    self.prevBound = [[self.context.activeSlot activeObjectOfClass:self.glType] makeWeakReference];
     [self.context bindTexture:self];
+    [self.context.objectSet setActiveObject:self];
 }
 
-- (void)unbindNested {
-    assert(self.isBound && self.nestedBound == YES);
+- (void)unbind {
+    //assert(self.isBound && self.nestedBound == YES);
     
     // bind previous object
     
-    GLTexture *prev = [self.prevBound target];
+    GLTexture *prev = (GLTexture *)[self.context.objectSet resetActiveObject:self];
     
     // no need unbind current texture - context's activateTexture method does it if required
     
@@ -184,9 +172,6 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
     } else {
         ;
     }
-    
-    self.nestedBound = NO;
-    self.prevBound = nil;
 }
 
 @end

@@ -14,8 +14,8 @@
 @class GLTexture;
 @class GLObject;
 @class GLActiveObjects;
+@class GLSlot;
 
-typedef GLActiveObjects GLSlot;
 typedef Class GLObjectType;
 
 /*
@@ -59,13 +59,28 @@ hard to maintain state
 
 
 // internal class.
-// Associative key(GLObjectType)-value(GLObject*) container.
+// Associative key(GLObjectType)-values array(GLObject*) container.
 // does not retain values
 @interface GLActiveObjects : NSObject
+
+- (GLObject *)activeObjectOfClass:(GLObjectType)theClass;
+// push new active object. returns previous top object
+- (GLObject *)setActiveObject:(GLObject *)object;
+// pop object. returns new top object
+- (GLObject *)resetActiveObject:(GLObject *)object;
+
+@end
+
+// internal class.
+// Associative key(GLObjectType)-value(GLObject*) container.
+// does not retain values
+@interface GLSlot : NSObject
 @property (nonatomic, assign)   GLuint      slotIdx;
 
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass;
+// push new active object. returns previous top object
 - (void)setActiveObject:(GLObject *)object;
+// pop object. returns new top object
 - (void)resetActiveObject:(GLObject *)object;
 
 @end
@@ -113,11 +128,6 @@ void assertBound(GLObject *object);
 @end
 
 @interface GLNestedObject ()
-// we should definitely retain prev object as context no more owns it
-// someone should need & retain them too however
-// TODO: should i use weak reference?
-@property (nonatomic, retain)   GLObject    *prevBound;
-@property (nonatomic, assign)   BOOL        nestedBound;
 
 @end
 

@@ -122,8 +122,6 @@ void assertBound(GLObject *object);
 @end
 
 @interface GLNestedObject : GLObject
-- (void)bindNested;
-- (void)unbindNested;
 
 @end
 

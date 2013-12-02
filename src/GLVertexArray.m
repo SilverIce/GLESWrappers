@@ -55,10 +55,10 @@
 {
     GLBufferObject *me = [[self new] autorelease];
     if (me) {
-        [me bindNested];
+        [me bind];
         me.dataSize = size;
         glBufferData(GL_ARRAY_BUFFER, size, data, usage);
-        [me unbindNested];
+        [me unbind];
     }
 
     return me;
@@ -99,11 +99,11 @@
         me.buffer = [GLBufferObject objectWithUsage:usage data:data size:dataSize];
         
         // attach buffer
-        [me bindNested];
-        [me.buffer bindNested];
-        [me unbindNested];
+        [me bind];
+        [me.buffer bind];
+        [me unbind];
         
-        [me.buffer unbindNested];
+        [me.buffer unbind];
     }
     
     return me;

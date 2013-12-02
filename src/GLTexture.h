@@ -88,7 +88,7 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
 
 @interface GLTexture ()
 // private api:
-// a way to determine most used/active texture - how often it was bound
+// a way to determine most used/active texture - how often it was activated
 @property (nonatomic, assign)   GLuint              useCount;
 @property (nonatomic, assign)   GLSlot              *slot;
 @end

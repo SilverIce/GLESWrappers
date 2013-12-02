@@ -117,9 +117,11 @@
 #pragma mark Texture parameters
 
 static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, GLenum *field) {
+    [texture bind];
     assertBound(texture);
     *field = value;
     glTexParameteri(texture.textureType, param, value);
+    [texture unbind];
 }
 
 - (void)setMinFilter:(GLTextureMinFilter)filter {

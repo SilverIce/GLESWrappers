@@ -164,10 +164,6 @@ void assertBound(GLObject *object) {
     return self;
 }
 
-//- (NSString *)description {
-//    return [NSString stringWithFormat:@"%@. %@", super.description, self.glType];
-//}
-
 - (GLContext *)context {
     if (!_context) {
         _context = [[EAGLContext currentContext] context];
@@ -207,9 +203,11 @@ void assertBound(GLObject *object) {
 - (void)bind {
     //assert(self.isBound == NO); // it's ok to bind twice
     
-    [self.context.objectSet setActiveObject:self];
+    GLObject *prevActive = [self.context.objectSet setActiveObject:self];
     
-    [self internalBind:YES];
+    if (self != prevActive) {
+        [self internalBind:YES];
+    }
 }
 
 - (void)unbind {
@@ -222,9 +220,11 @@ void assertBound(GLObject *object) {
     if (prev) {
         assert(prev.glType == self.glType);
         
-        [prev internalBind:YES];
+        if (prev != self) {
+            [prev internalBind:YES];
+        }
     } else {
-        [self internalBind:NO];
+        ;//[self internalBind:NO];
     }
 }
 

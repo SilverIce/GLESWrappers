@@ -61,6 +61,10 @@
     return self;
 }
 
+- (NSString *)description {
+    return self.dict.description;
+}
+
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass {
     NSNumber *key = @([theClass hash]);
     NSMutableArray *stack = self.dict[key];
@@ -118,6 +122,10 @@
     return self;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"slot %u. textures = %@", self.slotIdx, self.dict];
+}
+
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass {
     NSNumber *key = @([theClass hash]);
     return [(GLWeakReference *)self.dict[key] target];
@@ -159,8 +167,15 @@ void assertBound(GLObject *object) {
     return self;
 }
 
+//- (NSString *)description {
+//    return [NSString stringWithFormat:@"%@. %@", super.description, self.glType];
+//}
+
 - (GLContext *)context {
-    return [[EAGLContext currentContext] context];
+    if (!_context) {
+        _context = [[EAGLContext currentContext] context];
+    }
+    return _context;
 }
 
 - (void)bind {
@@ -195,7 +210,6 @@ void assertBound(GLObject *object) {
 - (void)bind {
     //assert(self.isBound == NO); // it's ok to bind twice
     
-    self.nestedBound = YES;
     [self.context.objectSet setActiveObject:self];
     
     [self internalBind:YES];

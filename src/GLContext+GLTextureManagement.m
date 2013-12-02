@@ -186,9 +186,11 @@
         prevTexture.slot = nil;
     }
     
+    texture.slot = slot;
+    [slot setActiveObject:texture];
+    
     self.activeSlot = slot;
     [texture internalBind:YES];
-    texture.slot = slot;
 }
 
 @end

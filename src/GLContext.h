@@ -90,7 +90,7 @@ hard to maintain state
 - (GLContext *)context;
 
 // gl object type identifier. can be overridden
-// objects should always have equal identifiers if they acting in same way
+// objects should always have equal identifiers if they behave in same way
 // initially set to object class
 - (GLObjectType)glType;
 

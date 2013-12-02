@@ -58,7 +58,6 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
 // Base class that implements bind, unbind behaviour.
 @interface GLTexture : GLObject
 
-// all properties setters requires this texture be a current bound texture
 @property (nonatomic, assign)   GLTextureMinFilter      minFilter;
 @property (nonatomic, assign)   GLTextureMagFilter      magFilter;
 @property (nonatomic, assign)   GLTextureWrap           wrapS;

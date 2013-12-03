@@ -147,6 +147,10 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 #pragma mark -
 #pragma mark GLObject
 
++ (GLObjectType)glType {
+    return GLObjectTypeTexture2D;
+}
+
 - (BOOL)isBound {
     return self.slot && self.slot == self.context.activeSlot;
 }
@@ -178,6 +182,14 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
     } else {
         ;
     }
+}
+
+@end
+
+@implementation GLTextureCube
+
++ (GLObjectType)glType {
+    return GLObjectTypeTextureCubemap;
 }
 
 @end

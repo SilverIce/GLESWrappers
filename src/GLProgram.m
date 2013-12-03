@@ -62,6 +62,13 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
     return self;
 }
 
+#pragma mark -
+#pragma mark GLObject
+
++ (GLObjectType)glType {
+    return GLObjectTypeProgram;
+}
+
 - (void)internalBind:(BOOL)bind {
     glUseProgram(bind ? self.uId : 0);
 }

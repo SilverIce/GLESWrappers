@@ -63,14 +63,14 @@
 }
 
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass {
-    NSNumber *key = @([theClass hash]);
+    NSNumber *key = @(theClass);
     NSMutableArray *stack = self.dict[key];
     return [(GLWeakReference *)stack.lastObject target];
 }
 
 - (GLObject *)setActiveObject:(GLObject *)object {
     assert(object);
-    NSNumber *key = @([[object glType] hash]);
+    NSNumber *key = @([object glType]);
     
     NSMutableArray *stack = self.dict[key];
     if (!stack) {
@@ -82,12 +82,14 @@
     //assert(prevWeak != newWeak); // it's ok to push object twice
     [stack addObject:newWeak];
     
+    assert(object == [self activeObjectOfClass:object.glType]);
+    
     return prevWeak.target;
 }
 
 - (GLObject *)resetActiveObject:(GLObject *)object {
     assert(object);
-    NSNumber *key = @([[object glType] hash]);
+    NSNumber *key = @([object glType]);
     
     NSMutableArray *stack = self.dict[key];
     assert(stack);
@@ -124,21 +126,22 @@
 }
 
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass {
-    NSNumber *key = @([theClass hash]);
+    NSNumber *key = @(theClass);
     return [(GLWeakReference *)self.dict[key] target];
 }
 
 - (void)setActiveObject:(GLObject *)object {
     assert(object);
-    NSNumber *key = @([[object glType] hash]);
+    NSNumber *key = @([object glType]);
     self.dict[key] = [object makeWeakReference];
 }
 
 - (void)resetActiveObject:(GLObject *)object {
     assert(object);
-    NSNumber *key = @([[object glType] hash]);
+    NSNumber *key = @([object glType]);
     assert(object == [(GLWeakReference *)self.dict[key] target]);
     [self.dict removeObjectForKey:key];
+    assert(object == [self activeObjectOfClass:object.glType]);
 }
 
 @end
@@ -156,12 +159,13 @@ void assertBound(GLObject *object) {
     return me;
 }
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        self.glType = [self class];
-    }
-    return self;
++ (GLObjectType)glType {
+    assert(false);
+    return -1;
+}
+
+- (GLObjectType)glType {
+    return [[self class] glType];
 }
 
 - (GLContext *)context {

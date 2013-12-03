@@ -16,7 +16,14 @@
 @class GLActiveObjects;
 @class GLSlot;
 
-typedef Class GLObjectType;
+typedef NS_ENUM(GLenum, GLObjectType) {
+    GLObjectTypeFramebuffer,
+    GLObjectTypeBuffer,
+    GLObjectTypeProgram,
+    GLObjectTypeVertexArray,
+    GLObjectTypeTexture2D,
+    GLObjectTypeTextureCubemap,
+};
 
 /*
 gl context issues:
@@ -93,6 +100,7 @@ hard to maintain state
 // objects should always have equal identifiers if they behave in same way
 // initially set to object class
 - (GLObjectType)glType;
++ (GLObjectType)glType;
 
 // should be overridden
 - (void)bind;
@@ -114,7 +122,6 @@ void assertBound(GLObject *object);
 
 @property (nonatomic, assign)   GLuint              uId;
 @property (nonatomic, assign)   GLContext           *context;
-@property (nonatomic, assign)   GLObjectType        glType;
 
 // should be overridden
 - (void)internalBind:(BOOL)bind;

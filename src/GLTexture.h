@@ -19,8 +19,23 @@
 // sometimes we'll have a huge texture and we'll want to free memory as fast as possible
 
 typedef struct {
-    GLuint width, height;
+    GLsizei width, height;
 } GLSizeI;
+
+typedef struct {
+    GLint x, y;
+} GLPoint;
+
+typedef union {
+    struct {
+        GLPoint origin;
+        GLSizeI size;
+    };
+    struct {
+        GLint x, y;
+        GLsizei width, height;
+    };
+} GLRect;
 
 typedef struct {
     GLuint  width;
@@ -92,4 +107,5 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
 @property (nonatomic, assign)   GLSlot              *slot;
 @end
 
-
+@interface GLTextureCube : GLTexture
+@end

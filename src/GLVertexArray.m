@@ -27,6 +27,10 @@
     return self;
 }
 
++ (GLObjectType)glType {
+    return GLObjectTypeBuffer;
+}
+
 - (void)internalBind:(BOOL)bind {
     glBindBuffer(GL_ARRAY_BUFFER, bind ? self.uId : 0);
 }
@@ -150,6 +154,10 @@
 
 - (void)internalBind:(BOOL)bind {
     glBindVertexArrayOES(bind ? self.uId : 0);
+}
+
++ (GLObjectType)glType {
+    return GLObjectTypeVertexArray;
 }
 
 - (void)drawTriangleStrip {

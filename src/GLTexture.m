@@ -12,11 +12,12 @@
 @interface GLTexture ()
 @property (nonatomic, assign)   GLuint              textureType;
 @property (nonatomic, assign)   GLSizeI             size;
-
 @end
 
 @implementation GLTexture
 
+#pragma mark -
+#pragma mark Constructors
 
 + (id)objectWithImagePath:(NSString *)path {
     NSString *res = [[NSBundle mainBundle] pathForResource:path
@@ -61,7 +62,7 @@
     if (me) {
         me.size = size;
         me.textureType = GL_TEXTURE_2D;
-        
+
         [me bind];
         
         glTexImage2D(me.textureType,
@@ -79,6 +80,9 @@
     assert(me);
     return me;
 }
+
+#pragma mark -
+#pragma mark Inialization and Deallocation
 
 - (void)dealloc {
     glDeleteTextures(1, &_uId);

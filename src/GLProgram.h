@@ -58,7 +58,7 @@
 // information log of program is overwritten with information on the results of the validation
 - (BOOL)validate;
 
-// gets filled after program being lined or validated
+// gets filled after program being linked or validated
 - (NSString *)infoLog;
 
 - (GLint)attribLocation:(NSString *)attribute;

@@ -9,8 +9,8 @@
 #import "GLShader.h"
 
 @interface GLShader ()
-@property (nonatomic, assign)   GLuint      uId;
-@property (nonatomic, assign)   GLuint      shaderType;
+@property (nonatomic, assign)   GLuint          uId;
+@property (nonatomic, assign)   GLShaderType    shaderType;
 @end
 
 @implementation GLShader

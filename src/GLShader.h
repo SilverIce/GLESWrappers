@@ -17,13 +17,18 @@ gets retained by shader programm in opengl, so must be retained here as well
  
 */
 
+typedef NS_ENUM(GLenum, GLShaderType) {
+    GLShaderTypeVertex      = GL_VERTEX_SHADER,
+    GLShaderTypeFragment    = GL_FRAGMENT_SHADER,
+};
+
 @interface GLShader : NSObject
 
 // way to identify shader? to identify it in from some shader cache?
 //@property (nonatomic, copy)     NSString    *name;
 
 - (GLuint)uId;
-- (GLuint)shaderType;
+- (GLShaderType)shaderType;
 
 - (BOOL)compileSource:(NSString *)source;
 

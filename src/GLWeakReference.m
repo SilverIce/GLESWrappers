@@ -72,6 +72,10 @@ static Class _IDPGetSubclass(Class class) {
     _target = target;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@. target = '%@'", [super description], self.target];
+}
+
 - (void)dealloc {
     if (self.target) {
         // actually no sense to do that: if dealloc is called then target no more own weak reference

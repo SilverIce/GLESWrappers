@@ -14,9 +14,16 @@
 @class GLTexture;
 @class GLObject;
 @class GLActiveObjects;
+@class GLSlot;
 
-typedef GLActiveObjects GLSlot;
-typedef Class GLObjectType;
+typedef NS_ENUM(GLenum, GLObjectType) {
+    GLObjectTypeFramebuffer,
+    GLObjectTypeBuffer,
+    GLObjectTypeProgram,
+    GLObjectTypeVertexArray,
+    GLObjectTypeTexture2D,
+    GLObjectTypeTextureCubemap,
+};
 
 /*
 gl context issues:
@@ -59,13 +66,28 @@ hard to maintain state
 
 
 // internal class.
-// Associative key(GLObjectType)-value(GLObject*) container.
+// Associative key(GLObjectType)-values array(GLObject*) container.
 // does not retain values
 @interface GLActiveObjects : NSObject
+
+- (GLObject *)activeObjectOfClass:(GLObjectType)theClass;
+// push new active object. returns previous top object
+- (GLObject *)setActiveObject:(GLObject *)object;
+// pop object. returns new top object
+- (GLObject *)resetActiveObject:(GLObject *)object;
+
+@end
+
+// internal class.
+// Associative key(GLObjectType)-value(GLObject*) container.
+// does not retain values
+@interface GLSlot : NSObject
 @property (nonatomic, assign)   GLuint      slotIdx;
 
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass;
+// push new active object. returns previous top object
 - (void)setActiveObject:(GLObject *)object;
+// pop object. returns new top object
 - (void)resetActiveObject:(GLObject *)object;
 
 @end
@@ -75,9 +97,10 @@ hard to maintain state
 - (GLContext *)context;
 
 // gl object type identifier. can be overridden
-// objects should always have equal identifiers if they acting in same way
+// objects should always have equal identifiers if they behave in same way
 // initially set to object class
 - (GLObjectType)glType;
++ (GLObjectType)glType;
 
 // should be overridden
 - (void)bind;
@@ -99,7 +122,6 @@ void assertBound(GLObject *object);
 
 @property (nonatomic, assign)   GLuint              uId;
 @property (nonatomic, assign)   GLContext           *context;
-@property (nonatomic, assign)   GLObjectType        glType;
 
 // should be overridden
 - (void)internalBind:(BOOL)bind;
@@ -107,17 +129,10 @@ void assertBound(GLObject *object);
 @end
 
 @interface GLNestedObject : GLObject
-- (void)bindNested;
-- (void)unbindNested;
 
 @end
 
 @interface GLNestedObject ()
-// we should definitely retain prev object as context no more owns it
-// someone should need & retain them too however
-// TODO: should i use weak reference?
-@property (nonatomic, retain)   GLObject    *prevBound;
-@property (nonatomic, assign)   BOOL        nestedBound;
 
 @end
 

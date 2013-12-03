@@ -12,13 +12,12 @@
 @interface GLTexture ()
 @property (nonatomic, assign)   GLuint              textureType;
 @property (nonatomic, assign)   GLSizeI             size;
-
-@property (nonatomic, retain)   GLWeakReference     *prevBound;
-@property (nonatomic, assign)   BOOL                nestedBound;
 @end
 
 @implementation GLTexture
 
+#pragma mark -
+#pragma mark Constructors
 
 + (id)objectWithImagePath:(NSString *)path {
     NSString *res = [[NSBundle mainBundle] pathForResource:path
@@ -63,7 +62,7 @@
     if (me) {
         me.size = size;
         me.textureType = GL_TEXTURE_2D;
-        
+
         [me bind];
         
         glTexImage2D(me.textureType,
@@ -82,8 +81,10 @@
     return me;
 }
 
+#pragma mark -
+#pragma mark Inialization and Deallocation
+
 - (void)dealloc {
-    self.prevBound = nil;
     glDeleteTextures(1, &_uId);
     [super dealloc];
 }
@@ -120,9 +121,11 @@
 #pragma mark Texture parameters
 
 static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, GLenum *field) {
+    [texture bind];
     assertBound(texture);
     *field = value;
     glTexParameteri(texture.textureType, param, value);
+    [texture unbind];
 }
 
 - (void)setMinFilter:(GLTextureMinFilter)filter {
@@ -144,12 +147,8 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 #pragma mark -
 #pragma mark GLObject
 
-- (void)bind {
-    [self.context bindTexture:self];
-}
-
-- (void)unbind {
-    // nothing to do
++ (GLObjectType)glType {
+    return GLObjectTypeTexture2D;
 }
 
 - (BOOL)isBound {
@@ -160,20 +159,19 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
     glBindTexture(self.textureType, bind ? self.uId : 0);
 }
 
-- (void)bindNested {
-    assert(self.isBound == NO);
+- (void)bind {
+    //assert(self.isBound == NO);
     
-    self.nestedBound = YES;
-    self.prevBound = [[self.context.activeSlot activeObjectOfClass:self.glType] makeWeakReference];
     [self.context bindTexture:self];
+    [self.context.objectSet setActiveObject:self];
 }
 
-- (void)unbindNested {
-    assert(self.isBound && self.nestedBound == YES);
+- (void)unbind {
+    //assert(self.isBound && self.nestedBound == YES);
     
     // bind previous object
     
-    GLTexture *prev = [self.prevBound target];
+    GLTexture *prev = (GLTexture *)[self.context.objectSet resetActiveObject:self];
     
     // no need unbind current texture - context's activateTexture method does it if required
     
@@ -184,9 +182,14 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
     } else {
         ;
     }
-    
-    self.nestedBound = NO;
-    self.prevBound = nil;
+}
+
+@end
+
+@implementation GLTextureCube
+
++ (GLObjectType)glType {
+    return GLObjectTypeTextureCubemap;
 }
 
 @end

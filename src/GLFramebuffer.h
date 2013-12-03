@@ -7,7 +7,11 @@
 //
 
 #import "GLContext.h"
+#import "GLTexture.h"
 
 @interface GLFramebuffer : GLNestedObject
+
+// read RGBA UNSIGNED_BYTE pixels
+- (void)readRGBAUBytePixels:(GLvoid *)pixels fromRect:(GLRect)rect;
 
 @end

@@ -35,9 +35,6 @@
     return self;
 }
 
-- (GLFramebuffer *)framebuffer {
-    return (GLFramebuffer *)[self.objectSet activeObjectOfClass:[GLFramebuffer glType]];
-}
 
 @end
 
@@ -61,22 +58,90 @@
     return self;
 }
 
+- (NSString *)description {
+    return self.dict.description;
+}
+
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass {
-    NSNumber *key = @([theClass hash]);
+    NSNumber *key = @(theClass);
+    NSMutableArray *stack = self.dict[key];
+    return [(GLWeakReference *)stack.lastObject target];
+}
+
+- (GLObject *)setActiveObject:(GLObject *)object {
+    assert(object);
+    NSNumber *key = @([object glType]);
+    
+    NSMutableArray *stack = self.dict[key];
+    if (!stack) {
+        self.dict[key] = stack = [NSMutableArray array];
+    }
+    
+    GLWeakReference *prevWeak = stack.lastObject;
+    GLWeakReference *newWeak = [object makeWeakReference];
+    //assert(prevWeak != newWeak); // it's ok to push object twice
+    [stack addObject:newWeak];
+    
+    assert(object == [self activeObjectOfClass:object.glType]);
+    
+    return prevWeak.target;
+}
+
+- (GLObject *)resetActiveObject:(GLObject *)object {
+    assert(object);
+    NSNumber *key = @([object glType]);
+    
+    NSMutableArray *stack = self.dict[key];
+    assert(stack);
+    assert([(GLWeakReference *)stack.lastObject target] == object);
+    
+    [stack removeLastObject];
+    
+    return [(GLWeakReference *)stack.lastObject target];
+}
+
+@end
+
+@interface GLSlot ()
+@property (nonatomic, retain)   NSMutableDictionary *dict;
+@end
+
+@implementation GLSlot
+
+- (void)dealloc {
+    self.dict = nil;
+    [super dealloc];
+}
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.dict = [NSMutableDictionary dictionary];
+    }
+    return self;
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"slot %u. textures = %@", self.slotIdx, self.dict];
+}
+
+- (GLObject *)activeObjectOfClass:(GLObjectType)theClass {
+    NSNumber *key = @(theClass);
     return [(GLWeakReference *)self.dict[key] target];
 }
 
 - (void)setActiveObject:(GLObject *)object {
     assert(object);
-    NSNumber *key = @([[object glType] hash]);
+    NSNumber *key = @([object glType]);
     self.dict[key] = [object makeWeakReference];
 }
 
 - (void)resetActiveObject:(GLObject *)object {
     assert(object);
-    NSNumber *key = @([[object glType] hash]);
+    NSNumber *key = @([object glType]);
     assert(object == [(GLWeakReference *)self.dict[key] target]);
     [self.dict removeObjectForKey:key];
+    assert(object == [self activeObjectOfClass:object.glType]);
 }
 
 @end
@@ -94,16 +159,20 @@ void assertBound(GLObject *object) {
     return me;
 }
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        self.glType = [self class];
-    }
-    return self;
++ (GLObjectType)glType {
+    assert(false);
+    return -1;
+}
+
+- (GLObjectType)glType {
+    return [[self class] glType];
 }
 
 - (GLContext *)context {
-    return [[EAGLContext currentContext] context];
+    if (!_context) {
+        _context = [[EAGLContext currentContext] context];
+    }
+    return _context;
 }
 
 - (void)bind {
@@ -128,7 +197,6 @@ void assertBound(GLObject *object) {
 @implementation GLNestedObject
 
 - (void)dealloc {
-    self.prevBound = nil;
     [super dealloc];
 }
 
@@ -137,46 +205,31 @@ void assertBound(GLObject *object) {
 }
 
 - (void)bind {
-    assert(self.isBound == NO);
+    //assert(self.isBound == NO); // it's ok to bind twice
     
-    [self.context.objectSet setActiveObject:self];
-    [self internalBind:YES];
+    GLObject *prevActive = [self.context.objectSet setActiveObject:self];
+    
+    if (self != prevActive) {
+        [self internalBind:YES];
+    }
 }
 
 - (void)unbind {
-    [self.context.objectSet resetActiveObject:self];
-    [self internalBind:NO];
-}
-
-- (void)bindNested {
-    assert(self.isBound == NO);
-    
-    self.nestedBound = YES;
-    self.prevBound = [self.context.objectSet activeObjectOfClass:self.glType];
-    [self.context.objectSet setActiveObject:self];
-    
-    [self internalBind:YES];
-}
-
-- (void)unbindNested {
-    assert(self.isBound && self.nestedBound == YES);
+    //assert(self.isBound && self.nestedBound == YES);
     
     // bind previous object
     
-    GLObject *prev = self.prevBound;
+    GLObject *prev = [self.context.objectSet resetActiveObject:self];
     
     if (prev) {
         assert(prev.glType == self.glType);
         
-        [self.context.objectSet setActiveObject:prev];
-        [prev internalBind:YES];
+        if (prev != self) {
+            [prev internalBind:YES];
+        }
     } else {
-        [self.context.objectSet resetActiveObject:self];
-        [self internalBind:NO];
+        ;//[self internalBind:NO];
     }
-    
-    self.nestedBound = NO;
-    self.prevBound = nil;
 }
 
 @end

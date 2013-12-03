@@ -19,8 +19,23 @@
 // sometimes we'll have a huge texture and we'll want to free memory as fast as possible
 
 typedef struct {
-    GLuint width, height;
+    GLsizei width, height;
 } GLSizeI;
+
+typedef struct {
+    GLint x, y;
+} GLPoint;
+
+typedef union {
+    struct {
+        GLPoint origin;
+        GLSizeI size;
+    };
+    struct {
+        GLint x, y;
+        GLsizei width, height;
+    };
+} GLRect;
 
 typedef struct {
     GLuint  width;
@@ -58,7 +73,6 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
 // Base class that implements bind, unbind behaviour.
 @interface GLTexture : GLObject
 
-// all properties setters requires this texture be a current bound texture
 @property (nonatomic, assign)   GLTextureMinFilter      minFilter;
 @property (nonatomic, assign)   GLTextureMagFilter      magFilter;
 @property (nonatomic, assign)   GLTextureWrap           wrapS;
@@ -88,9 +102,10 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
 
 @interface GLTexture ()
 // private api:
-// a way to determine most used/active texture - how often it was bound
+// a way to determine most used/active texture - how often it was activated
 @property (nonatomic, assign)   GLuint              useCount;
 @property (nonatomic, assign)   GLSlot              *slot;
 @end
 
-
+@interface GLTextureCube : GLTexture
+@end

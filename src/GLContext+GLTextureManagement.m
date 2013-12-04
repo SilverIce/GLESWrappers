@@ -131,6 +131,8 @@
     }
     
     ++texture.useCount;
+    
+    assert(texture.slot == self.activeSlot);
 }
 
 - (GLSlot *)lessActiveSlotFor:(GLObjectType)objType {

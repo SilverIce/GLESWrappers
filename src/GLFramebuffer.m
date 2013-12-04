@@ -23,8 +23,15 @@
     return self;
 }
 
+#pragma mark -
+#pragma mark GLObject
+
 - (void)internalBind:(BOOL)bind {
     glBindFramebuffer(GL_FRAMEBUFFER, bind ? self.uId : 0);
+}
+
++ (GLObjectType)glType {
+    return GLObjectTypeFramebuffer;
 }
 
 - (void)readRGBAUBytePixels:(GLvoid *)pixels fromRect:(GLRect)rect {
@@ -38,8 +45,28 @@
     [self unbind];
 }
 
-+ (GLObjectType)glType {
-    return GLObjectTypeFramebuffer;
+- (void)attachTexture:(GLTexture *)texture {
+    assert(texture);
+    
+    [self bind];
+    
+    /*
+     texture must name an existing cube map texture and textarget must be one of: TEXTURE_CUBE_MAP_POSITIVE_X, TEXTURE_CUBE_MAP_POSITIVE_Y,
+     TEXTURE_CUBE_MAP_POSITIVE_Z, TEXTURE_CUBE_MAP_NEGATIVE_X, TEXTURE_CUBE_MAP_NEGATIVE_Y, or TEXTURE_CUBE_MAP_NEGATIVE_Z
+     
+     or
+     
+     If texture is not zero, then textarget must be one of TEXTURE_2D, TEXTURE_CUBE_MAP_POSITIVE_X, TEXTURE_CUBE_MAP_POSITIVE_Y,
+     TEXTURE_CUBE_MAP_POSITIVE_Z, TEXTURE_CUBE_MAP_NEGATIVE_X, TEXTURE_CUBE_MAP_NEGATIVE_Y, or TEXTURE_CUBE_MAP_NEGATIVE_Z.
+     */
+    
+    glFramebufferTexture2D(GL_FRAMEBUFFER,
+                           GL_COLOR_ATTACHMENT0,
+                           texture.textureType,
+                           texture.uId,
+                           )
+    
+    [self unbind];
 }
 
 @end

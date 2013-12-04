@@ -81,6 +81,7 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
 - (GLuint)width;
 - (GLuint)height;
 - (GLSizeI)size;
+- (GLuint)textureType;
 
 - (void)bind;
 - (void)unbind;

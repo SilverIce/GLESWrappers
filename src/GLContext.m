@@ -35,6 +35,9 @@
     return self;
 }
 
+- (GLFramebuffer *)framebuffer {
+    return (GLFramebuffer *)[self.objectSet activeObjectOfClass:[GLFramebuffer glType]];
+}
 
 @end
 

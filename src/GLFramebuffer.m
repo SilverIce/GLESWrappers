@@ -8,9 +8,21 @@
 
 #import "GLFramebuffer.h"
 
+@interface GLFramebuffer ()
+@property (nonatomic, retain)   GLTextureFaceRef    *colorTexture;
+@property (nonatomic, retain)   GLTextureFaceRef    *depthTexture;
+@property (nonatomic, retain)   GLTextureFaceRef    *stencilTexture;
+@end
+
 @implementation GLFramebuffer
 
+#pragma mark -
+#pragma mark Inialization and Deallocation
+
 - (void)dealloc {
+    self.colorTexture = nil;
+    self.depthTexture = nil;
+    self.stencilTexture = nil;
     glDeleteFramebuffers(1, &_uId);
     [super dealloc];
 }
@@ -34,6 +46,9 @@
     return GLObjectTypeFramebuffer;
 }
 
+#pragma mark -
+#pragma mark Public
+
 - (void)readRGBAUBytePixels:(GLvoid *)pixels fromRect:(GLRect)rect {
     [self bind];
     /*
@@ -45,8 +60,10 @@
     [self unbind];
 }
 
-- (void)attachTexture:(GLTexture *)texture {
-    assert(texture);
+- (void)attachTextureFace:(GLTextureFaceRef *)face
+                  toPoint:(GLFramebufferAttachment)point
+{
+    assert(face);
     
     [self bind];
     
@@ -61,11 +78,21 @@
      */
     
     glFramebufferTexture2D(GL_FRAMEBUFFER,
-                           GL_COLOR_ATTACHMENT0,
-                           texture.textureType,
-                           texture.uId,
-                           )
+                           point,
+                           face.face,
+                           face.texture.uId,
+                           face.level);
     
+    [self unbind];
+}
+
+- (void)detachTextureFromPoint:(GLFramebufferAttachment)point {
+    [self bind];
+    glFramebufferTexture2D(GL_FRAMEBUFFER,
+                           point,
+                           point,
+                           0,
+                           0);
     [self unbind];
 }
 

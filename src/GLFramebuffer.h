@@ -21,6 +21,9 @@ typedef NS_ENUM(GLenum, GLFramebufferAttachment) {
 // read RGBA UNSIGNED_BYTE pixels
 - (void)readRGBAUBytePixels:(GLvoid *)pixels fromRect:(GLRect)rect;
 
-- (void)attachTexture:(GLTexture *)texture;
+- (void)attachTextureFace:(GLTextureFaceRef *)face
+                  toPoint:(GLFramebufferAttachment)point;
+
+- (void)detachTextureFromPoint:(GLFramebufferAttachment)point;
 
 @end

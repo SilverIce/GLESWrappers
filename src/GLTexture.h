@@ -59,6 +59,11 @@ typedef NS_ENUM(GLenum, GLTextureMinFilter) {
     GLTextureMinFilterLinearMipmapLinear    = GL_LINEAR_MIPMAP_LINEAR,
 };
 
+typedef NS_ENUM(GLenum, GLTextureType) {
+    GLTextureType2D         = GL_TEXTURE_2D,
+    GLTextureTypeCubemap    = GL_TEXTURE_CUBE_MAP,
+};
+
 typedef NS_ENUM(GLenum, GLTextureMagFilter) {
     GLTextureMagFilterNearest   = GL_NEAREST,
     GLTextureMagFilterLinear    = GL_LINEAR,
@@ -70,18 +75,35 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
     GLTextureWrapMirroredRepeat = GL_MIRRORED_REPEAT,
 };
 
+typedef NS_ENUM(GLenum, GLTextureFace) {
+    // A single 2d texture face
+    GLTextureFace2D                 = GL_TEXTURE_2D,
+    
+    GLTextureFaceCubemapPositiveX   = GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+    GLTextureFaceCubemapPositiveY   = GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+    GLTextureFaceCubemapPositiveZ   = GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+    
+    GLTextureFaceCubemapNegativeX   = GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+    GLTextureFaceCubemapNegativeY   = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+    GLTextureFaceCubemapNegativeZ   = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
+};
+
+@class GLTextureFaceRef;
+
 // Base class that implements bind, unbind behaviour.
 @interface GLTexture : GLObject
 
+// per texture (not per texture face) paramenters
 @property (nonatomic, assign)   GLTextureMinFilter      minFilter;
 @property (nonatomic, assign)   GLTextureMagFilter      magFilter;
 @property (nonatomic, assign)   GLTextureWrap           wrapS;
 @property (nonatomic, assign)   GLTextureWrap           wrapT;
+@property (nonatomic, assign)   GLInternalFormat        format;
 
 - (GLuint)width;
 - (GLuint)height;
 - (GLSizeI)size;
-- (GLuint)textureType;
+- (GLTextureType)textureType;
 
 - (void)bind;
 - (void)unbind;
@@ -90,6 +112,10 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
 - (void)ensureActive;
 // returns -1 if not attached to slot
 - (GLint)slotIndex;
+
+// make new reference for specified face & level
+- (GLTextureFaceRef *)referenceFace:(GLTextureFace)face
+                              level:(GLint)level;
 
 + (id)objectAs2DTextureWithSize:(GLSizeI)size
                  internalFormat:(GLInternalFormat)internalFormat   //
@@ -109,4 +135,17 @@ typedef NS_ENUM(GLenum, GLTextureWrap) {
 @end
 
 @interface GLTextureCube : GLTexture
+@end
+
+// Weak texture reference
+// References specific texture face & level
+@interface GLTextureFaceRef : NSObject
+- (GLTexture *)texture;
+- (GLTextureFace)face;
+- (GLint)level;
+
++ (id)objectWithTexture:(GLTexture *)texture
+                   face:(GLTextureFace)face
+                  level:(GLint)level;
+
 @end

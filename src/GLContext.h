@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
+#import "GLWeakReference.h"
 
 @class GLProgram;
 @class GLFramebuffer;
@@ -57,6 +58,9 @@ hard to maintain state
 // find less active slot (& put texture into slot if it's not in slot yet), activate slot
 - (void)bindTexture:(GLTexture *)texture;
 
+- (void)setupSlots;
+- (void)deallocSlots;
+
 @end
 
 // internals:
@@ -85,9 +89,9 @@ hard to maintain state
 @property (nonatomic, assign)   GLuint      slotIdx;
 
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass;
-// push new active object. returns previous top object
+// put new active object.
 - (void)setActiveObject:(GLObject *)object;
-// pop object. returns new top object
+// remove active object
 - (void)resetActiveObject:(GLObject *)object;
 
 @end

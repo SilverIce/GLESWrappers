@@ -10,7 +10,7 @@
 #import "GLWeakReference.h"
 
 @interface GLTexture ()
-@property (nonatomic, assign)   GLuint              textureType;
+@property (nonatomic, assign)   GLTextureType       textureType;
 @property (nonatomic, assign)   GLSizeI             size;
 @end
 
@@ -60,21 +60,13 @@
 {
     GLTexture *me = [[self new] autorelease];
     if (me) {
-        me.size = size;
         me.textureType = GL_TEXTURE_2D;
-
-        [me bind];
         
-        glTexImage2D(me.textureType,
-                     0, // level
-                     internalFormat,
-                     size.width, size.height,
-                     0, // border, not supported on GLES
-                     internalFormat,
-                     type,
-                     pixels);
-        
-        [me unbind];
+        [me putImageAtFace:GLTextureFace2D
+                  withSize:size
+            internalFormat:internalFormat
+                      type:type
+                    pixels:pixels];
     }
     
     assert(me);
@@ -97,6 +89,9 @@
     return self;
 }
 
+#pragma mark -
+#pragma mark Accessors
+
 - (GLuint)width {
     return self.size.width;
 }
@@ -105,16 +100,60 @@
     return self.size.height;
 }
 
-- (void)ensureActive {
-    [self.context activateTexture:self];
+- (void)putImageAtFace:(GLTextureFace)face
+              withSize:(GLSizeI)size
+        internalFormat:(GLInternalFormat)internalFormat
+                  type:(GLenum)type
+                pixels:(const GLvoid *)pixels
+{
+    assert((face == GLTextureFace2D && self.textureType == GL_TEXTURE_2D) ||
+           (face != GLTextureFace2D && self.textureType == GL_TEXTURE_CUBE_MAP));
+    
+    [self bind];
+    
+    self.size = size;
+    self.format = internalFormat;
+    
+    glTexImage2D(self.textureType,
+                 0, // level
+                 internalFormat,
+                 size.width, size.height,
+                 0, // border, not supported on GLES
+                 internalFormat,
+                 type,
+                 pixels);
+    
+    [self unbind];
 }
 
-- (GLint)slotIndex {
-    if (self.slot) {
-        return self.slot.slotIdx;
-    }
+- (void)putSubImageAtFace:(GLTextureFace)face
+                 withRect:(GLRect)rect
+           internalFormat:(GLInternalFormat)internalFormat
+                     type:(GLenum)type
+                   pixels:(const GLvoid *)pixels
+{
+    assert((face == GLTextureFace2D && self.textureType == GL_TEXTURE_2D) ||
+           (face != GLTextureFace2D && self.textureType == GL_TEXTURE_CUBE_MAP));
     
-    return -1;
+    [self bind];
+    
+    self.format = internalFormat;
+    
+    glTexSubImage2D(face,
+                    0,  // level
+                    rect.x, rect.y, rect.width, rect.height,
+                    internalFormat, type,
+                    pixels);
+    
+    [self unbind];
+}
+
+- (GLTextureFaceRef *)referenceFace:(GLTextureFace)face
+                              level:(GLint)level
+{
+    return [GLTextureFaceRef objectWithTexture:self
+                                          face:face
+                                         level:level];
 }
 
 #pragma mark -
@@ -145,7 +184,7 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 }
 
 #pragma mark -
-#pragma mark GLObject
+#pragma mark GLObject & other
 
 + (GLObjectType)glType {
     return GLObjectTypeTexture2D;
@@ -182,6 +221,19 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
     } else {
         ;
     }
+    
+}
+
+- (void)ensureActive {
+    [self.context activateTexture:self];
+}
+
+- (GLint)slotIndex {
+    if (self.slot) {
+        return self.slot.slotIdx;
+    }
+    
+    return -1;
 }
 
 @end
@@ -190,6 +242,42 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 
 + (GLObjectType)glType {
     return GLObjectTypeTextureCubemap;
+}
+
+@end
+
+@interface GLTextureFaceRef ()
+@property (nonatomic, retain)   GLWeakReference     *weakRef;
+@property (nonatomic, assign)   GLTextureFace       face;
+@property (nonatomic, assign)   GLint               level;
+@end
+
+@implementation GLTextureFaceRef
+
++ (id)objectWithTexture:(GLTexture *)texture
+                   face:(GLTextureFace)face
+                  level:(GLint)level
+{
+    assert(texture);
+    assert(level == 0 && "currently level 0 supported only");
+    
+    GLTextureFaceRef *me = [[self new] autorelease];
+    if (me) {
+        me.weakRef = [texture makeWeakReference];
+        me.face = face;
+        me.level = level;
+    }
+    
+    return me;
+}
+
+- (void)dealloc {
+    self.weakRef = nil;
+    [super dealloc];
+}
+
+- (GLTexture *)texture {
+    return self.weakRef.target;
 }
 
 @end

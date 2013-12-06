@@ -18,12 +18,11 @@ typedef NS_ENUM(GLenum, GLFramebufferAttachment) {
 
 @interface GLFramebuffer : GLNestedObject
 
+@property (nonatomic, retain)   GLTextureFaceRef    *colorTexture;
+@property (nonatomic, retain)   GLTextureFaceRef    *depthTexture;
+@property (nonatomic, retain)   GLTextureFaceRef    *stencilTexture;
+
 // read RGBA UNSIGNED_BYTE pixels
 - (void)readRGBAUBytePixels:(GLvoid *)pixels fromRect:(GLRect)rect;
-
-- (void)attachTextureFace:(GLTextureFaceRef *)face
-                  toPoint:(GLFramebufferAttachment)point;
-
-- (void)detachTextureFromPoint:(GLFramebufferAttachment)point;
 
 @end

@@ -9,9 +9,7 @@
 #import "GLFramebuffer.h"
 
 @interface GLFramebuffer ()
-@property (nonatomic, retain)   GLTextureFaceRef    *colorTexture;
-@property (nonatomic, retain)   GLTextureFaceRef    *depthTexture;
-@property (nonatomic, retain)   GLTextureFaceRef    *stencilTexture;
+
 @end
 
 @implementation GLFramebuffer
@@ -60,40 +58,43 @@
     [self unbind];
 }
 
-- (void)attachTextureFace:(GLTextureFaceRef *)face
-                  toPoint:(GLFramebufferAttachment)point
+static void _GLFramebufferAttachTexture(GLFramebuffer *me, GLTextureFaceRef **field,
+                                        GLTextureFaceRef *face, GLFramebufferAttachment point)
 {
-    assert(face);
-    
-    [self bind];
-    
-    /*
-     texture must name an existing cube map texture and textarget must be one of: TEXTURE_CUBE_MAP_POSITIVE_X, TEXTURE_CUBE_MAP_POSITIVE_Y,
-     TEXTURE_CUBE_MAP_POSITIVE_Z, TEXTURE_CUBE_MAP_NEGATIVE_X, TEXTURE_CUBE_MAP_NEGATIVE_Y, or TEXTURE_CUBE_MAP_NEGATIVE_Z
-     
-     or
-     
-     If texture is not zero, then textarget must be one of TEXTURE_2D, TEXTURE_CUBE_MAP_POSITIVE_X, TEXTURE_CUBE_MAP_POSITIVE_Y,
-     TEXTURE_CUBE_MAP_POSITIVE_Z, TEXTURE_CUBE_MAP_NEGATIVE_X, TEXTURE_CUBE_MAP_NEGATIVE_Y, or TEXTURE_CUBE_MAP_NEGATIVE_Z.
-     */
-    
-    glFramebufferTexture2D(GL_FRAMEBUFFER,
-                           point,
-                           face.face,
-                           face.texture.uId,
-                           face.level);
-    
-    [self unbind];
+    if (*field != face) {
+        [*field release];
+        *field = [face retain];
+        
+        [me bind];
+        
+        if (face) {
+            glFramebufferTexture2D(GL_FRAMEBUFFER,
+                                   point,
+                                   face.face,
+                                   face.texture.uId,
+                                   face.level);
+        } else {
+            glFramebufferTexture2D(GL_FRAMEBUFFER,
+                                   point,
+                                   0,
+                                   0,
+                                   0);
+        }
+        
+        [me unbind];
+    }
 }
 
-- (void)detachTextureFromPoint:(GLFramebufferAttachment)point {
-    [self bind];
-    glFramebufferTexture2D(GL_FRAMEBUFFER,
-                           point,
-                           point,
-                           0,
-                           0);
-    [self unbind];
+- (void)setColorTexture:(GLTextureFaceRef *)colorTexture {
+    _GLFramebufferAttachTexture(self, &_colorTexture, colorTexture, GLFramebufferAttachmentColor);
+}
+
+- (void)setDepthTexture:(GLTextureFaceRef *)depthTexture {
+    _GLFramebufferAttachTexture(self, &_depthTexture, depthTexture, GLFramebufferAttachmentDepth);
+}
+
+-(void)setStencilTexture:(GLTextureFaceRef *)stencilTexture {
+    _GLFramebufferAttachTexture(self, &_stencilTexture, stencilTexture, GLFramebufferAttachmentStencil);
 }
 
 @end

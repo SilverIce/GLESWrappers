@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
+
+#import "GLConstants.h"
 #import "GLWeakReference.h"
 
 @class GLProgram;

@@ -55,7 +55,7 @@
      The second is an implementation-chosen format from among those defined in table 3.4, excluding formats LUMINANCE and LUMINANCE_ALPHA.
      The values of format and type for this format may be determined by calling GetIntegerv with the symbolic constants IMPLEMENTATION_COLOR_READ_FORMAT and IMPLEMENTATION_COLOR_READ_TYPE, respectively.
      */
-    glReadPixels(rect.x, rect.y, rect.width, rect.height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+    glReadPixels(rect.x, rect.y, rect.width, rect.height, GL_RGBA, GLDataUByte, pixels);
     [self unbind];
 }
 

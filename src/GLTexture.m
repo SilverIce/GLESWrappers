@@ -41,7 +41,7 @@
     
     GLTexture *me = [self objectAs2DTextureWithSize:(GLSize){width, height}
                                      internalFormat:GLInternalFormatRGBA
-                                               type:GL_UNSIGNED_BYTE
+                                           dataType:GLDataUByte
                                              pixels:spriteData];
     
     [me bind];
@@ -55,7 +55,7 @@
 
 + (id)objectAs2DTextureWithSize:(GLSize)size
                  internalFormat:(GLInternalFormat)internalFormat
-                           type:(GLenum)type
+                       dataType:(GLData)dataType
                          pixels:(const GLvoid *)pixels
 {
     GLTexture *me = [[self new] autorelease];
@@ -65,7 +65,7 @@
         [me putImageAtFace:GLTextureFace2D
                   withSize:size
             internalFormat:internalFormat
-                      type:type
+                  dataType:dataType
                     pixels:pixels];
     }
     
@@ -103,7 +103,7 @@
 - (void)putImageAtFace:(GLTextureFace)face
               withSize:(GLSize)size
         internalFormat:(GLInternalFormat)internalFormat
-                  type:(GLenum)type
+              dataType:(GLData)dataType
                 pixels:(const GLvoid *)pixels
 {
     assert((face == GLTextureFace2D && self.textureType == GL_TEXTURE_2D) ||
@@ -120,7 +120,7 @@
                  size.width, size.height,
                  0, // border, not supported on GLES
                  internalFormat,
-                 type,
+                 dataType,
                  pixels);
     
     [self unbind];
@@ -129,7 +129,7 @@
 - (void)putSubImageAtFace:(GLTextureFace)face
                  withRect:(GLRect)rect
            internalFormat:(GLInternalFormat)internalFormat
-                     type:(GLenum)type
+                 dataType:(GLData)dataType
                    pixels:(const GLvoid *)pixels
 {
     assert((face == GLTextureFace2D && self.textureType == GL_TEXTURE_2D) ||
@@ -142,7 +142,7 @@
     glTexSubImage2D(face,
                     0,  // level
                     rect.x, rect.y, rect.width, rect.height,
-                    internalFormat, type,
+                    internalFormat, dataType,
                     pixels);
     
     [self unbind];

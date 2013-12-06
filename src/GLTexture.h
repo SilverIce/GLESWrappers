@@ -43,12 +43,6 @@ typedef struct {
     GLvoid  *data;
 } GLPixelData;
 
-typedef NS_ENUM(GLenum, GLInternalFormat) {
-    GLInternalFormatRGBA            = GL_RGBA,
-    GLInternalFormatRGB             = GL_RGB,
-    GLInternalFormatLuminance       = GL_LUMINANCE,
-    GLInternalFormatLuminanceAlpha  = GL_LUMINANCE_ALPHA,
-};
 
 typedef NS_ENUM(GLenum, GLTextureMinFilter) {
     GLTextureMinFilterNearest               = GL_NEAREST,
@@ -119,7 +113,7 @@ typedef NS_ENUM(GLenum, GLTextureFace) {
 
 + (id)objectAs2DTextureWithSize:(GLSize)size
                  internalFormat:(GLInternalFormat)internalFormat   //
-                           type:(GLenum)type
+                       dataType:(GLData)dataType
                          pixels:(const GLvoid *)pixels;            // can be NULL
 
 // should not be here since method references coregraphics framework methods. just for testing

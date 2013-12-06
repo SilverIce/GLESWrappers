@@ -26,3 +26,13 @@ typedef NS_ENUM(GLenum, GLFramebufferAttachment) {
 - (void)readRGBAUBytePixels:(GLvoid *)pixels fromRect:(GLRect)rect;
 
 @end
+
+// Wraps current bound framebuffer that was created out of our gl wrapper system.
+// Useful when pure gl code co-works with wrapped one.
+// Unsafe since it does not own framebuffer.
+// Returns nil if no framebuffer bound.
+@interface GLExternalFramebuffer : GLNestedObject
+
++ (id)object;
+
+@end

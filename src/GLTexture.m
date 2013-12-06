@@ -247,7 +247,7 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 @end
 
 @interface GLTextureFaceRef ()
-@property (nonatomic, retain)   GLWeakReference     *weakRef;
+@property (nonatomic, retain)   GLTexture           *texture;
 @property (nonatomic, assign)   GLTextureFace       face;
 @property (nonatomic, assign)   GLint               level;
 @end
@@ -263,7 +263,7 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
     
     GLTextureFaceRef *me = [[self new] autorelease];
     if (me) {
-        me.weakRef = [texture makeWeakReference];
+        me.texture = texture;
         me.face = face;
         me.level = level;
     }
@@ -272,12 +272,8 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 }
 
 - (void)dealloc {
-    self.weakRef = nil;
+    self.texture = nil;
     [super dealloc];
-}
-
-- (GLTexture *)texture {
-    return self.weakRef.target;
 }
 
 @end

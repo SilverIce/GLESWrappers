@@ -7,6 +7,7 @@
 //
 
 #import "GLFramebuffer.h"
+#import "EAGLContext+GLContext.h"
 
 @interface GLFramebuffer ()
 
@@ -93,8 +94,40 @@ static void _GLFramebufferAttachTexture(GLFramebuffer *me, GLTextureFaceRef **fi
     _GLFramebufferAttachTexture(self, &_depthTexture, depthTexture, GLFramebufferAttachmentDepth);
 }
 
--(void)setStencilTexture:(GLTextureFaceRef *)stencilTexture {
+- (void)setStencilTexture:(GLTextureFaceRef *)stencilTexture {
     _GLFramebufferAttachTexture(self, &_stencilTexture, stencilTexture, GLFramebufferAttachmentStencil);
+}
+
+@end
+
+@implementation GLExternalFramebuffer
+
++ (id)object {
+    GLint fboCurrent;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fboCurrent);
+    
+    if (fboCurrent == 0) {
+        return nil;
+    }
+    
+    GLContext *context = [[EAGLContext currentContext] context];
+    assert(!context.framebuffer || context.framebuffer.uId != fboCurrent);
+    
+    GLExternalFramebuffer *me = [[self new] autorelease];
+    if (me) {
+        me.uId = fboCurrent;
+        [me bind];
+    }
+    
+    return me;
+}
+
+- (void)internalBind:(BOOL)bind {
+    glBindFramebuffer(GL_FRAMEBUFFER, bind ? self.uId : 0);
+}
+
++ (GLObjectType)glType {
+    return GLObjectTypeFramebuffer;
 }
 
 @end

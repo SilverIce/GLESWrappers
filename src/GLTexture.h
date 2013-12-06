@@ -137,7 +137,7 @@ typedef NS_ENUM(GLenum, GLTextureFace) {
 @interface GLTextureCube : GLTexture
 @end
 
-// Weak texture reference
+// Strong texture reference
 // References specific texture face & level
 @interface GLTextureFaceRef : NSObject
 - (GLTexture *)texture;

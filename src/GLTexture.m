@@ -11,7 +11,7 @@
 
 @interface GLTexture ()
 @property (nonatomic, assign)   GLTextureType       textureType;
-@property (nonatomic, assign)   GLSizeI             size;
+@property (nonatomic, assign)   GLSize             size;
 @end
 
 @implementation GLTexture
@@ -39,7 +39,7 @@
     
     CGContextRelease(spriteContext);
     
-    GLTexture *me = [self objectAs2DTextureWithSize:(GLSizeI){width, height}
+    GLTexture *me = [self objectAs2DTextureWithSize:(GLSize){width, height}
                                      internalFormat:GLInternalFormatRGBA
                                                type:GL_UNSIGNED_BYTE
                                              pixels:spriteData];
@@ -53,7 +53,7 @@
     return me;
 }
 
-+ (id)objectAs2DTextureWithSize:(GLSizeI)size
++ (id)objectAs2DTextureWithSize:(GLSize)size
                  internalFormat:(GLInternalFormat)internalFormat
                            type:(GLenum)type
                          pixels:(const GLvoid *)pixels
@@ -101,7 +101,7 @@
 }
 
 - (void)putImageAtFace:(GLTextureFace)face
-              withSize:(GLSizeI)size
+              withSize:(GLSize)size
         internalFormat:(GLInternalFormat)internalFormat
                   type:(GLenum)type
                 pixels:(const GLvoid *)pixels

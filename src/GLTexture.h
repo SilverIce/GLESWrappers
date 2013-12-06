@@ -20,7 +20,7 @@
 
 typedef struct {
     GLsizei width, height;
-} GLSizeI;
+} GLSize;
 
 typedef struct {
     GLint x, y;
@@ -29,7 +29,7 @@ typedef struct {
 typedef union {
     struct {
         GLPoint origin;
-        GLSizeI size;
+        GLSize size;
     };
     struct {
         GLint x, y;
@@ -102,7 +102,7 @@ typedef NS_ENUM(GLenum, GLTextureFace) {
 
 - (GLuint)width;
 - (GLuint)height;
-- (GLSizeI)size;
+- (GLSize)size;
 - (GLTextureType)textureType;
 
 - (void)bind;
@@ -117,7 +117,7 @@ typedef NS_ENUM(GLenum, GLTextureFace) {
 - (GLTextureFaceRef *)referenceFace:(GLTextureFace)face
                               level:(GLint)level;
 
-+ (id)objectAs2DTextureWithSize:(GLSizeI)size
++ (id)objectAs2DTextureWithSize:(GLSize)size
                  internalFormat:(GLInternalFormat)internalFormat   //
                            type:(GLenum)type
                          pixels:(const GLvoid *)pixels;            // can be NULL

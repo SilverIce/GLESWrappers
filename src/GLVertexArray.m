@@ -166,18 +166,18 @@
 - (void)drawTriangleStrip {
     [self bind];
     assertBound(self);
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, self.vertexCount);
+    glDrawArrays(GLPrimitiveTriangleStrip, 0, self.vertexCount);
     [self unbind];
 }
 
-- (void)draw:(GLenum)mode {
+- (void)draw:(GLPrimitive)mode {
     [self bind];
     assertBound(self);
     glDrawArrays(mode, 0, self.buffer.dataSize / self.elementSize);
     [self unbind];
 }
 
-- (void)draw:(GLenum)mode from:(NSUInteger)from count:(NSUInteger)count {
+- (void)draw:(GLPrimitive)mode from:(NSUInteger)from count:(NSUInteger)count {
     assert(from + count <= self.vertexCount);
     [self bind];
     assertBound(self);

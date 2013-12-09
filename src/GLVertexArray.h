@@ -37,12 +37,22 @@ typedef NS_ENUM(GLenum, GLBufferUsage) {
 
 #define countOf(array) (sizeof(array)/sizeof(array[0]))
 
+typedef NS_ENUM(GLenum, GLPrimitive) {
+    GLPrimitivePoints           = GL_POINTS,
+    GLPrimitiveLines            = GL_LINES,
+    GLPrimitiveLineLoop         = GL_LINE_LOOP,
+    GLPrimitiveLineStrip        = GL_LINE_STRIP,
+    GLPrimitiveTriangles        = GL_TRIANGLES,
+    GLPrimitiveTriangleStrip    = GL_TRIANGLE_STRIP,
+    GLPrimitiveTriangleFan      = GL_TRIANGLE_FAN,
+};
+
 // the data that gets passed into vertex shader
 // vertex array with underlying Buffer object
 @interface GLVertexArray : GLNestedObject
 
 typedef struct {
-    GLint           identifier;
+    GLint           identifier;     // attribute index
     GLsizei         elementCount;
     GLData          elementType;
     GLboolean       normalized;
@@ -63,10 +73,10 @@ typedef struct {
 
 - (void)drawTriangleStrip;
 // GL_POINTS, GL_TRIANGLE_STRIP and etc
-- (void)draw:(GLenum)mode;
-- (void)draw:(GLenum)mode from:(NSUInteger)from count:(NSUInteger)count;
+- (void)draw:(GLPrimitive)mode;
+- (void)draw:(GLPrimitive)mode from:(NSUInteger)from count:(NSUInteger)count;
 
-+ (id)objectWithUsage:(GLenum)usage
++ (id)objectWithUsage:(GLBufferUsage)usage
                  data:(const GLvoid *)data
              dataSize:(GLsizei)dataSize
           elementSize:(GLsizei)elementSize;

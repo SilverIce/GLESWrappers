@@ -13,7 +13,7 @@
 
 #import "EAGLContext+GLContext.h"
 
-#import "GLContext+GLTextureManagement.m"
+#import "GLContext+GLTextureManagement.hpp"
 
 @interface GLContext ()
 

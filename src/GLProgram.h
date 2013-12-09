@@ -78,6 +78,9 @@ typedef struct {
 - (void)associateAttributes:(const GLProgramAttrib2Loc *)associations
                       count:(NSUInteger)count;
 
+// accepts array of NSString & NSNumber objects
+- (void)associateAttributes:(NSArray *)associations;
+
 // may return -1 if uniform is inactive (or no such at all)
 - (GLint)uniformLocation:(NSString *)uniform;
 
@@ -98,6 +101,14 @@ DECL_FOUR_METHODS(GLfloat, f, DECL_ATTRIB_PAIR);
 
 + (id)objectWithVertShaderName:(NSString *)vertexShader
                     fragShader:(NSString *)fragmentShader;
+
+@end
+
+@interface GLProgram (Construction)
+
++ (id)objectWithVertShaderName:(NSString *)vertexShader
+                    fragShader:(NSString *)fragmentShader
+          linkedWithAttributes:(NSArray *)attributes;
 
 @end
 

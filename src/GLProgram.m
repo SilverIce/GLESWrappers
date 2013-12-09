@@ -164,6 +164,16 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
     }
 }
 
+- (void)associateAttributes:(NSArray *)associations {
+    assert(associations);
+    assert((associations.count % 2) == 0);
+    NSUInteger count = associations.count / 2;
+    for (NSUInteger i = 0; i < count; i += 2) {
+        [self setAttrib:associations[i]
+               location:[associations[i + 1] unsignedIntValue]];
+    }
+}
+
 - (GLint)uniformLocation:(NSString *)uniform {
     GLint location = -1;
     NSNumber *locationNum = [self.uniformCache objectForKey:uniform];
@@ -220,6 +230,24 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
         [_fragShader release];
         _fragShader = [fragShader retain];
     }
+}
+
+@end
+
+@implementation GLProgram (Construction)
+
++ (id)objectWithVertShaderName:(NSString *)vertexShader
+                    fragShader:(NSString *)fragmentShader
+          linkedWithAttributes:(NSArray *)attributes
+{
+    GLProgram *me = [self objectWithVertShaderName:vertexShader
+                                        fragShader:fragmentShader];
+    
+    [me associateAttributes:attributes];
+    
+    assert([me link]);
+    
+    return me;
 }
 
 @end

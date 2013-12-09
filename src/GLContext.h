@@ -44,7 +44,7 @@ hard to maintain state
 
 - (GLFramebuffer *)framebuffer;
 
-- (GLProgram *)program;
+//- (GLProgram *)program;
 
 @end
 

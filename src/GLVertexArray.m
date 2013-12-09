@@ -90,7 +90,7 @@
     [super dealloc];
 }
 
-+ (id)objectWithUsage:(GLenum)usage
++ (id)objectWithUsage:(GLBufferUsage)usage
                  data:(const GLvoid *)data
              dataSize:(GLsizei)dataSize
           elementSize:(GLsizei)elementSize

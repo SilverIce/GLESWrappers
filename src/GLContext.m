@@ -236,8 +236,12 @@ void assertBound(GLObject *object) {
             [prev internalBind:YES];
         }
     } else {
-        ;//[self internalBind:NO];
+        [self internalBind:NO];
     }
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@. uId %u", super.description, self.uId];
 }
 
 @end

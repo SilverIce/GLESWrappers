@@ -184,7 +184,7 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
 - (void)associateAttributes:(NSArray *)associations {
     assert(associations);
     assert((associations.count % 2) == 0);
-    NSUInteger count = associations.count / 2;
+    NSUInteger count = associations.count;
     for (NSUInteger i = 0; i < count; i += 2) {
         [self setAttrib:associations[i]
                location:[associations[i + 1] unsignedIntValue]];

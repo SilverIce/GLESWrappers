@@ -106,6 +106,7 @@ DECL_FOUR_METHODS(GLfloat, f, DECL_ATTRIB_PAIR);
 
 @interface GLProgram (Construction)
 
+// Creates linked program
 + (id)objectWithVertShaderName:(NSString *)vertexShader
                     fragShader:(NSString *)fragmentShader
           linkedWithAttributes:(NSArray *)attributes;

@@ -80,13 +80,17 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
     DECL_UNIFORM(argCount, type, GLtype) {  \
         [self bind];    \
         assert([self isBound]); \
-        glUniform##argCount##type([self uniformLocation:uniform], UNIFORM_CALL_ARGS_##argCount);    \
+        GLint location = [self uniformLocation:uniform];    \
+        assert(location != -1); \
+        glUniform##argCount##type(location, UNIFORM_CALL_ARGS_##argCount);    \
         [self unbind];  \
     }   \
     DECL_UNIFORM_V(argCount, type, GLtype) {    \
         [self bind];    \
         assert([self isBound]); \
-        glUniform##argCount##type##v([self uniformLocation:uniform], count, v); \
+        GLint location = [self uniformLocation:uniform];    \
+        assert(location != -1); \
+        glUniform##argCount##type##v(location, count, v); \
         [self unbind];  \
     }
 
@@ -94,7 +98,9 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
     DECL_UNIFORM_MATRIX_V(GLtype, type, argCount) {  \
         [self bind];    \
         assert([self isBound]); \
-        glUniformMatrix##argCount##type##v([self uniformLocation:uniform], count, transpose, value); \
+        GLint location = [self uniformLocation:uniform];    \
+        assert(location != -1); \
+        glUniformMatrix##argCount##type##v(location, count, transpose, value); \
         [self unbind];  \
     }
 

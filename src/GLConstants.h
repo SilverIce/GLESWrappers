@@ -22,3 +22,13 @@ typedef NS_ENUM(GLenum, GLData) {
     GLDataUShort    = GL_UNSIGNED_SHORT,
     GLDataFloat     = GL_FLOAT,
 };
+
+
+#define assertGL \
+{\
+    GLenum error = glGetError();\
+    if (error != GL_NO_ERROR) {\
+        NSLog(@"gl error: 0x%x", error);\
+        assert(false);\
+    }\
+}

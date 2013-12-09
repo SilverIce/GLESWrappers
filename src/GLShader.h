@@ -29,6 +29,7 @@ typedef NS_ENUM(GLenum, GLShaderType) {
 
 - (GLuint)uId;
 - (GLShaderType)shaderType;
+- (BOOL)compiled;
 
 - (BOOL)compileSource:(NSString *)source;
 

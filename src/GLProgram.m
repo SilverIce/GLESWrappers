@@ -45,11 +45,12 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
 }
 
 - (void)dealloc {
-    glDeleteProgram(self.uId);
-    
+    // need detach shaders before program will became invalid after glDeleteProgram call
     self.vertShader = nil;
     self.fragShader = nil;
+    
     self.uniformCache = nil;
+    glDeleteProgram(self.uId);
     [super dealloc];
 }
 
@@ -71,6 +72,7 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
 
 - (void)internalBind:(BOOL)bind {
     glUseProgram(bind ? self.uId : 0);
+    assertGL
 }
 
 #pragma mark -
@@ -83,6 +85,7 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
         GLint location = [self uniformLocation:uniform];    \
         assert(location != -1); \
         glUniform##argCount##type(location, UNIFORM_CALL_ARGS_##argCount);    \
+        assertGL \
         [self unbind];  \
     }   \
     DECL_UNIFORM_V(argCount, type, GLtype) {    \
@@ -91,6 +94,7 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
         GLint location = [self uniformLocation:uniform];    \
         assert(location != -1); \
         glUniform##argCount##type##v(location, count, v); \
+        assertGL \
         [self unbind];  \
     }
 
@@ -101,6 +105,7 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
         GLint location = [self uniformLocation:uniform];    \
         assert(location != -1); \
         glUniformMatrix##argCount##type##v(location, count, transpose, value); \
+        assertGL \
         [self unbind];  \
     }
 
@@ -129,10 +134,11 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
 #pragma mark Etc
 
 - (BOOL)link {
-    assert(self.vertShader);
-    assert(self.fragShader);
+    assert(self.vertShader && [self.vertShader compiled]);
+    assert(self.fragShader && [self.fragShader compiled]);
     
     glLinkProgram(self.uId);
+    assertGL
     [self.uniformCache removeAllObjects];
     
     return [self linkStatus];
@@ -141,6 +147,7 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
 - (BOOL)linkStatus {
     GLint status = 0;
     glGetProgramiv(self.uId, GL_LINK_STATUS, &status);
+    assertGL
     return status == GL_TRUE;
 }
 
@@ -148,6 +155,7 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
     glValidateProgram(self.uId);
     GLint status = 0;
     glGetProgramiv(self.uId, GL_VALIDATE_STATUS, &status);
+    assertGL
     return status == GL_TRUE;
 }
 
@@ -159,14 +167,17 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
 - (void)setAttrib:(NSString *)attribute location:(GLuint)location {
     assert(attribute);
     glBindAttribLocation(self.uId, location, attribute.UTF8String);
+    assertGL
 }
 
 - (void)associateAttributes:(const GLProgramAttrib2Loc *)associations
                       count:(NSUInteger)count
 {
+    assert(associations);
     for (NSUInteger i = 0; i < count; ++i) {
         const GLProgramAttrib2Loc *assoc = &associations[i];
         glBindAttribLocation(self.uId, assoc->location, assoc->attrib);
+        assertGL
     }
 }
 
@@ -212,10 +223,12 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
     if (vertShader != _vertShader) {
         if (_vertShader) {
             glDetachShader(self.uId, _vertShader.uId);
+            assertGL
         }
         
         if (vertShader) {
             glAttachShader(self.uId, vertShader.uId);
+            assertGL
         }
         
         [_vertShader release];
@@ -227,10 +240,12 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
     if (fragShader != _fragShader) {
         if (_fragShader) {
             glDetachShader(self.uId, _fragShader.uId);
+            assertGL
         }
         
         if (fragShader) {
             glAttachShader(self.uId, fragShader.uId);
+            assertGL
         }
         
         [_fragShader release];

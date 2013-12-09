@@ -103,6 +103,11 @@
     return [(GLWeakReference *)stack.lastObject target];
 }
 
+- (void)removeAllObjectsOfClass:(GLObjectType)theClass {
+    NSMutableArray *stack = self.dict[@(theClass)];
+    [stack removeAllObjects];
+}
+
 @end
 
 @interface GLSlot ()

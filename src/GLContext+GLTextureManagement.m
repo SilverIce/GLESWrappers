@@ -79,6 +79,8 @@
     GLObjectType textureType = [textures.lastObject glType];
     NSArray *sortedSlots = nil;
     
+    [self.objectSet removeAllObjectsOfClass:textureType];
+    
     for (GLTexture *texture in textures) {
         // it assumes that we are trying activate textures of same type
         assert(textureType == texture.glType);
@@ -110,6 +112,8 @@
 - (void)activateTexture:(GLTexture *)texture {
     assert(texture);
     
+    [self.objectSet removeAllObjectsOfClass:texture.glType];
+    
     ++texture.useCount;
     
     if (texture.slot) {
@@ -120,7 +124,7 @@
     [self putTexture:texture ontoSlot:lessActive];
 }
 
-- (void)bindTexture:(GLTexture *)texture {
+- (void)_bindTexture:(GLTexture *)texture {
     assert(texture);
     
     if (texture.slot) {

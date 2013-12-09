@@ -53,12 +53,14 @@ hard to maintain state
 
 // trying to find less active textures & bind onto slots occupied by them
 // it assumes that we are trying activate textures of same type
+// Important: method clears texture object stack
 - (void)activateTextures:(NSArray *)array;
 // ensures that texture is in slot. may not activate slot
+// Important: method clears texture object stack
 - (void)activateTexture:(GLTexture *)texture;
 
 // find less active slot (& put texture into slot if it's not in slot yet), activate slot
-- (void)bindTexture:(GLTexture *)texture;
+- (void)_bindTexture:(GLTexture *)texture;
 
 - (void)setupSlots;
 - (void)deallocSlots;
@@ -81,6 +83,7 @@ hard to maintain state
 - (GLObject *)setActiveObject:(GLObject *)object;
 // pop object. returns new top object
 - (GLObject *)resetActiveObject:(GLObject *)object;
+- (void)removeAllObjectsOfClass:(GLObjectType)theClass;
 
 @end
 

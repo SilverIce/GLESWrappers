@@ -201,7 +201,7 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 - (void)bind {
     //assert(self.isBound == NO);
     
-    [self.context bindTexture:self];
+    [self.context _bindTexture:self];
     [self.context.objectSet setActiveObject:self];
 }
 
@@ -217,7 +217,7 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
     if (prev) {
         assert(prev.glType == self.glType);
         
-        [self.context activateTexture:prev];
+        [self.context _bindTexture:prev];
     } else {
         ;
     }

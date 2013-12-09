@@ -103,6 +103,7 @@ typedef NS_ENUM(GLenum, GLTextureFace) {
 - (void)unbind;
 
 // ensures that texture attached to slot
+// Important: method clears texture object stack
 - (void)ensureActive;
 // returns -1 if not attached to slot
 - (GLint)slotIndex;

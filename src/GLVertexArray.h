@@ -8,11 +8,18 @@
 
 #import "GLContext.h"
 
+typedef NS_ENUM(GLenum, GLBufferUsage) {
+    GLBufferUsageStaticDraw     = GL_STATIC_DRAW,
+    GLBufferUsageDynamicDraw    = GL_DYNAMIC_DRAW,
+    GLBufferUsageStreamDraw     = GL_STREAM_DRAW,
+};
+
 // create it with init or objectWithUsage method
 // data buffer stored in GPU memory
 @interface GLBufferObject : GLNestedObject
 
 - (GLsizei)dataSize;
+- (GLBufferUsage)usage;
 
 - (void)modifyData:(const GLvoid *)data
           withSize:(GLsizei)size
@@ -20,9 +27,9 @@
 
 - (void)setData:(const GLvoid *)data
        withSize:(GLsizei)size
-      withUsage:(GLenum)usage;
+      withUsage:(GLBufferUsage)usage;
 
-+ (id)objectWithUsage:(GLenum)usage
++ (id)objectWithUsage:(GLBufferUsage)usage
                  data:(const GLvoid *)data
                  size:(GLsizei)size;
 
@@ -37,7 +44,7 @@
 typedef struct {
     GLint           identifier;
     GLsizei         elementCount;
-    GLenum          elementType;
+    GLData          elementType;
     GLboolean       normalized;
     GLsizei         ptrOffset;
 } GLVertexArrayStructDescription;
@@ -50,7 +57,7 @@ typedef struct {
 
 - (void)describeStructWithIdentifier:(GLint)identifier
                         elementCount:(GLsizei)size
-                         elementType:(GLenum)type
+                         elementType:(GLData)type
                           normalized:(GLboolean)normalized
                            ptrOffset:(GLsizei)ptrOffset;
 

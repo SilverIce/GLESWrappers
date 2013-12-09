@@ -9,7 +9,8 @@
 #import "GLVertexArray.h"
 
 @interface GLBufferObject ()
-@property (nonatomic, assign)   GLsizei dataSize;
+@property (nonatomic, assign)   GLsizei         dataSize;
+@property (nonatomic, assign)   GLBufferUsage   usage;
 @end
 
 @implementation GLBufferObject
@@ -48,16 +49,17 @@
 
 - (void)setData:(const GLvoid *)data
        withSize:(GLsizei)size
-      withUsage:(GLenum)usage
+      withUsage:(GLBufferUsage)usage
 {
     [self bind];
     assertBound(self);
     self.dataSize = size;
+    self.usage = usage;
     glBufferData(GL_ARRAY_BUFFER, size, data, usage);
     [self unbind];
 }
 
-+ (id)objectWithUsage:(GLenum)usage
++ (id)objectWithUsage:(GLBufferUsage)usage
                  data:(const GLvoid *)data
                  size:(GLsizei)size
 {
@@ -65,6 +67,7 @@
     if (me) {
         [me bind];
         me.dataSize = size;
+        me.usage = usage;
         glBufferData(GL_ARRAY_BUFFER, size, data, usage);
         [me unbind];
     }
@@ -141,7 +144,7 @@
 
 - (void)describeStructWithIdentifier:(GLint)attribute
                         elementCount:(GLsizei)size
-                         elementType:(GLenum)type
+                         elementType:(GLData)type
                           normalized:(GLboolean)normalized
                            ptrOffset:(GLsizei)ptrOffset
 {

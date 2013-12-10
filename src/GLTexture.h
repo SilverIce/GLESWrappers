@@ -111,7 +111,7 @@ typedef NS_ENUM(GLenum, GLTextureFace) {
                          pixels:(const GLvoid *)pixels;            // can be NULL
 
 // should not be here since method references coregraphics framework methods. just for testing
-+ (id)objectWithImagePath:(NSString *)path;
++ (id)objectWithImageAtPath:(NSString *)path;
 
 @end
 

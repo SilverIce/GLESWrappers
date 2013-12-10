@@ -19,7 +19,7 @@
 #pragma mark -
 #pragma mark Constructors
 
-+ (id)objectWithImagePath:(NSString *)path {
++ (id)objectWithImageAtPath:(NSString *)path {
     NSString *res = [[NSBundle mainBundle] pathForResource:path
                                                     ofType:nil];
 

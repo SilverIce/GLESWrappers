@@ -42,7 +42,7 @@ hard to maintain state
 
 @interface GLContext : NSObject
 
-- (GLFramebuffer *)framebuffer;
+- (GLObject *)framebuffer;
 
 //- (GLProgram *)program;
 

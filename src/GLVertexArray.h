@@ -52,7 +52,7 @@ typedef NS_ENUM(GLenum, GLPrimitive) {
 @interface GLVertexArray : GLNestedObject
 
 typedef struct {
-    GLint           identifier;     // attribute index
+    GLuint          attribIndex;     // attribute index
     GLsizei         elementCount;
     GLData          elementType;
     GLboolean       normalized;
@@ -64,12 +64,6 @@ typedef struct {
 
 - (void)describeStructures:(const GLVertexArrayStructDescription *)descriptors
                structCount:(NSUInteger)count;
-
-- (void)describeStructWithIdentifier:(GLint)identifier
-                        elementCount:(GLsizei)size
-                         elementType:(GLData)type
-                          normalized:(GLboolean)normalized
-                           ptrOffset:(GLsizei)ptrOffset;
 
 - (void)drawTriangleStrip;
 - (void)draw:(GLPrimitive)mode;

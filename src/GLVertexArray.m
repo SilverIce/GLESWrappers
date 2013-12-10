@@ -131,27 +131,14 @@
     assertBound(self);
     for (NSUInteger i = 0; i < count; ++i) {
         const GLVertexArrayStructDescription *descr = &descriptors[i];
-        glEnableVertexAttribArray(descr->identifier);
-        glVertexAttribPointer(descr->identifier,
+        glEnableVertexAttribArray(descr->attribIndex);
+        glVertexAttribPointer(descr->attribIndex,
                               descr->elementCount,
                               descr->elementType,
                               descr->normalized,
                               self.elementSize,
-                              (GLvoid *)descr->ptrOffset);
+                              (const GLvoid *)descr->ptrOffset);
     }
-    [self unbind];
-}
-
-- (void)describeStructWithIdentifier:(GLint)attribute
-                        elementCount:(GLsizei)size
-                         elementType:(GLData)type
-                          normalized:(GLboolean)normalized
-                           ptrOffset:(GLsizei)ptrOffset
-{
-    [self bind];
-    assertBound(self);
-    glEnableVertexAttribArray(attribute);
-    glVertexAttribPointer(attribute, size, type, normalized, self.elementSize, (GLvoid *)ptrOffset);
     [self unbind];
 }
 

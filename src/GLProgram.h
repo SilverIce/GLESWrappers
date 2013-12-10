@@ -39,14 +39,6 @@
 #define UNIFORM_ARGS_3(GLtype) UNIFORM_ARGS_2(GLtype) :(GLtype)z
 #define UNIFORM_ARGS_4(GLtype) UNIFORM_ARGS_3(GLtype) :(GLtype)w
 
-#define DECL_ATTRIB_PAIR(argCount, type, GLtype)    DECL_ATTRIB(argCount, type, GLtype); DECL_ATTRIB_V(argCount, type, GLtype);
-
-#define DECL_ATTRIB(argCount, type, GLtype) \
-    - (void)setAttrib:(NSString *)attribute to##argCount##type UNIFORM_ARGS_##argCount(GLtype)
-
-#define DECL_ATTRIB_V(argCount, type, GLtype) \
-    - (void)setAttrib:(NSString *)attribute to##argCount##type##v :(const GLtype *)v
-
 // Private tools end
 
 @interface GLProgram : GLNestedObject
@@ -96,8 +88,6 @@ DECL_UNIFORM_MATRIX_V(GLfloat, f, 4);
 
 /// Attribute setters:
 // all these methods requires program to be bound
-
-DECL_FOUR_METHODS(GLfloat, f, DECL_ATTRIB_PAIR);
 
 + (id)objectWithVertShaderName:(NSString *)vertexShader
                     fragShader:(NSString *)fragmentShader;

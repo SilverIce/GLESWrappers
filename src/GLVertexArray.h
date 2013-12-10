@@ -35,6 +35,25 @@ typedef NS_ENUM(GLenum, GLBufferUsage) {
 
 @end
 
+#define DECL_FOUR_METHODS(GLtype, type, method) \
+    method(1, type, GLtype)   \
+    method(2, type, GLtype)   \
+    method(3, type, GLtype)   \
+    method(4, type, GLtype)
+
+#define UNIFORM_ARGS_1(GLtype) :(GLtype)x
+#define UNIFORM_ARGS_2(GLtype) UNIFORM_ARGS_1(GLtype) :(GLtype)y
+#define UNIFORM_ARGS_3(GLtype) UNIFORM_ARGS_2(GLtype) :(GLtype)z
+#define UNIFORM_ARGS_4(GLtype) UNIFORM_ARGS_3(GLtype) :(GLtype)w
+
+#define DECL_ATTRIB_PAIR(argCount, type, GLtype)    DECL_ATTRIB(argCount, type, GLtype); DECL_ATTRIB_V(argCount, type, GLtype);
+
+#define DECL_ATTRIB(argCount, type, GLtype) \
+    - (void)setAttrib:(GLuint)attribute to##argCount##type UNIFORM_ARGS_##argCount(GLtype)
+
+#define DECL_ATTRIB_V(argCount, type, GLtype) \
+    - (void)setAttrib:(GLuint)attribute to##argCount##type##v :(const GLtype *)v
+
 #define countOf(array) (sizeof(array)/sizeof(array[0]))
 
 typedef NS_ENUM(GLenum, GLPrimitive) {
@@ -64,6 +83,8 @@ typedef struct {
 
 - (void)describeStructures:(const GLVertexArrayStructDescription *)descriptors
                structCount:(NSUInteger)count;
+
+DECL_FOUR_METHODS(GLfloat, f, DECL_ATTRIB_PAIR);
 
 - (void)drawTriangleStrip;
 - (void)draw:(GLPrimitive)mode;

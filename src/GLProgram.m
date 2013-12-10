@@ -118,15 +118,6 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 3);
 IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
 
 #pragma mark -
-#pragma mark Attribute setters
-
-#define IMPL_ATTRIB(argCount, type, GLtype) \
-    DECL_ATTRIB(argCount, type, GLtype) { glVertexAttrib##argCount##type([self attribLocation:attribute], UNIFORM_CALL_ARGS_##argCount); }   \
-    DECL_ATTRIB_V(argCount, type, GLtype) { glVertexAttrib##argCount##type##v([self attribLocation:attribute], v); }
-
-DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
-
-#pragma mark -
 #pragma mark Etc
 
 - (BOOL)link {

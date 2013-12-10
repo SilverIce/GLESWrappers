@@ -100,14 +100,18 @@
     return self.size.height;
 }
 
+static void _GLtextureValidateFace(GLTexture *texture, GLTextureFace face) {
+    assert((face == GLTextureFace2D && texture.textureType == GL_TEXTURE_2D) ||
+           (face != GLTextureFace2D && texture.textureType == GL_TEXTURE_CUBE_MAP));
+}
+
 - (void)putImageAtFace:(GLTextureFace)face
               withSize:(GLSize)size
         internalFormat:(GLInternalFormat)internalFormat
               dataType:(GLData)dataType
                 pixels:(const GLvoid *)pixels
 {
-    assert((face == GLTextureFace2D && self.textureType == GL_TEXTURE_2D) ||
-           (face != GLTextureFace2D && self.textureType == GL_TEXTURE_CUBE_MAP));
+    _GLtextureValidateFace(self, face);
     
     [self bind];
     
@@ -132,8 +136,7 @@
                  dataType:(GLData)dataType
                    pixels:(const GLvoid *)pixels
 {
-    assert((face == GLTextureFace2D && self.textureType == GL_TEXTURE_2D) ||
-           (face != GLTextureFace2D && self.textureType == GL_TEXTURE_CUBE_MAP));
+    _GLtextureValidateFace(self, face);
     
     [self bind];
     
@@ -259,7 +262,7 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
                   level:(GLint)level
 {
     assert(texture);
-    assert(level == 0 && "currently level 0 supported only");
+    _GLtextureValidateFace(texture, face);
     
     GLTextureFaceRef *me = [[self new] autorelease];
     if (me) {

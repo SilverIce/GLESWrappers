@@ -85,7 +85,7 @@ typedef struct {
 - (GLint)uniformLocation:(NSString *)uniform;
 
 /// Uniform setters:
-// all these methods requires program to be bound
+// macroses generating bunch of setUniform* methods
 
 DECL_FOUR_METHODS(GLint, i, DECL_UNIFORM_PAIR);
 DECL_FOUR_METHODS(GLfloat, f, DECL_UNIFORM_PAIR);

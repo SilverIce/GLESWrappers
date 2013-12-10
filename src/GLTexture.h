@@ -8,13 +8,6 @@
 
 #import "GLContext.h"
 
-// use cases:
-
-// bind & put something into texture
-// bind onto less active slot & do somthing & restore previous
-
-// bind -> make it current texture -
-
 // TODO:
 // sometimes we'll have a huge texture and we'll want to free memory as fast as possible
 

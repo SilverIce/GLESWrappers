@@ -14,8 +14,8 @@ typedef NS_ENUM(GLenum, GLBufferUsage) {
     GLBufferUsageStreamDraw     = GL_STREAM_DRAW,
 };
 
+// Wraps data buffer stored in GPU memory.
 // create it with init or objectWithUsage method
-// data buffer stored in GPU memory
 @interface GLBufferObject : GLNestedObject
 
 - (GLsizei)dataSize;
@@ -72,7 +72,6 @@ typedef struct {
                            ptrOffset:(GLsizei)ptrOffset;
 
 - (void)drawTriangleStrip;
-// GL_POINTS, GL_TRIANGLE_STRIP and etc
 - (void)draw:(GLPrimitive)mode;
 - (void)draw:(GLPrimitive)mode from:(NSUInteger)from count:(NSUInteger)count;
 

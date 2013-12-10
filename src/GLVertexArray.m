@@ -124,7 +124,7 @@
     return self.buffer.dataSize / self.elementSize;
 }
 
-- (void)describeStructures:(const GLVertexArrayStructDescription*)descriptors
+- (void)describeStructures:(const GLVertexArrayStructDescription *)descriptors
                structCount:(NSUInteger)count
 {
     [self bind];
@@ -137,7 +137,8 @@
                               descr->elementType,
                               descr->normalized,
                               self.elementSize,
-                              (const GLvoid *)descr->ptrOffset);
+                              (GLvoid *)descr->ptrOffset);
+        assertGL
     }
     [self unbind];
 }

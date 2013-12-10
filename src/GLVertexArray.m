@@ -108,13 +108,6 @@
         glGenVertexArraysOES(1, &me->_uId);
         
         me.buffer = [GLBufferObject objectWithUsage:usage data:data size:dataSize];
-        
-        // attach buffer
-        [me bind];
-        [me.buffer bind];
-        [me unbind];
-        
-        [me.buffer unbind];
     }
     
     return me;
@@ -129,6 +122,7 @@
 {
     [self bind];
     assertBound(self);
+    [self.buffer bind];
     for (NSUInteger i = 0; i < count; ++i) {
         const GLVertexArrayStructDescription *descr = &descriptors[i];
         glEnableVertexAttribArray(descr->attribIndex);
@@ -140,6 +134,7 @@
                               (GLvoid *)descr->ptrOffset);
         assertGL
     }
+    [self.buffer unbind];
     [self unbind];
 }
 

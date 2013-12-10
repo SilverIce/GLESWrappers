@@ -28,12 +28,8 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
 + (id)objectWithVertShaderName:(NSString *)vertexShader
                   fragShader:(NSString *)fragmentShader
 {
-    GLShader *vShader = [GLShader objectAsVertexShader];
-    assert([vShader compileSource:GLShaderSource(vertexShader, nil)]);
-    
-    GLShader *fShader = [GLShader objectAsFragmentShader];
-    assert([fShader compileSource:GLShaderSource(fragmentShader, nil)]);
-    
+    GLShader *vShader = [GLShader objectAsFragmentShaderWithSource:GLShaderSource(vertexShader, nil)];
+    GLShader *fShader = [GLShader objectAsVertexShaderWithSource:GLShaderSource(fragmentShader, nil)];
 
     GLProgram *me = [GLProgram object];
     

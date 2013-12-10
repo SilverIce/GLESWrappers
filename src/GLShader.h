@@ -31,11 +31,17 @@ typedef NS_ENUM(GLenum, GLShaderType) {
 - (GLShaderType)shaderType;
 - (BOOL)compiled;
 
-- (BOOL)compileSource:(NSString *)source;
-
 - (NSString *)compileLog;
 
++ (id)objectAsFragmentShaderWithSource:(NSString *)source;
++ (id)objectAsVertexShaderWithSource:(NSString *)source;
+
+@end
+
+@interface GLShader ()
 + (id)objectAsFragmentShader;
 + (id)objectAsVertexShader;
+
+- (BOOL)compileSource:(NSString *)source;
 
 @end

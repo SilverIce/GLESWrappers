@@ -68,7 +68,9 @@
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass {
     NSNumber *key = @(theClass);
     NSMutableArray *stack = self.dict[key];
-    return [(GLWeakReference *)stack.lastObject target];
+    GLWeakReference *weakRef = (GLWeakReference *)stack.lastObject;
+    assert((!weakRef || weakRef.target) && "stack is empty or new active object is owned by someone");
+    return weakRef.target;
 }
 
 - (GLObject *)setActiveObject:(GLObject *)object {
@@ -100,7 +102,9 @@
     
     [stack removeLastObject];
     
-    return [(GLWeakReference *)stack.lastObject target];
+    GLWeakReference *prewWeak = (GLWeakReference *)stack.lastObject;
+    assert((!prewWeak || prewWeak.target) && "stack is empty or new active object is owned by someone");
+    return prewWeak.target;
 }
 
 - (void)removeAllObjectsOfClass:(GLObjectType)theClass {

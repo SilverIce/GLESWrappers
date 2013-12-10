@@ -10,18 +10,32 @@
 #import "EAGLContext+GLContext.h"
 
 @interface GLFramebuffer ()
-
+@property (nonatomic, retain)   GLTextureFaceRef    *colorTexturePtr;
+@property (nonatomic, retain)   GLTextureFaceRef    *depthTexturePtr;
+@property (nonatomic, retain)   GLTextureFaceRef    *stencilTexturePtr;
 @end
 
 @implementation GLFramebuffer
+
+@dynamic colorTexture;
+@dynamic depthTexture;
+@dynamic stencilTexture;
+
++ (id)objectWithColorAttachment:(GLTextureFaceRef *)colorFace {
+    GLFramebuffer *me = [self object];
+    me.colorTexture = colorFace;
+    return me;
+}
 
 #pragma mark -
 #pragma mark Inialization and Deallocation
 
 - (void)dealloc {
-    self.colorTexture = nil;
-    self.depthTexture = nil;
-    self.stencilTexture = nil;
+    // do not detach textures because it requires binding
+    self.colorTexturePtr = nil;
+    self.depthTexturePtr = nil;
+    self.stencilTexturePtr = nil;
+    
     glDeleteFramebuffers(1, &_uId);
     [super dealloc];
 }
@@ -86,16 +100,28 @@ static void _GLFramebufferAttachTexture(GLFramebuffer *me, GLTextureFaceRef **fi
     }
 }
 
+- (GLTextureFaceRef *)colorTexture {
+    return _colorTexturePtr;
+}
+
+- (GLTextureFaceRef *)depthTexture {
+    return _depthTexturePtr;
+}
+
+- (GLTextureFaceRef *)stencilTexture {
+    return _stencilTexturePtr;
+}
+
 - (void)setColorTexture:(GLTextureFaceRef *)colorTexture {
-    _GLFramebufferAttachTexture(self, &_colorTexture, colorTexture, GLFramebufferAttachmentColor);
+    _GLFramebufferAttachTexture(self, &_colorTexturePtr, colorTexture, GLFramebufferAttachmentColor);
 }
 
 - (void)setDepthTexture:(GLTextureFaceRef *)depthTexture {
-    _GLFramebufferAttachTexture(self, &_depthTexture, depthTexture, GLFramebufferAttachmentDepth);
+    _GLFramebufferAttachTexture(self, &_depthTexturePtr, depthTexture, GLFramebufferAttachmentDepth);
 }
 
 - (void)setStencilTexture:(GLTextureFaceRef *)stencilTexture {
-    _GLFramebufferAttachTexture(self, &_stencilTexture, stencilTexture, GLFramebufferAttachmentStencil);
+    _GLFramebufferAttachTexture(self, &_stencilTexturePtr, stencilTexture, GLFramebufferAttachmentStencil);
 }
 
 @end

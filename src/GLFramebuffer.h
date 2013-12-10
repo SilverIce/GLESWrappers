@@ -25,6 +25,8 @@ typedef NS_ENUM(GLenum, GLFramebufferAttachment) {
 // read RGBA UNSIGNED_BYTE pixels
 - (void)readRGBAUBytePixels:(GLvoid *)pixels fromRect:(GLRect)rect;
 
++ (id)objectWithColorAttachment:(GLTextureFaceRef *)colorFace;
+
 @end
 
 // Wraps current bound framebuffer that was created out of our gl wrapper system.

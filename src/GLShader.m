@@ -32,6 +32,22 @@
     return me;
 }
 
++ (id)objectAsFragmentShaderWithSource:(NSString *)source {
+    GLShader *me = [[[self alloc] initWithType:GL_VERTEX_SHADER] autorelease];
+    if (me) {
+        assert([me compileSource:source]);
+    }
+    return me;
+}
+
++ (id)objectAsVertexShaderWithSource:(NSString *)source {
+    GLShader *me = [[[self alloc] initWithType:GL_FRAGMENT_SHADER] autorelease];
+    if (me) {
+        assert([me compileSource:source]);
+    }
+    return me;
+}
+
 #pragma mark -
 #pragma mark Initialization and Deallocation
 
@@ -40,7 +56,7 @@
     [super dealloc];
 }
 
-- (id)initWithType:(GLuint)shaderType {
+- (id)initWithType:(GLShaderType)shaderType {
     self = [super init];
     if (self) {
         self.shaderType = shaderType;

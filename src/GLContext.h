@@ -21,6 +21,7 @@
 
 typedef NS_ENUM(GLenum, GLObjectType) {
     GLObjectTypeFramebuffer,
+    GLObjectTypeRenderbuffer,
     GLObjectTypeBuffer,
     GLObjectTypeProgram,
     GLObjectTypeVertexArray,

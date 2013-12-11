@@ -7,28 +7,10 @@
 //
 
 #import "GLContext.h"
+#import "GLFramebuffer.h"
 
 // TODO:
 // sometimes we'll have a huge texture and we'll want to free memory as fast as possible
-
-typedef struct {
-    GLsizei width, height;
-} GLSize;
-
-typedef struct {
-    GLint x, y;
-} GLPoint;
-
-typedef union {
-    struct {
-        GLPoint origin;
-        GLSize size;
-    };
-    struct {
-        GLint x, y;
-        GLsizei width, height;
-    };
-} GLRect;
 
 typedef struct {
     GLuint  width;
@@ -127,7 +109,7 @@ typedef NS_ENUM(GLenum, GLTextureFace) {
 
 // Strong texture reference
 // References specific texture face & level
-@interface GLTextureFaceRef : NSObject
+@interface GLTextureFaceRef : NSObject <GLFramebufferRenderTarget>
 - (GLTexture *)texture;
 - (GLTextureFace)face;
 - (GLint)level;

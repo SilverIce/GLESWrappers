@@ -23,6 +23,25 @@ typedef NS_ENUM(GLenum, GLData) {
     GLDataFloat     = GL_FLOAT,
 };
 
+typedef struct {
+    GLsizei width, height;
+} GLSize;
+
+typedef struct {
+    GLint x, y;
+} GLPoint;
+
+typedef union {
+    struct {
+        GLPoint origin;
+        GLSize size;
+    };
+    struct {
+        GLint x, y;
+        GLsizei width, height;
+    };
+} GLRect;
+
 
 #define assertGL \
 {\

@@ -8,24 +8,30 @@
 
 #import "GLContext.h"
 
-#import "GLTexture.h"
-
 typedef NS_ENUM(GLenum, GLFramebufferAttachment) {
     GLFramebufferAttachmentColor    = GL_COLOR_ATTACHMENT0,
     GLFramebufferAttachmentDepth    = GL_DEPTH_ATTACHMENT,
     GLFramebufferAttachmentStencil  = GL_STENCIL_ATTACHMENT,
 };
 
+@protocol GLFramebufferRenderTarget <NSObject>
+@required
+- (void)internalAttach:(BOOL)attach
+           framebuffer:(GLFramebuffer *)framebuffer
+               toPoint:(GLFramebufferAttachment)attachmentPoint;
+
+@end
+
 @interface GLFramebuffer : GLNestedObject
 
-@property (nonatomic, retain)   GLTextureFaceRef    *colorTexture;
-@property (nonatomic, retain)   GLTextureFaceRef    *depthTexture;
-@property (nonatomic, retain)   GLTextureFaceRef    *stencilTexture;
+@property (nonatomic, retain)   id<GLFramebufferRenderTarget>    colorTarget;
+@property (nonatomic, retain)   id<GLFramebufferRenderTarget>    depthTarget;
+@property (nonatomic, retain)   id<GLFramebufferRenderTarget>    stencilTarget;
 
 // read RGBA UNSIGNED_BYTE pixels
 - (void)readRGBAUBytePixels:(GLvoid *)pixels fromRect:(GLRect)rect;
 
-+ (id)objectWithColorAttachment:(GLTextureFaceRef *)colorFace;
++ (id)objectWithColorAttachment:(id<GLFramebufferRenderTarget>)colorFace;
 
 @end
 

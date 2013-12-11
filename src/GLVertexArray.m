@@ -78,8 +78,10 @@
 @end
 
 @interface GLVertexArray ()
-@property (nonatomic, retain)  GLBufferObject *buffer;
-@property (nonatomic, assign)  NSUInteger      elementSize;
+@property (nonatomic, retain)   GLBufferObject *buffer;
+@property (nonatomic, assign)   NSUInteger      elementSize;
+
+@property (nonatomic, retain)   NSMutableDictionary     *index2Storage;
 @end
 
 @implementation GLVertexArray
@@ -88,6 +90,25 @@
     self.buffer = nil;
     glDeleteVertexArraysOES(1, &_uId);
     [super dealloc];
+}
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        glGenVertexArraysOES(1, &_uId);
+        self.index2Storage = [NSMutableDictionary dictionary];
+    }
+    return self;
+}
+
+- (void)describeStructures:(const GLVertexArrayStructDescription *)descriptors
+                     count:(NSUInteger)count
+                  inBuffer:(GLBufferObject *)buffer
+{
+    assert(descriptors);
+    assert(buffer);
+    
+    
 }
 
 + (id)objectWithUsage:(GLBufferUsage)usage
@@ -104,8 +125,6 @@
     if (me) {
         me.elementSize = elementSize;
         //me.dataSize = dataSize;
-        
-        glGenVertexArraysOES(1, &me->_uId);
         
         me.buffer = [GLBufferObject objectWithUsage:usage data:data size:dataSize];
     }

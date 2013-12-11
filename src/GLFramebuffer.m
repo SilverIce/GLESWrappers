@@ -10,20 +10,20 @@
 #import "EAGLContext+GLContext.h"
 
 @interface GLFramebuffer ()
-@property (nonatomic, retain)   GLTextureFaceRef    *colorTexturePtr;
-@property (nonatomic, retain)   GLTextureFaceRef    *depthTexturePtr;
-@property (nonatomic, retain)   GLTextureFaceRef    *stencilTexturePtr;
+@property (nonatomic, retain)   id<GLFramebufferRenderTarget>    colorTexturePtr;
+@property (nonatomic, retain)   id<GLFramebufferRenderTarget>    depthTexturePtr;
+@property (nonatomic, retain)   id<GLFramebufferRenderTarget>    stencilTexturePtr;
 @end
 
 @implementation GLFramebuffer
 
-@dynamic colorTexture;
-@dynamic depthTexture;
-@dynamic stencilTexture;
+@dynamic colorTarget;
+@dynamic depthTarget;
+@dynamic stencilTarget;
 
-+ (id)objectWithColorAttachment:(GLTextureFaceRef *)colorFace {
++ (id)objectWithColorAttachment:(id<GLFramebufferRenderTarget>)colorFace {
     GLFramebuffer *me = [self object];
-    me.colorTexture = colorFace;
+    me.colorTarget = colorFace;
     return me;
 }
 
@@ -73,8 +73,8 @@
     [self unbind];
 }
 
-static void _GLFramebufferAttachTexture(GLFramebuffer *me, GLTextureFaceRef **field,
-                                        GLTextureFaceRef *face, GLFramebufferAttachment point)
+static void _GLFramebufferAttachTexture(GLFramebuffer *me, id<GLFramebufferRenderTarget> *field,
+                                        id<GLFramebufferRenderTarget> face, GLFramebufferAttachment point)
 {
     if (*field != face) {
         [*field release];
@@ -82,45 +82,35 @@ static void _GLFramebufferAttachTexture(GLFramebuffer *me, GLTextureFaceRef **fi
         
         [me bind];
         
-        if (face) {
-            glFramebufferTexture2D(GL_FRAMEBUFFER,
-                                   point,
-                                   face.face,
-                                   face.texture.uId,
-                                   face.level);
-        } else {
-            glFramebufferTexture2D(GL_FRAMEBUFFER,
-                                   point,
-                                   0,
-                                   0,
-                                   0);
-        }
+        [face internalAttach:(face ? YES : NO)
+                 framebuffer:me
+                     toPoint:point];
         
         [me unbind];
     }
 }
 
-- (GLTextureFaceRef *)colorTexture {
+- (id<GLFramebufferRenderTarget>)colorTarget {
     return _colorTexturePtr;
 }
 
-- (GLTextureFaceRef *)depthTexture {
+- (id<GLFramebufferRenderTarget>)depthTarget {
     return _depthTexturePtr;
 }
 
-- (GLTextureFaceRef *)stencilTexture {
+- (id<GLFramebufferRenderTarget>)stencilTarget {
     return _stencilTexturePtr;
 }
 
-- (void)setColorTexture:(GLTextureFaceRef *)colorTexture {
+- (void)setColorTarget:(id<GLFramebufferRenderTarget>)colorTexture {
     _GLFramebufferAttachTexture(self, &_colorTexturePtr, colorTexture, GLFramebufferAttachmentColor);
 }
 
-- (void)setDepthTexture:(GLTextureFaceRef *)depthTexture {
+- (void)setDepthTarget:(id<GLFramebufferRenderTarget>)depthTexture {
     _GLFramebufferAttachTexture(self, &_depthTexturePtr, depthTexture, GLFramebufferAttachmentDepth);
 }
 
-- (void)setStencilTexture:(GLTextureFaceRef *)stencilTexture {
+- (void)setStencilTarget:(id<GLFramebufferRenderTarget>)stencilTexture {
     _GLFramebufferAttachTexture(self, &_stencilTexturePtr, stencilTexture, GLFramebufferAttachmentStencil);
 }
 

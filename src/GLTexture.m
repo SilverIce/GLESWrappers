@@ -7,7 +7,8 @@
 //
 
 #import "GLTexture.h"
-#import "GLWeakReference.h"
+
+#import "GLFramebuffer.h"
 
 @interface GLTexture ()
 @property (nonatomic, assign)   GLTextureType       textureType;
@@ -277,6 +278,28 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 - (void)dealloc {
     self.texture = nil;
     [super dealloc];
+}
+
+#pragma mark -
+#pragma mark GLFramebufferRenderTarget
+
+- (void)internalAttach:(BOOL)attach
+           framebuffer:(GLFramebuffer *)framebuffer
+               toPoint:(GLFramebufferAttachment)attachmentPoint
+{
+    if (attach) {
+        glFramebufferTexture2D(GL_FRAMEBUFFER,
+                               attachmentPoint,
+                               self.face,
+                               self.texture.uId,
+                               self.level);
+    } else {
+        glFramebufferTexture2D(GL_FRAMEBUFFER,
+                               attachmentPoint,
+                               0,
+                               0,
+                               0);
+    }
 }
 
 @end

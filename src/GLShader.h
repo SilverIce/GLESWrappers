@@ -24,6 +24,7 @@ typedef NS_ENUM(GLenum, GLShaderType) {
 
 - (NSString *)compileLog;
 
+// returns successfully compiled shader. otherwise assertion will fail
 + (id)objectAsFragmentShaderWithSource:(NSString *)source;
 + (id)objectAsVertexShaderWithSource:(NSString *)source;
 

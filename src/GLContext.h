@@ -74,7 +74,6 @@ hard to maintain state
 
 // gl object type identifier. can be overridden
 // objects should always have equal identifiers if they behave in same way
-// initially set to object class
 - (GLObjectType)glType;
 + (GLObjectType)glType;
 
@@ -85,5 +84,7 @@ hard to maintain state
 
 @end
 
+// Implements nested binding behaviour - each bind call remembers previous bound object
+// each unbind call restores pre
 @interface GLNestedObject : GLObject
 @end

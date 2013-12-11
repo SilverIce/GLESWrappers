@@ -10,9 +10,6 @@
 
 @class GLShader;
 
-// holds per program uniform data
-
-
 // Private tools:
 
 #define DECL_FOUR_METHODS(GLtype, type, method) \
@@ -76,12 +73,15 @@ typedef struct {
 // may return -1 if uniform is inactive (or no such at all)
 - (GLint)uniformLocation:(NSString *)uniform;
 
-/// Uniform setters:
-// macroses generating bunch of setUniform* methods
+// Uniform setters
+// macroses generating lot of methods:
+// - (void)setUniform:(NSString *)uniform to{1234}{if}{v}:[args,]:Targ1...:TargN [:args];
 
 DECL_FOUR_METHODS(GLint, i, DECL_UNIFORM_PAIR);
 DECL_FOUR_METHODS(GLfloat, f, DECL_UNIFORM_PAIR);
 
+// macroses generating lot of methods:
+// - (void)setUniform:(NSString *)uniform toMatrix{234}fv:(GLsizei)count transpose:(GLboolean)transpose value:(const GLtype *)value;
 DECL_UNIFORM_MATRIX_V(GLfloat, f, 2);
 DECL_UNIFORM_MATRIX_V(GLfloat, f, 3);
 DECL_UNIFORM_MATRIX_V(GLfloat, f, 4);
@@ -96,13 +96,14 @@ DECL_UNIFORM_MATRIX_V(GLfloat, f, 4);
 
 @interface GLProgram (Construction)
 
-// Creates linked program
+// Creates linked program. otherwise assertion will fail
 + (id)objectWithVertShaderName:(NSString *)vertexShader
                     fragShader:(NSString *)fragmentShader
           linkedWithAttributes:(NSArray *)attributes;
 
 @end
 
+// internal api
 @interface GLProgram ()
 @property (nonatomic, retain)   GLShader  *vertShader;
 @property (nonatomic, retain)   GLShader  *fragShader;

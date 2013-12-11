@@ -77,14 +77,17 @@ static void _GLFramebufferAttachTexture(GLFramebuffer *me, id<GLFramebufferRende
                                         id<GLFramebufferRenderTarget> face, GLFramebufferAttachment point)
 {
     if (*field != face) {
-        [*field release];
-        *field = [face retain];
-        
         [me bind];
         
-        [face internalAttach:(face ? YES : NO)
-                 framebuffer:me
-                     toPoint:point];
+        if (face) {
+            [face internalAttach:YES
+                     framebuffer:me
+                         toPoint:point];
+        } else {
+            [*field internalAttach:NO
+                       framebuffer:me
+                           toPoint:point];
+        }
         
         GLenum completeness = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         if (completeness != GL_FRAMEBUFFER_COMPLETE) {
@@ -93,6 +96,9 @@ static void _GLFramebufferAttachTexture(GLFramebuffer *me, id<GLFramebufferRende
         }
         
         [me unbind];
+        
+        [*field release];
+        *field = [face retain];
     }
 }
 

@@ -43,11 +43,4 @@ typedef union {
 } GLRect;
 
 
-#define assertGL \
-{\
-    GLenum error = glGetError();\
-    if (error != GL_NO_ERROR) {\
-        NSLog(@"gl error: 0x%x", error);\
-        assert(false);\
-    }\
-}
+extern void GLassertStateValid();

@@ -22,6 +22,7 @@
     GLRenderbuffer *me = [[self new] autorelease];
     if (me) {
         glGenRenderbuffers(1, &me->_uId);
+        GLassertStateValid();
         [me setFormat:format size:size];
     }
     
@@ -38,6 +39,7 @@
 
 - (void)dealloc {
     glDeleteRenderbuffers(1, &_uId);
+    GLassertStateValid();
     [super dealloc];
 }
 
@@ -51,6 +53,7 @@
     self.format = format;
     self.size = size;
     glRenderbufferStorage(GL_RENDERBUFFER, format, size.width, size.height);
+    GLassertStateValid();
     [self unbind];
 }
 
@@ -59,6 +62,7 @@
 
 - (void)internalBind:(BOOL)bind {
     glBindRenderbuffer(GL_RENDERBUFFER, bind ? _uId : 0);
+    GLassertStateValid();
 }
 
 + (GLObjectType)glType {
@@ -77,6 +81,8 @@
     } else {
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachmentPoint, 0, 0);
     }
+    
+    GLassertStateValid();
 }
 
 @end

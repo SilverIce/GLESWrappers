@@ -18,6 +18,7 @@
 
 - (void)dealloc {
     glDeleteBuffers(1, &_uId);
+    GLassertStateValid();
     [super dealloc];
 }
 
@@ -25,6 +26,7 @@
     self = [super init];
     if (self) {
         glGenBuffers(1, &_uId);
+        GLassertStateValid();
     }
     return self;
 }
@@ -35,6 +37,7 @@
 
 - (void)internalBind:(BOOL)bind {
     glBindBuffer(GL_ARRAY_BUFFER, bind ? self.uId : 0);
+    GLassertStateValid();
 }
 
 - (void)modifyData:(const GLvoid *)data
@@ -45,6 +48,7 @@
     assert(offset + size < self.dataSize);
     assertBound(self);
     glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
+    GLassertStateValid();
     [self unbind];
 }
 
@@ -57,6 +61,7 @@
     self.dataSize = size;
     self.usage = usage;
     glBufferData(GL_ARRAY_BUFFER, size, data, usage);
+    GLassertStateValid();
     [self unbind];
 }
 
@@ -70,6 +75,7 @@
         me.dataSize = size;
         me.usage = usage;
         glBufferData(GL_ARRAY_BUFFER, size, data, usage);
+        GLassertStateValid();
         [me unbind];
     }
 
@@ -90,6 +96,7 @@
 - (void)dealloc {
     self.buffer = nil;
     glDeleteVertexArraysOES(1, &_uId);
+    GLassertStateValid();
     [super dealloc];
 }
 
@@ -97,6 +104,7 @@
     self = [super init];
     if (self) {
         glGenVertexArraysOES(1, &_uId);
+        GLassertStateValid();
         self.index2Storage = [NSMutableDictionary dictionary];
     }
     return self;
@@ -152,7 +160,7 @@
                               descr->normalized,
                               self.elementSize,
                               (GLvoid *)descr->ptrOffset);
-        assertGL
+        GLassertStateValid();
     }
     [self.buffer unbind];
     [self unbind];
@@ -185,6 +193,7 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
 
 - (void)internalBind:(BOOL)bind {
     glBindVertexArrayOES(bind ? self.uId : 0);
+    GLassertStateValid();
 }
 
 + (GLObjectType)glType {
@@ -198,6 +207,7 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
     [self bind];
     assertBound(self);
     glDrawArrays(GLPrimitiveTriangleStrip, 0, self.vertexCount);
+    GLassertStateValid();
     [self unbind];
 }
 
@@ -205,6 +215,7 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
     [self bind];
     assertBound(self);
     glDrawArrays(mode, 0, self.buffer.dataSize / self.elementSize);
+    GLassertStateValid();
     [self unbind];
 }
 
@@ -213,6 +224,7 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
     [self bind];
     assertBound(self);
     glDrawArrays(mode, from, count);
+    GLassertStateValid();
     [self unbind];
 }
 

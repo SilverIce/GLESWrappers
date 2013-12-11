@@ -48,6 +48,7 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
     
     self.uniformCache = nil;
     glDeleteProgram(self.uId);
+    GLassertStateValid();
     [super dealloc];
 }
 
@@ -55,6 +56,7 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
     self = [super init];
     if (self) {
         self.uId = glCreateProgram();
+        GLassertStateValid();
         self.uniformCache = [NSMutableDictionary dictionary];
     }
     return self;
@@ -69,7 +71,7 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
 
 - (void)internalBind:(BOOL)bind {
     glUseProgram(bind ? self.uId : 0);
-    assertGL
+    GLassertStateValid();
 }
 
 #pragma mark -
@@ -82,7 +84,7 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
         GLint location = [self uniformLocation:uniform];    \
         assert(location != -1); \
         glUniform##argCount##type(location, UNIFORM_CALL_ARGS_##argCount);    \
-        assertGL \
+        GLassertStateValid(); \
         [self unbind];  \
     }   \
     DECL_UNIFORM_V(argCount, type, GLtype) {    \
@@ -91,7 +93,7 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
         GLint location = [self uniformLocation:uniform];    \
         assert(location != -1); \
         glUniform##argCount##type##v(location, count, v); \
-        assertGL \
+        GLassertStateValid(); \
         [self unbind];  \
     }
 
@@ -102,7 +104,7 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
         GLint location = [self uniformLocation:uniform];    \
         assert(location != -1); \
         glUniformMatrix##argCount##type##v(location, count, transpose, value); \
-        assertGL \
+        GLassertStateValid(); \
         [self unbind];  \
     }
 
@@ -126,7 +128,7 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
     assert(self.fragShader && [self.fragShader compiled]);
     
     glLinkProgram(self.uId);
-    assertGL
+    GLassertStateValid();
     [self.uniformCache removeAllObjects];
     
     return [self linkStatus];
@@ -135,7 +137,7 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
 - (BOOL)linkStatus {
     GLint status = 0;
     glGetProgramiv(self.uId, GL_LINK_STATUS, &status);
-    assertGL
+    GLassertStateValid();
     return status == GL_TRUE;
 }
 
@@ -143,7 +145,7 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
     glValidateProgram(self.uId);
     GLint status = 0;
     glGetProgramiv(self.uId, GL_VALIDATE_STATUS, &status);
-    assertGL
+    GLassertStateValid();
     return status == GL_TRUE;
 }
 
@@ -155,7 +157,7 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
 - (void)setAttrib:(NSString *)attribute location:(GLuint)location {
     assert(attribute);
     glBindAttribLocation(self.uId, location, attribute.UTF8String);
-    assertGL
+    GLassertStateValid();
 }
 
 - (void)associateAttributes:(const GLProgramAttrib2Loc *)associations
@@ -165,7 +167,7 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
     for (NSUInteger i = 0; i < count; ++i) {
         const GLProgramAttrib2Loc *assoc = &associations[i];
         glBindAttribLocation(self.uId, assoc->location, assoc->attrib);
-        assertGL
+        GLassertStateValid();
     }
 }
 
@@ -201,6 +203,7 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
     
     GLchar *buffer = calloc(length, sizeof(GLchar));
     glGetProgramInfoLog(self.uId, length, &length, buffer);
+    GLassertStateValid();
     
     NSString *log = [NSString stringWithUTF8String:buffer];
     free(buffer);
@@ -211,12 +214,12 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
     if (vertShader != _vertShader) {
         if (_vertShader) {
             glDetachShader(self.uId, _vertShader.uId);
-            assertGL
+            GLassertStateValid();
         }
         
         if (vertShader) {
             glAttachShader(self.uId, vertShader.uId);
-            assertGL
+            GLassertStateValid();
         }
         
         [_vertShader release];
@@ -228,12 +231,12 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
     if (fragShader != _fragShader) {
         if (_fragShader) {
             glDetachShader(self.uId, _fragShader.uId);
-            assertGL
+            GLassertStateValid();
         }
         
         if (fragShader) {
             glAttachShader(self.uId, fragShader.uId);
-            assertGL
+            GLassertStateValid();
         }
         
         [_fragShader release];

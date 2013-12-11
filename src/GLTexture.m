@@ -195,7 +195,7 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 }
 
 - (BOOL)isBound {
-    return self.slot && self.slot == self.context.activeSlot;
+    return [self.context.activeSlot activeObjectOfClass:self.glType] == self;
 }
 
 - (void)internalBind:(BOOL)bind {

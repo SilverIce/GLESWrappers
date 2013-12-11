@@ -86,6 +86,12 @@ static void _GLFramebufferAttachTexture(GLFramebuffer *me, id<GLFramebufferRende
                  framebuffer:me
                      toPoint:point];
         
+        GLenum completeness = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        if (completeness != GL_FRAMEBUFFER_COMPLETE) {
+            [NSException raise:NSInternalInconsistencyException
+                        format:@"framebuffer incomplete status 0x%x", completeness];
+        }
+        
         [me unbind];
     }
 }

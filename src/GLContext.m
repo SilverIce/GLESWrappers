@@ -69,9 +69,7 @@
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass {
     NSNumber *key = @(theClass);
     NSMutableArray *stack = self.dict[key];
-    GLWeakReference *weakRef = (GLWeakReference *)stack.lastObject;
-    assert((!weakRef || weakRef.target) && "stack is empty or new active object is owned by someone");
-    return weakRef.target;
+    return stack.lastObject;
 }
 
 - (GLObject *)setActiveObject:(GLObject *)object {
@@ -83,14 +81,13 @@
         self.dict[key] = stack = [NSMutableArray array];
     }
     
-    GLWeakReference *prevWeak = stack.lastObject;
-    GLWeakReference *newWeak = [object makeWeakReference];
+    GLObject *prevWeak = stack.lastObject;
     //assert(prevWeak != newWeak); // it's ok to push object twice
-    [stack addObject:newWeak];
+    [stack addObject:object];
     
     assert(object == [self activeObjectOfClass:object.glType]);
     
-    return prevWeak.target;
+    return prevWeak;
 }
 
 - (GLObject *)resetActiveObject:(GLObject *)object {
@@ -99,13 +96,11 @@
     
     NSMutableArray *stack = self.dict[key];
     assert(stack);
-    assert([(GLWeakReference *)stack.lastObject target] == object);
+    assert(stack.lastObject == object);
     
     [stack removeLastObject];
     
-    GLWeakReference *prewWeak = (GLWeakReference *)stack.lastObject;
-    assert((!prewWeak || prewWeak.target) && "stack is empty or new active object is owned by someone");
-    return prewWeak.target;
+    return stack.lastObject;
 }
 
 - (void)removeAllObjectsOfClass:(GLObjectType)theClass {

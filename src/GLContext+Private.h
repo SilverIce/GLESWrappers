@@ -16,7 +16,7 @@
 
 // internal class.
 // Associative key(GLObjectType)-values array(GLObject*) container.
-// does not retain values
+// retains values
 @interface GLActiveObjects : NSObject
 
 - (GLObject *)activeObjectOfClass:(GLObjectType)theClass;

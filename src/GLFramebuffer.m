@@ -82,12 +82,12 @@ static void _GLFramebufferAttachTexture(GLFramebuffer *me, id<GLFramebufferRende
         
         if (face) {
             [face internalAttach:YES
-                     framebuffer:me
-                         toPoint:point];
+                     toFramebuffer:me
+                           point:point];
         } else {
             [*field internalAttach:NO
-                       framebuffer:me
-                           toPoint:point];
+                       toFramebuffer:me
+                             point:point];
         }
         
         GLenum completeness = glCheckFramebufferStatus(GL_FRAMEBUFFER);

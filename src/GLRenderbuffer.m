@@ -7,6 +7,7 @@
 //
 
 #import "GLRenderbuffer.h"
+#import "GLContext+Private.h"
 
 @interface GLRenderbuffer ()
 @property (nonatomic, assign)   GLInternalFormat    format;
@@ -68,8 +69,8 @@
 #pragma mark GLFramebufferRenderTarget
 
 - (void)internalAttach:(BOOL)attach
-           framebuffer:(GLFramebuffer *)framebuffer
-               toPoint:(GLFramebufferAttachment)attachmentPoint
+         toFramebuffer:(GLFramebuffer *)framebuffer
+                 point:(GLFramebufferAttachment)attachmentPoint
 {
     if (attach) {
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachmentPoint, GL_RENDERBUFFER, self.uId);

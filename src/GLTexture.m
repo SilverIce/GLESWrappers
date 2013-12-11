@@ -283,8 +283,8 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 #pragma mark GLFramebufferRenderTarget
 
 - (void)internalAttach:(BOOL)attach
-           framebuffer:(GLFramebuffer *)framebuffer
-               toPoint:(GLFramebufferAttachment)attachmentPoint
+         toFramebuffer:(GLFramebuffer *)framebuffer
+                 point:(GLFramebufferAttachment)attachmentPoint
 {
     if (attach) {
         glFramebufferTexture2D(GL_FRAMEBUFFER,

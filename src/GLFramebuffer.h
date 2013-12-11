@@ -17,8 +17,8 @@ typedef NS_ENUM(GLenum, GLFramebufferAttachment) {
 @protocol GLFramebufferRenderTarget <NSObject>
 @required
 - (void)internalAttach:(BOOL)attach
-           framebuffer:(GLFramebuffer *)framebuffer
-               toPoint:(GLFramebufferAttachment)attachmentPoint;
+         toFramebuffer:(GLFramebuffer *)framebuffer
+                 point:(GLFramebufferAttachment)attachmentPoint;
 
 @end
 

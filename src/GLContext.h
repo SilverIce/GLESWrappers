@@ -68,40 +68,6 @@ hard to maintain state
 
 @end
 
-// internals:
-@interface GLContext ()
-@property (nonatomic, retain)   GLActiveObjects     *objectSet;
-@end
-
-
-// internal class.
-// Associative key(GLObjectType)-values array(GLObject*) container.
-// does not retain values
-@interface GLActiveObjects : NSObject
-
-- (GLObject *)activeObjectOfClass:(GLObjectType)theClass;
-// push new active object. returns previous top object
-- (GLObject *)setActiveObject:(GLObject *)object;
-// pop object. returns new top object
-- (GLObject *)resetActiveObject:(GLObject *)object;
-- (void)removeAllObjectsOfClass:(GLObjectType)theClass;
-
-@end
-
-// internal class.
-// Associative key(GLObjectType)-value(GLObject*) container.
-// does not retain values
-@interface GLSlot : NSObject
-@property (nonatomic, assign)   GLuint      slotIdx;
-
-- (GLObject *)activeObjectOfClass:(GLObjectType)theClass;
-// put new active object.
-- (void)setActiveObject:(GLObject *)object;
-// remove active object
-- (void)resetActiveObject:(GLObject *)object;
-
-@end
-
 @interface GLObject : NSObject
 
 - (GLContext *)context;
@@ -117,32 +83,7 @@ hard to maintain state
 - (void)unbind;
 - (BOOL)isBound;
 
-// should we really pass&store context everywhere or just query current EAGLConext context?
-+ (id)objectWithContext:(GLContext *)context;
-
-@end
-
-void assertBound(GLObject *object);
-
-// private api:
-@interface GLObject () {
-@protected
-    GLuint  _uId;
-}
-
-@property (nonatomic, assign)   GLuint              uId;
-@property (nonatomic, assign)   GLContext           *context;
-
-// should be overridden
-- (void)internalBind:(BOOL)bind;
-
 @end
 
 @interface GLNestedObject : GLObject
-
 @end
-
-@interface GLNestedObject ()
-
-@end
-

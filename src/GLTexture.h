@@ -18,7 +18,6 @@ typedef struct {
     GLvoid  *data;
 } GLPixelData;
 
-
 typedef NS_ENUM(GLenum, GLTextureMinFilter) {
     GLTextureMinFilterNearest               = GL_NEAREST,
     GLTextureMinFilterLinear                = GL_LINEAR,
@@ -95,13 +94,6 @@ typedef NS_ENUM(GLenum, GLTextureFace) {
 // should not be here since method references coregraphics framework methods. just for testing
 + (id)objectWithImageAtPath:(NSString *)path;
 
-@end
-
-@interface GLTexture ()
-// private api:
-// a way to determine most used/active texture - how often it was activated
-@property (nonatomic, assign)   GLuint              useCount;
-@property (nonatomic, assign)   GLSlot              *slot;
 @end
 
 @interface GLTextureCube : GLTexture

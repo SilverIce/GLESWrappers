@@ -7,6 +7,7 @@
 //
 
 #import "GLContext.h"
+#import "GLContext+Private.h"
 
 #import "GLFramebuffer.h"
 #import "GLWeakReference.h"

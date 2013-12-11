@@ -8,15 +8,6 @@
 
 #import "GLContext.h"
 
-/*
-use cases:
-get compile log
-reuse vshader
- 
-gets retained by shader programm in opengl, so must be retained here as well
- 
-*/
-
 typedef NS_ENUM(GLenum, GLShaderType) {
     GLShaderTypeVertex      = GL_VERTEX_SHADER,
     GLShaderTypeFragment    = GL_FRAGMENT_SHADER,

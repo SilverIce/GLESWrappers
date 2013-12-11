@@ -7,6 +7,7 @@
 //
 
 #import "GLVertexArray.h"
+#import "GLContext+Private.h"
 
 @interface GLBufferObject ()
 @property (nonatomic, assign)   GLsizei         dataSize;

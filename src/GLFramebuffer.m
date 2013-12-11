@@ -7,6 +7,7 @@
 //
 
 #import "GLFramebuffer.h"
+#import "GLContext+Private.h"
 #import "EAGLContext+GLContext.h"
 
 @interface GLFramebuffer ()

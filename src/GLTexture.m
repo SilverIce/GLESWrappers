@@ -7,8 +7,8 @@
 //
 
 #import "GLTexture.h"
-
-#import "GLFramebuffer.h"
+#import "GLTexture+Private.h"
+#import "GLContext+Private.h"
 
 @interface GLTexture ()
 @property (nonatomic, assign)   GLTextureType       textureType;
@@ -225,7 +225,6 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
     } else {
         ;
     }
-    
 }
 
 - (void)ensureActive {

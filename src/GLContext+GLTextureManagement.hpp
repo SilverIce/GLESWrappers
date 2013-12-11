@@ -7,7 +7,7 @@
 //
 
 #import "GLContext.h"
-#import "GLTexture.h"
+#import "GLTexture+Private.h"
 
 @interface GLContext () {
     GLSlot  *_activeSlot;

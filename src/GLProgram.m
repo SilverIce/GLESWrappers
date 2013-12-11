@@ -8,6 +8,7 @@
 
 #import "GLProgram.h"
 #import "GLShader.h"
+#import "GLContext+Private.h"
 
 @interface GLProgram ()
 @property (nonatomic, retain)   NSMutableDictionary     *uniformCache;

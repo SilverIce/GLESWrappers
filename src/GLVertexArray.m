@@ -12,9 +12,13 @@
 @interface GLBufferObject ()
 @property (nonatomic, assign)   GLsizei         dataSize;
 @property (nonatomic, assign)   GLBufferUsage   usage;
+@property (nonatomic, assign)   GLenum          glTarget;
 @end
 
 @implementation GLBufferObject
+
+#pragma mark -
+#pragma mark Initialization and Deallocation
 
 - (void)dealloc {
     glDeleteBuffers(1, &_uId);
@@ -27,18 +31,25 @@
     if (self) {
         glGenBuffers(1, &_uId);
         GLassertStateValid();
+        self.usage = GLBufferUsageStaticDraw;
     }
     return self;
 }
 
-+ (GLObjectType)glType {
-    return GLObjectTypeBuffer;
+#pragma mark -
+#pragma mark GLObject
+
+- (GLObjectType)glType {
+    return self.glTarget;
 }
 
 - (void)internalBind:(BOOL)bind {
-    glBindBuffer(GL_ARRAY_BUFFER, bind ? self.uId : 0);
+    glBindBuffer(self.glTarget, bind ? self.uId : 0);
     GLassertStateValid();
 }
+
+#pragma mark -
+#pragma mark Public
 
 - (void)modifyData:(const GLvoid *)data
           withSize:(GLsizei)size
@@ -47,7 +58,7 @@
     [self bind];
     assert(offset + size < self.dataSize);
     assertBound(self);
-    glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
+    glBufferSubData(self.glTarget, offset, size, data);
     GLassertStateValid();
     [self unbind];
 }
@@ -60,33 +71,34 @@
     assertBound(self);
     self.dataSize = size;
     self.usage = usage;
-    glBufferData(GL_ARRAY_BUFFER, size, data, usage);
+    glBufferData(self.glTarget, size, data, usage);
     GLassertStateValid();
     [self unbind];
 }
 
-+ (id)objectWithUsage:(GLBufferUsage)usage
-                 data:(const GLvoid *)data
-                 size:(GLsizei)size
-{
++ (id)objectAsIndiceBufer {
     GLBufferObject *me = [[self new] autorelease];
     if (me) {
-        [me bind];
-        me.dataSize = size;
-        me.usage = usage;
-        glBufferData(GL_ARRAY_BUFFER, size, data, usage);
-        GLassertStateValid();
-        [me unbind];
+        me.glTarget = GL_ELEMENT_ARRAY_BUFFER;
     }
+    
+    return me;
+}
 
++ (id)objectAsVertexBufer {
+    GLBufferObject *me = [[self new] autorelease];
+    if (me) {
+        me.glTarget = GL_ARRAY_BUFFER;
+    }
+    
     return me;
 }
 
 @end
 
 @interface GLVertexArray ()
-@property (nonatomic, retain)   GLBufferObject *buffer;
-@property (nonatomic, assign)   NSUInteger      elementSize;
+@property (nonatomic, retain)   GLBufferObject          *buffer;
+@property (nonatomic, assign)   NSUInteger              elementSize;
 
 @property (nonatomic, retain)   NSMutableDictionary     *index2Storage;
 @end
@@ -117,7 +129,11 @@
     assert(descriptors);
     assert(buffer);
     
-    
+    for (NSUInteger i = 0; i < count; ++i) {
+        const GLVertexArrayStructDescription *descr = &descriptors[i];
+        
+//        self.index2Storage[descr->attribIndex] = 
+    }
 }
 
 + (id)objectWithUsage:(GLBufferUsage)usage
@@ -135,7 +151,8 @@
         me.elementSize = elementSize;
         //me.dataSize = dataSize;
         
-        me.buffer = [GLBufferObject objectWithUsage:usage data:data size:dataSize];
+        me.buffer = [GLBufferObject objectAsVertexBufer];
+        [me.buffer setData:data withSize:dataSize withUsage:usage];
     }
     
     return me;

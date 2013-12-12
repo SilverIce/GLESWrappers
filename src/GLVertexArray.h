@@ -15,7 +15,7 @@ typedef NS_ENUM(GLenum, GLBufferUsage) {
 };
 
 // Wraps data buffer stored in GPU memory.
-// create it with object or objectWithUsage method
+// create it with object* methods
 @interface GLBufferObject : GLNestedObject
 
 - (GLsizei)dataSize;
@@ -29,9 +29,8 @@ typedef NS_ENUM(GLenum, GLBufferUsage) {
        withSize:(GLsizei)size
       withUsage:(GLBufferUsage)usage;
 
-+ (id)objectWithUsage:(GLBufferUsage)usage
-                 data:(const GLvoid *)data
-                 size:(GLsizei)size;
++ (id)objectAsIndiceBufer;
++ (id)objectAsVertexBufer;
 
 @end
 

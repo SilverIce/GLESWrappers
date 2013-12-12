@@ -178,7 +178,9 @@ void assertBound(GLObject *object) {
 
 - (GLContext *)context {
     if (!_context) {
-        _context = [[EAGLContext currentContext] context];
+        EAGLContext *context = [EAGLContext currentContext];
+        assert(context && "there should be always context active during sending any messages to any GLObject instance");
+        _context = [context context];
     }
     return _context;
 }

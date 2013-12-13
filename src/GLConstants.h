@@ -52,7 +52,7 @@ static BOOL GLSizeIsPowerOfTwo(GLSize size) {
 
 #define GLAssert(expression, ...) \
     if (!(expression)) { \
-        NSLog(@"assertion  failed. %@", [NSString stringWithFormat: __VA_ARGS__ ]); \
+        NSLog(@"assertion '%s' failed. %@", #expression, [NSString stringWithFormat: __VA_ARGS__ ]); \
         assert(false); \
     }
 

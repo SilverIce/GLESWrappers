@@ -42,5 +42,18 @@ typedef union {
     };
 } GLRect;
 
+static BOOL GLintIsPowerOfTwo(GLint x) {
+    return (x & (x - 1)) == 0;
+}
+
+static BOOL GLSizeIsPowerOfTwo(GLSize size) {
+    return GLintIsPowerOfTwo(size.width) && GLintIsPowerOfTwo(size.height);
+}
+
+#define GLAssert(expression, ...) \
+    if (!(expression)) { \
+        NSLog(@"assertion '%s' failed. %@", #expression, [NSString stringWithFormat: __VA_ARGS__ ]); \
+        assert(false); \
+    }
 
 extern void GLassertStateValid();

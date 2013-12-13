@@ -12,7 +12,7 @@
 
 @interface GLTexture ()
 @property (nonatomic, assign)   GLTextureType       textureType;
-@property (nonatomic, assign)   GLSize             size;
+@property (nonatomic, assign)   GLSize              size;
 @end
 
 @implementation GLTexture
@@ -36,6 +36,9 @@
     CGContextRef spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width*4,
                                                        CGImageGetColorSpace(image), kCGImageAlphaPremultipliedLast);
     
+    CGContextTranslateCTM(spriteContext, 0, height);
+    CGContextScaleCTM(spriteContext, 1.0, -1.0);
+    
     CGContextDrawImage(spriteContext, CGRectMake(0, 0, width, height), image);
     
     CGContextRelease(spriteContext);
@@ -44,10 +47,6 @@
                                      internalFormat:GLInternalFormatRGBA
                                            dataType:GLDataUByte
                                              pixels:spriteData];
-    
-    [me bind];
-    me.minFilter = GLTextureMinFilterNearest;
-    [me unbind];
     
     free(spriteData);
     
@@ -63,11 +62,15 @@
     if (me) {
         me.textureType = GL_TEXTURE_2D;
         
+        [me bind];
+        
         [me putImageAtFace:GLTextureFace2D
                   withSize:size
             internalFormat:internalFormat
                   dataType:dataType
                     pixels:pixels];
+
+        [me bind];
     }
     
     assert(me);
@@ -119,6 +122,15 @@ static void _GLtextureValidateFace(GLTexture *texture, GLTextureFace face) {
     self.size = size;
     self.format = internalFormat;
     
+    if (!GLSizeIsPowerOfTwo(size)) {
+        self.minFilter = GLTextureMinFilterLinear;
+        //self.magFilter = GLTextureMagFilterLinear;
+        self.wrapS = GLTextureWrapClampToEdge;
+        self.wrapT = GLTextureWrapClampToEdge;
+        
+        NSLog(@"warning: using non power of two texture. filter & wrap parameters were changed");
+    }
+    
     glTexImage2D(self.textureType,
                  0, // level
                  internalFormat,
@@ -163,7 +175,7 @@ static void _GLtextureValidateFace(GLTexture *texture, GLTextureFace face) {
 #pragma mark -
 #pragma mark Texture parameters
 
-static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, GLenum *field) {
+static void _GLTextureSetParam(GLTexture *texture, GLenum param, GLenum value, GLenum *field) {
     [texture bind];
     assertBound(texture);
     *field = value;
@@ -172,6 +184,11 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 }
 
 - (void)setMinFilter:(GLTextureMinFilter)filter {
+    GLAssert(GLSizeIsPowerOfTwo(self.size) ||
+             (filter == GLTextureMinFilterNearest || filter == GLTextureMinFilterLinear), @"should be power-of-two or ");
+    
+    GLAssert((filter == GLTextureMinFilterNearest || filter == GLTextureMinFilterLinear), @"mipmapping & mipmap filters are not supported yet");
+    
     _GLTextureSetParam(self, GL_TEXTURE_MIN_FILTER, filter, &_minFilter);
 }
 
@@ -180,10 +197,12 @@ static void _GLTextureSetParam(GLTexture *texture, GLuint param, GLenum value, G
 }
 
 - (void)setWrapS:(GLTextureWrap)wrapS {
+    assert(GLSizeIsPowerOfTwo(self.size) || wrapS == GLTextureWrapClampToEdge);
     _GLTextureSetParam(self, GL_TEXTURE_WRAP_S, wrapS, &_wrapS);
 }
 
 - (void)setWrapT:(GLTextureWrap)wrapT {
+    assert(GLSizeIsPowerOfTwo(self.size) || wrapT == GLTextureWrapClampToEdge);
     _GLTextureSetParam(self, GL_TEXTURE_WRAP_T, wrapT, &_wrapT);
 }
 

@@ -22,11 +22,13 @@
 typedef NS_ENUM(GLenum, GLObjectType) {
     GLObjectTypeFramebuffer,
     GLObjectTypeRenderbuffer,
-    GLObjectTypeBuffer,
     GLObjectTypeProgram,
     GLObjectTypeVertexArray,
     GLObjectTypeTexture2D,
     GLObjectTypeTextureCubemap,
+    
+    GLObjectTypeBuffer          = GL_ARRAY_BUFFER,
+    GLObjectTypeIndiceBuffer    = GL_ELEMENT_ARRAY_BUFFER,
 };
 
 /*

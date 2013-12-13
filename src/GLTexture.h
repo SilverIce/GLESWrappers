@@ -21,6 +21,7 @@ typedef struct {
 typedef NS_ENUM(GLenum, GLTextureMinFilter) {
     GLTextureMinFilterNearest               = GL_NEAREST,
     GLTextureMinFilterLinear                = GL_LINEAR,
+    // requires use of mipmap:
     GLTextureMinFilterNearestMipmapNearest  = GL_NEAREST_MIPMAP_NEAREST,
     GLTextureMinFilterNearestMipmapLinear   = GL_NEAREST_MIPMAP_LINEAR,
     GLTextureMinFilterLinearMipmapNearest   = GL_LINEAR_MIPMAP_NEAREST,

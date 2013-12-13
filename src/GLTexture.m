@@ -36,6 +36,9 @@
     CGContextRef spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width*4,
                                                        CGImageGetColorSpace(image), kCGImageAlphaPremultipliedLast);
     
+    CGContextTranslateCTM(spriteContext, 0, height);
+    CGContextScaleCTM(spriteContext, 1.0, -1.0);
+    
     CGContextDrawImage(spriteContext, CGRectMake(0, 0, width, height), image);
     
     CGContextRelease(spriteContext);

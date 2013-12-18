@@ -257,7 +257,7 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
     
     [me associateAttributes:attributes];
     
-    assert([me link]);
+    GLAssert([me link], @"program link failed: %@", me.infoLog);
     
     return me;
 }

@@ -69,6 +69,11 @@
             internalFormat:internalFormat
                   dataType:dataType
                     pixels:pixels];
+        
+        me.minFilter = GLTextureMinFilterLinear;
+        //self.magFilter = GLTextureMagFilterLinear;
+        me.wrapS = GLTextureWrapClampToEdge;
+        me.wrapT = GLTextureWrapClampToEdge;
 
         [me bind];
     }
@@ -123,12 +128,7 @@ static void _GLtextureValidateFace(GLTexture *texture, GLTextureFace face) {
     self.format = internalFormat;
     
     if (!GLSizeIsPowerOfTwo(size)) {
-        self.minFilter = GLTextureMinFilterLinear;
-        //self.magFilter = GLTextureMagFilterLinear;
-        self.wrapS = GLTextureWrapClampToEdge;
-        self.wrapT = GLTextureWrapClampToEdge;
-        
-        NSLog(@"warning: using non power of two texture. filter & wrap parameters were changed");
+        NSLog(@"warning: using non power-of-two texture. filter & wrap parameters limited");
     }
     
     glTexImage2D(self.textureType,
@@ -185,9 +185,11 @@ static void _GLTextureSetParam(GLTexture *texture, GLenum param, GLenum value, G
 
 - (void)setMinFilter:(GLTextureMinFilter)filter {
     GLAssert(GLSizeIsPowerOfTwo(self.size) ||
-             (filter == GLTextureMinFilterNearest || filter == GLTextureMinFilterLinear), @"should be power-of-two or ");
+             (filter == GLTextureMinFilterNearest || filter == GLTextureMinFilterLinear),
+             @"filter 0x%x not available for non power-of-two textres", filter);
     
-    GLAssert((filter == GLTextureMinFilterNearest || filter == GLTextureMinFilterLinear), @"mipmapping & mipmap filters are not supported yet");
+    GLAssert((filter == GLTextureMinFilterNearest || filter == GLTextureMinFilterLinear),
+             @"mipmapping & mipmap filters are not supported yet");
     
     _GLTextureSetParam(self, GL_TEXTURE_MIN_FILTER, filter, &_minFilter);
 }

@@ -35,7 +35,7 @@
 + (id)objectAsFragmentShaderWithSource:(NSString *)source {
     GLShader *me = [[[self alloc] initWithType:GL_VERTEX_SHADER] autorelease];
     if (me) {
-        assert([me compileSource:source]);
+        GLAssert([me compileSource:source], @"shader compile error: %@", me.compileLog);
     }
     return me;
 }
@@ -43,7 +43,7 @@
 + (id)objectAsVertexShaderWithSource:(NSString *)source {
     GLShader *me = [[[self alloc] initWithType:GL_FRAGMENT_SHADER] autorelease];
     if (me) {
-        assert([me compileSource:source]);
+        GLAssert([me compileSource:source], @"shader compile error: %@", me.compileLog);
     }
     return me;
 }

@@ -80,10 +80,10 @@
     
     glCompileShader(self.uId);
     
-    return [self compiled];
+    return [self isCompiled];
 }
 
-- (BOOL)compiled {
+- (BOOL)isCompiled {
     GLint status = 0;
     glGetShaderiv(self.uId, GL_COMPILE_STATUS, &status);
     return status == GL_TRUE;

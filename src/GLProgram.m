@@ -124,8 +124,8 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
 #pragma mark Etc
 
 - (BOOL)link {
-    assert(self.vertShader && [self.vertShader compiled]);
-    assert(self.fragShader && [self.fragShader compiled]);
+    assert(self.vertShader && [self.vertShader isCompiled]);
+    assert(self.fragShader && [self.fragShader isCompiled]);
     
     glLinkProgram(self.uId);
     GLassertStateValid();

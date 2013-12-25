@@ -166,7 +166,6 @@
                structCount:(NSUInteger)count
 {
     [self bind];
-    assertBound(self);
     [self.buffer bind];
     for (NSUInteger i = 0; i < count; ++i) {
         const GLVertexArrayStructDescription *descr = &descriptors[i];
@@ -222,7 +221,6 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
 
 - (void)drawTriangleStrip {
     [self bind];
-    assertBound(self);
     glDrawArrays(GLPrimitiveTriangleStrip, 0, self.vertexCount);
     GLassertStateValid();
     [self unbind];
@@ -230,7 +228,6 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
 
 - (void)draw:(GLPrimitive)mode {
     [self bind];
-    assertBound(self);
     glDrawArrays(mode, 0, self.buffer.dataSize / self.elementSize);
     GLassertStateValid();
     [self unbind];
@@ -239,7 +236,6 @@ DECL_FOUR_METHODS(GLfloat, f, IMPL_ATTRIB);
 - (void)draw:(GLPrimitive)mode from:(NSUInteger)from count:(NSUInteger)count {
     assert(from + count <= self.vertexCount);
     [self bind];
-    assertBound(self);
     glDrawArrays(mode, from, count);
     GLassertStateValid();
     [self unbind];

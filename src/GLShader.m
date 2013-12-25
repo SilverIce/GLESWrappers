@@ -53,6 +53,7 @@
 
 - (void)dealloc {
     glDeleteShader(self.uId);
+    GLassertStateValid();
     [super dealloc];
 }
 
@@ -61,6 +62,7 @@
     if (self) {
         self.shaderType = shaderType;
         self.uId = glCreateShader(shaderType);
+        GLassertStateValid();
     }
     return self;
 }
@@ -79,6 +81,7 @@
     glShaderSource(self.uId, 1, strings, NULL);
     
     glCompileShader(self.uId);
+    GLassertStateValid();
     
     return [self isCompiled];
 }
@@ -86,6 +89,7 @@
 - (BOOL)isCompiled {
     GLint status = 0;
     glGetShaderiv(self.uId, GL_COMPILE_STATUS, &status);
+    GLassertStateValid();
     return status == GL_TRUE;
 }
 

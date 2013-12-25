@@ -87,6 +87,7 @@
 
 - (void)dealloc {
     glDeleteTextures(1, &_uId);
+    GLassertStateValid();
     [super dealloc];
 }
 
@@ -94,6 +95,7 @@
     self = [super init];
     if (self) {
         glGenTextures(1, &_uId);
+        GLassertStateValid();
     }
     return self;
 }
@@ -139,6 +141,7 @@ static void _GLtextureValidateFace(GLTexture *texture, GLTextureFace face) {
                  internalFormat,
                  dataType,
                  pixels);
+    GLassertStateValid();
     
     [self unbind];
 }
@@ -160,6 +163,7 @@ static void _GLtextureValidateFace(GLTexture *texture, GLTextureFace face) {
                     rect.x, rect.y, rect.width, rect.height,
                     internalFormat, dataType,
                     pixels);
+    GLassertStateValid();
     
     [self unbind];
 }
@@ -180,6 +184,7 @@ static void _GLTextureSetParam(GLTexture *texture, GLenum param, GLenum value, G
     assertBound(texture);
     *field = value;
     glTexParameteri(texture.textureType, param, value);
+    GLassertStateValid();
     [texture unbind];
 }
 
@@ -221,6 +226,7 @@ static void _GLTextureSetParam(GLTexture *texture, GLenum param, GLenum value, G
 
 - (void)internalBind:(BOOL)bind {
     glBindTexture(self.textureType, bind ? self.uId : 0);
+    GLassertStateValid();
 }
 
 - (void)bind {
@@ -320,6 +326,8 @@ static void _GLTextureSetParam(GLTexture *texture, GLenum param, GLenum value, G
                                0,
                                0);
     }
+    
+    GLassertStateValid();
 }
 
 @end

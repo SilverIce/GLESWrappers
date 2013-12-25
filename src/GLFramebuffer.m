@@ -38,6 +38,7 @@
     self.stencilTexturePtr = nil;
     
     glDeleteFramebuffers(1, &_uId);
+    GLassertStateValid();
     [super dealloc];
 }
 
@@ -45,6 +46,7 @@
     self = [super init];
     if (self) {
         glGenFramebuffers(1, &_uId);
+        GLassertStateValid();
     }
     return self;
 }
@@ -54,6 +56,7 @@
 
 - (void)internalBind:(BOOL)bind {
     glBindFramebuffer(GL_FRAMEBUFFER, bind ? self.uId : 0);
+    GLassertStateValid();
 }
 
 + (GLObjectType)glType {

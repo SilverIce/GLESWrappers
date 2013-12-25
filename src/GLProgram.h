@@ -40,16 +40,6 @@
 
 @interface GLProgram : GLNestedObject
 
-// both fragment and vertex shaders should be attached
-- (BOOL)link;
-
-// will check for all the conditions that could lead to an INVALID_OPERATION error when rendering commands are issued
-// information log of program is overwritten with information on the results of the validation
-- (BOOL)validate;
-
-// gets filled after program being linked or validated
-- (NSString *)infoLog;
-
 - (GLint)attribLocation:(NSString *)attribute;
 
 // must be used before program will be linked.
@@ -103,9 +93,19 @@ DECL_UNIFORM_MATRIX_V(GLfloat, f, 4);
 
 @end
 
-// internal api
+// advanced user api
 @interface GLProgram ()
 @property (nonatomic, retain)   GLShader  *vertShader;
 @property (nonatomic, retain)   GLShader  *fragShader;
+
+// both fragment and vertex shaders should be attached
+- (BOOL)link;
+
+// will check for all the conditions that could lead to an INVALID_OPERATION error when rendering commands are issued
+// information log of program is overwritten with information on the results of the validation
+- (BOOL)validate;
+
+// gets filled after program being linked or validated
+- (NSString *)infoLog;
 
 @end

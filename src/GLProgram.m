@@ -29,8 +29,8 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
 + (id)objectWithVertShaderName:(NSString *)vertexShader
                   fragShader:(NSString *)fragmentShader
 {
-    GLShader *vShader = [GLShader objectAsFragmentShaderWithSource:GLShaderSource(vertexShader, nil)];
-    GLShader *fShader = [GLShader objectAsVertexShaderWithSource:GLShaderSource(fragmentShader, nil)];
+    GLShader *vShader = [GLShader objectAsVertexShaderWithSource:GLShaderSource(vertexShader, nil)];
+    GLShader *fShader = [GLShader objectAsFragmentShaderWithSource:GLShaderSource(fragmentShader, nil)];
 
     GLProgram *me = [GLProgram object];
     
@@ -218,6 +218,7 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
         }
         
         if (vertShader) {
+            GLAssert(vertShader.shaderType == GLShaderTypeVertex, @"wrong shader type");
             glAttachShader(self.uId, vertShader.uId);
             GLassertStateValid();
         }
@@ -235,6 +236,7 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
         }
         
         if (fragShader) {
+            GLAssert(fragShader.shaderType == GLShaderTypeFragment, @"wrong shader type");
             glAttachShader(self.uId, fragShader.uId);
             GLassertStateValid();
         }

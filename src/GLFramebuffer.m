@@ -32,10 +32,11 @@
 #pragma mark Inialization and Deallocation
 
 - (void)dealloc {
-    // do not detach textures because it requires binding
-    self.colorTexturePtr = nil;
-    self.depthTexturePtr = nil;
-    self.stencilTexturePtr = nil;
+    [self bind];
+    self.colorTarget = nil;
+    self.depthTarget = nil;
+    self.stencilTarget = nil;
+    [self unbind];
     
     GLCall(glDeleteFramebuffers(1, &_uId));
     [super dealloc];

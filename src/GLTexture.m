@@ -86,16 +86,14 @@
 #pragma mark Inialization and Deallocation
 
 - (void)dealloc {
-    glDeleteTextures(1, &_uId);
-    GLassertStateValid();
+    GLCall(glDeleteTextures(1, &_uId));
     [super dealloc];
 }
 
 - (id)init {
     self = [super init];
     if (self) {
-        glGenTextures(1, &_uId);
-        GLassertStateValid();
+        GLCall(glGenTextures(1, &_uId));
     }
     return self;
 }
@@ -183,8 +181,7 @@ static void _GLTextureSetParam(GLTexture *texture, GLenum param, GLenum value, G
     [texture bind];
     assertBound(texture);
     *field = value;
-    glTexParameteri(texture.textureType, param, value);
-    GLassertStateValid();
+    GLCall(glTexParameteri(texture.textureType, param, value));
     [texture unbind];
 }
 
@@ -225,8 +222,7 @@ static void _GLTextureSetParam(GLTexture *texture, GLenum param, GLenum value, G
 }
 
 - (void)internalBind:(BOOL)bind {
-    glBindTexture(self.textureType, bind ? self.uId : 0);
-    GLassertStateValid();
+    GLCall(glBindTexture(self.textureType, bind ? self.uId : 0));
 }
 
 - (void)bind {

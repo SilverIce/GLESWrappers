@@ -37,16 +37,14 @@
     self.depthTexturePtr = nil;
     self.stencilTexturePtr = nil;
     
-    glDeleteFramebuffers(1, &_uId);
-    GLassertStateValid();
+    GLCall(glDeleteFramebuffers(1, &_uId));
     [super dealloc];
 }
 
 - (id)init {
     self = [super init];
     if (self) {
-        glGenFramebuffers(1, &_uId);
-        GLassertStateValid();
+        GLCall(glGenFramebuffers(1, &_uId));
     }
     return self;
 }
@@ -55,8 +53,7 @@
 #pragma mark GLObject
 
 - (void)internalBind:(BOOL)bind {
-    glBindFramebuffer(GL_FRAMEBUFFER, bind ? self.uId : 0);
-    GLassertStateValid();
+    GLCall(glBindFramebuffer(GL_FRAMEBUFFER, bind ? self.uId : 0));
 }
 
 + (GLObjectType)glType {
@@ -73,7 +70,7 @@
      The second is an implementation-chosen format from among those defined in table 3.4, excluding formats LUMINANCE and LUMINANCE_ALPHA.
      The values of format and type for this format may be determined by calling GetIntegerv with the symbolic constants IMPLEMENTATION_COLOR_READ_FORMAT and IMPLEMENTATION_COLOR_READ_TYPE, respectively.
      */
-    glReadPixels(rect.x, rect.y, rect.width, rect.height, GLInternalFormatRGBA, GLDataUByte, pixels);
+    GLCall(glReadPixels(rect.x, rect.y, rect.width, rect.height, GLInternalFormatRGBA, GLDataUByte, pixels));
     [self unbind];
 }
 
@@ -136,7 +133,7 @@ static void _GLFramebufferAttachTexture(GLFramebuffer *me, id<GLFramebufferRende
 
 + (id)object {
     GLint fboCurrent;
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fboCurrent);
+    GLCall(glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fboCurrent));
     
     if (fboCurrent == 0) {
         return nil;
@@ -155,7 +152,7 @@ static void _GLFramebufferAttachTexture(GLFramebuffer *me, id<GLFramebufferRende
 }
 
 - (void)internalBind:(BOOL)bind {
-    glBindFramebuffer(GL_FRAMEBUFFER, bind ? self.uId : 0);
+    GLCall(glBindFramebuffer(GL_FRAMEBUFFER, bind ? self.uId : 0));
 }
 
 + (GLObjectType)glType {

@@ -47,16 +47,14 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
     self.fragShader = nil;
     
     self.uniformCache = nil;
-    glDeleteProgram(self.uId);
-    GLassertStateValid();
+    GLCall(glDeleteProgram(self.uId));
     [super dealloc];
 }
 
 - (id)init {
     self = [super init];
     if (self) {
-        self.uId = glCreateProgram();
-        GLassertStateValid();
+        self.uId = GLCallR(glCreateProgram());
         self.uniformCache = [NSMutableDictionary dictionary];
     }
     return self;
@@ -70,8 +68,7 @@ static NSString * GLShaderSource(NSString *fileName, NSString *extension) {
 }
 
 - (void)internalBind:(BOOL)bind {
-    glUseProgram(bind ? self.uId : 0);
-    GLassertStateValid();
+    GLCall(glUseProgram(bind ? self.uId : 0));
 }
 
 #pragma mark -
@@ -124,8 +121,7 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
     assert(self.vertShader && [self.vertShader isCompiled]);
     assert(self.fragShader && [self.fragShader isCompiled]);
     
-    glLinkProgram(self.uId);
-    GLassertStateValid();
+    GLCall(glLinkProgram(self.uId));
     [self.uniformCache removeAllObjects];
     
     return [self linkStatus];
@@ -133,8 +129,7 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
 
 - (BOOL)linkStatus {
     GLint status = 0;
-    glGetProgramiv(self.uId, GL_LINK_STATUS, &status);
-    GLassertStateValid();
+    GLCall(glGetProgramiv(self.uId, GL_LINK_STATUS, &status));
     return status == GL_TRUE;
 }
 
@@ -153,8 +148,7 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
 
 - (void)setAttrib:(NSString *)attribute location:(GLuint)location {
     assert(attribute);
-    glBindAttribLocation(self.uId, location, attribute.UTF8String);
-    GLassertStateValid();
+    GLCall(glBindAttribLocation(self.uId, location, attribute.UTF8String));
 }
 
 - (void)associateAttributes:(const GLProgramAttrib2Loc *)associations
@@ -163,8 +157,7 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
     assert(associations);
     for (NSUInteger i = 0; i < count; ++i) {
         const GLProgramAttrib2Loc *assoc = &associations[i];
-        glBindAttribLocation(self.uId, assoc->location, assoc->attrib);
-        GLassertStateValid();
+        GLCall(glBindAttribLocation(self.uId, assoc->location, assoc->attrib));
     }
 }
 

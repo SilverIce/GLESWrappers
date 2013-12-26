@@ -56,4 +56,7 @@ static BOOL GLSizeIsPowerOfTwo(GLSize size) {
         assert(false); \
     }
 
+#define GLCall(...)     __VA_ARGS__; GLassertStateValid();
+#define GLCallR(...)     ({typeof(__VA_ARGS__) res = (__VA_ARGS__); GLassertStateValid(); res;})
+
 extern void GLassertStateValid();

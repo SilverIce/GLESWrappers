@@ -21,8 +21,7 @@
 {
     GLRenderbuffer *me = [[self new] autorelease];
     if (me) {
-        glGenRenderbuffers(1, &me->_uId);
-        GLassertStateValid();
+        GLCall(glGenRenderbuffers(1, &me->_uId));
         [me setFormat:format size:size];
     }
     
@@ -38,8 +37,7 @@
 #pragma mark Initialization and Deallocation
 
 - (void)dealloc {
-    glDeleteRenderbuffers(1, &_uId);
-    GLassertStateValid();
+    GLCall(glDeleteRenderbuffers(1, &_uId));
     [super dealloc];
 }
 
@@ -52,8 +50,7 @@
     [self bind];
     self.format = format;
     self.size = size;
-    glRenderbufferStorage(GL_RENDERBUFFER, format, size.width, size.height);
-    GLassertStateValid();
+    GLCall(glRenderbufferStorage(GL_RENDERBUFFER, format, size.width, size.height));
     [self unbind];
 }
 
@@ -61,8 +58,7 @@
 #pragma mark GLObject
 
 - (void)internalBind:(BOOL)bind {
-    glBindRenderbuffer(GL_RENDERBUFFER, bind ? _uId : 0);
-    GLassertStateValid();
+    GLCall(glBindRenderbuffer(GL_RENDERBUFFER, bind ? _uId : 0));
 }
 
 + (GLObjectType)glType {

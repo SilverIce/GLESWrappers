@@ -52,12 +52,14 @@ typedef struct {
     GLuint          location;
 } GLProgramAttrib2Loc;
 
+// associates attribute names with indices
 // must be used before program will be linked.
 // may be issued before any vertex shader objects are attached to a program object.
 - (void)associateAttributes:(const GLProgramAttrib2Loc *)associations
                       count:(NSUInteger)count;
 
-// accepts array of NSString & NSNumber objects
+// associates attribute names with indices
+// accepts array of NSString & NSNumber objects: e.g. @[@"attributeA", @1, @"attributeB", @2, ...]
 - (void)associateAttributes:(NSArray *)associations;
 
 // may return -1 if uniform is inactive (or no such at all)
@@ -89,7 +91,8 @@ DECL_UNIFORM_MATRIX_V(GLfloat, f, 4);
 // Creates linked program. otherwise assertion will fail
 + (id)objectWithVertShaderName:(NSString *)vertexShader
                     fragShader:(NSString *)fragmentShader
-          linkedWithAttributes:(NSArray *)attributes;
+          linkedWithAttributes:(NSArray *)attributes;       // NSString (attribute) - NSNumber (attrib. index) array. You may pass nil here.
+                                                            // See associateAttributes method for more info
 
 @end
 

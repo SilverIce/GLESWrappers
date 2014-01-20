@@ -247,7 +247,9 @@ IMPL_UNIFORM_MATRIX(GLfloat, f, 4);
     GLProgram *me = [self objectWithVertShaderName:vertexShader
                                         fragShader:fragmentShader];
     
-    [me associateAttributes:attributes];
+    if (attributes) {
+        [me associateAttributes:attributes];
+    }
     
     GLAssert([me link], @"program link failed: %@", me.infoLog);
     

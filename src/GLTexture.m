@@ -75,7 +75,7 @@
         me.wrapS = GLTextureWrapClampToEdge;
         me.wrapT = GLTextureWrapClampToEdge;
 
-        [me bind];
+        [me unbind];
     }
     
     assert(me);

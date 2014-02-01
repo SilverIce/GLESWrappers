@@ -172,6 +172,12 @@ void assertBound(GLObject *object) {
     return -1;
 }
 
+- (void)dealloc {
+    GLAssert(self.context == [[EAGLContext currentContext] context],
+        @"GL object must be deallocated inside his native context only. GL resource leak detected");
+    [super dealloc];
+}
+
 - (GLObjectType)glType {
     return [[self class] glType];
 }
@@ -205,10 +211,6 @@ void assertBound(GLObject *object) {
 @end
 
 @implementation GLNestedObject
-
-- (void)dealloc {
-    [super dealloc];
-}
 
 - (BOOL)isBound {
     return [self.context.objectSet activeObjectOfClass:self.glType] == self;

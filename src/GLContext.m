@@ -173,7 +173,7 @@ void assertBound(GLObject *object) {
 }
 
 - (void)dealloc {
-    GLAssert(self.context == [[EAGLContext currentContext] context],
+    GLAssert(self.context == [[EAGLContext currentContext] gl_context],
         @"GL object must be deallocated inside his native context only. GL resource leak detected");
     [super dealloc];
 }
@@ -186,7 +186,7 @@ void assertBound(GLObject *object) {
     if (!_context) {
         EAGLContext *context = [EAGLContext currentContext];
         assert(context && "there should be always context active during sending any messages to any GLObject instance");
-        _context = [context context];
+        _context = [context gl_context];
     }
     return _context;
 }

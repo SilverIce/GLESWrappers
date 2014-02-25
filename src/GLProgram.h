@@ -68,7 +68,6 @@ typedef struct {
 // Uniform setters
 // macroses generating lot of methods:
 // - (void)setUniform:(NSString *)uniform to{1234}{if}{v}:[args,]:Targ1...:TargN [:args];
-
 DECL_FOUR_METHODS(GLint, i, DECL_UNIFORM_PAIR);
 DECL_FOUR_METHODS(GLfloat, f, DECL_UNIFORM_PAIR);
 
@@ -77,9 +76,6 @@ DECL_FOUR_METHODS(GLfloat, f, DECL_UNIFORM_PAIR);
 DECL_UNIFORM_MATRIX_V(GLfloat, f, 2);
 DECL_UNIFORM_MATRIX_V(GLfloat, f, 3);
 DECL_UNIFORM_MATRIX_V(GLfloat, f, 4);
-
-/// Attribute setters:
-// all these methods requires program to be bound
 
 + (id)objectWithVertShaderName:(NSString *)vertexShader
                     fragShader:(NSString *)fragmentShader;

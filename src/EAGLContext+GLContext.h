@@ -11,6 +11,6 @@
 @class GLContext;
 
 @interface EAGLContext (GLContext)
-- (GLContext *)context;
+- (GLContext *)gl_context;
 
 @end

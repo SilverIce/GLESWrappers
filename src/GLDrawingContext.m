@@ -56,7 +56,7 @@ typedef struct {
 }
 
 - (void)activateTextures {
-    [[[EAGLContext currentContext] context] activateTextures:self.sampler2Texture.allValues];
+    [[[EAGLContext currentContext] gl_context] activateTextures:self.sampler2Texture.allValues];
     
     for (NSString *sampler in self.sampler2Texture.allValues) {
         [self.program setUniform:sampler

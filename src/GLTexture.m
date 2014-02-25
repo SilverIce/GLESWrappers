@@ -10,9 +10,42 @@
 #import "GLTexture+Private.h"
 #import "GLContext+Private.h"
 
+GLPixelData * GLPixelDataCreateFromImageAtPath(NSString *filePath) {
+    UIImage *img = [UIImage imageWithContentsOfFile:filePath];
+    assert(img);
+    CGImageRef image = img.CGImage;
+    
+    size_t width = CGImageGetWidth(image);
+    size_t height = CGImageGetHeight(image);
+    
+    
+    GLPixelData *spriteData = (GLPixelData *) calloc(sizeof(GLPixelData) + width*height * 4, 1);
+    spriteData->size = (GLSize){width, height};
+    spriteData->data = ((GLbyte *)spriteData + sizeof(GLPixelData));
+    spriteData->format = GLInternalFormatRGBA;
+    spriteData->dataType = GLDataUByte;
+    
+    CGContextRef spriteContext = CGBitmapContextCreate(spriteData->data, width, height, 8, width * 4,
+                                                       CGImageGetColorSpace(image), kCGImageAlphaPremultipliedLast);
+    
+    CGContextTranslateCTM(spriteContext, 0, height);
+    CGContextScaleCTM(spriteContext, 1.0, -1.0);
+    
+    CGContextDrawImage(spriteContext, CGRectMake(0, 0, width, height), image);
+    
+    CGContextRelease(spriteContext);
+    
+    return spriteData;
+}
+
+void GLPixelDataFree(GLPixelData *pixelData) {
+    free(pixelData);
+}
+
 @interface GLTexture ()
 @property (nonatomic, assign)   GLTextureType       textureType;
 @property (nonatomic, assign)   GLSize              size;
+@property (nonatomic, assign)   GLInternalFormat    format;
 @end
 
 @implementation GLTexture
@@ -23,32 +56,15 @@
 + (id)objectWithImageAtPath:(NSString *)path {
     NSString *res = [[NSBundle mainBundle] pathForResource:path
                                                     ofType:nil];
+    
+    GLPixelData *data = GLPixelDataCreateFromImageAtPath(res);
 
-    UIImage *img = [UIImage imageWithContentsOfFile:res];
-    assert(img);
-    CGImageRef image = img.CGImage;
+    GLTexture *me = [self objectAs2DTextureWithSize:data->size
+                                     internalFormat:data->format
+                                           dataType:data->dataType
+                                             pixels:data->data];
     
-    size_t width = CGImageGetWidth(image);
-    size_t height = CGImageGetHeight(image);
-    
-    GLubyte * spriteData = (GLubyte *) calloc(width*height*4, sizeof(GLubyte));
-    
-    CGContextRef spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width*4,
-                                                       CGImageGetColorSpace(image), kCGImageAlphaPremultipliedLast);
-    
-    CGContextTranslateCTM(spriteContext, 0, height);
-    CGContextScaleCTM(spriteContext, 1.0, -1.0);
-    
-    CGContextDrawImage(spriteContext, CGRectMake(0, 0, width, height), image);
-    
-    CGContextRelease(spriteContext);
-    
-    GLTexture *me = [self objectAs2DTextureWithSize:(GLSize){width, height}
-                                     internalFormat:GLInternalFormatRGBA
-                                           dataType:GLDataUByte
-                                             pixels:spriteData];
-    
-    free(spriteData);
+    GLPixelDataFree(data);
     
     return me;
 }
@@ -135,7 +151,7 @@ static void _GLtextureValidateFace(GLTexture *texture, GLTextureFace face) {
                  0, // level
                  internalFormat,
                  size.width, size.height,
-                 0, // border, not supported on GLES
+                 0, // border, not supported by GLES
                  internalFormat,
                  dataType,
                  pixels);
@@ -146,7 +162,6 @@ static void _GLtextureValidateFace(GLTexture *texture, GLTextureFace face) {
 
 - (void)putSubImageAtFace:(GLTextureFace)face
                  withRect:(GLRect)rect
-           internalFormat:(GLInternalFormat)internalFormat
                  dataType:(GLData)dataType
                    pixels:(const GLvoid *)pixels
 {
@@ -154,12 +169,11 @@ static void _GLtextureValidateFace(GLTexture *texture, GLTextureFace face) {
     
     [self bind];
     
-    self.format = internalFormat;
-    
     glTexSubImage2D(face,
                     0,  // level
                     rect.x, rect.y, rect.width, rect.height,
-                    internalFormat, dataType,
+                    self.format,
+                    dataType,
                     pixels);
     GLassertStateValid();
     

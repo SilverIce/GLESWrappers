@@ -70,6 +70,7 @@ hard to maintain state
 
 @end
 
+
 @interface GLObject : NSObject
 
 - (GLContext *)context;
@@ -86,7 +87,7 @@ hard to maintain state
 
 @end
 
-// Implements nested binding behaviour - each bind call remembers previous bound object
-// each unbind call restores pre
+// Implements nested gl object binding behaviour - each bind call remembers current bound object,
+// each unbind call restores previous one
 @interface GLNestedObject : GLObject
 @end

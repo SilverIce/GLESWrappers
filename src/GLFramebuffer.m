@@ -140,7 +140,7 @@ static void _GLFramebufferAttachTexture(GLFramebuffer *me, id<GLFramebufferRende
         return nil;
     }
     
-    GLContext *context = [[EAGLContext currentContext] context];
+    GLContext *context = [[EAGLContext currentContext] gl_context];
     assert(!context.framebuffer || context.framebuffer.uId != fboCurrent);
     
     GLExternalFramebuffer *me = [[self new] autorelease];

@@ -12,7 +12,7 @@
 
 @implementation EAGLContext (GLContext)
 
-- (GLContext *)context {
+- (GLContext *)gl_context {
     static char kGLContext;
     GLContext *context = objc_getAssociatedObject(self, &kGLContext);
     if (!context) {

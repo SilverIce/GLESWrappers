@@ -13,9 +13,10 @@
 // sometimes we'll have a huge texture and we'll want to free memory as fast as possible
 
 typedef struct {
-    GLuint  width;
-    GLuint  height;
-    GLvoid  *data;
+    GLSize              size;
+    GLInternalFormat    format;
+    GLvoid              *data;
+    GLData              dataType;
 } GLPixelData;
 
 typedef NS_ENUM(GLenum, GLTextureMinFilter) {
@@ -57,6 +58,10 @@ typedef NS_ENUM(GLenum, GLTextureFace) {
     GLTextureFaceCubemapNegativeZ   = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
 };
 
+
+GLPixelData * GLPixelDataCreateFromImageAtPath(NSString *filePath);
+void GLPixelDataFree(GLPixelData *pixelData);
+
 @class GLTextureFaceRef;
 
 // Base class that implements bind, unbind behaviour.
@@ -67,8 +72,8 @@ typedef NS_ENUM(GLenum, GLTextureFace) {
 @property (nonatomic, assign)   GLTextureMagFilter      magFilter;
 @property (nonatomic, assign)   GLTextureWrap           wrapS;
 @property (nonatomic, assign)   GLTextureWrap           wrapT;
-@property (nonatomic, assign)   GLInternalFormat        format;
 
+- (GLInternalFormat)format;
 - (GLuint)width;
 - (GLuint)height;
 - (GLSize)size;
@@ -87,16 +92,29 @@ typedef NS_ENUM(GLenum, GLTextureFace) {
 - (GLTextureFaceRef *)referenceFace:(GLTextureFace)face
                               level:(GLint)level;
 
+// fill specified texture area with pixels
+- (void)putSubImageAtFace:(GLTextureFace)face
+                 withRect:(GLRect)rect
+                 dataType:(GLData)dataType
+                   pixels:(const GLvoid *)pixels;
+
 + (id)objectAs2DTextureWithSize:(GLSize)size
                  internalFormat:(GLInternalFormat)internalFormat   //
                        dataType:(GLData)dataType
                          pixels:(const GLvoid *)pixels;            // can be NULL
 
-// should not be here since method references coregraphics framework methods. just for testing
+/**
+ *  Creates 2D texture containing bundled image at given path
+ *
+ *  @param path bundled image path
+ *
+ *  @return texture
+ */
 + (id)objectWithImageAtPath:(NSString *)path;
 
 @end
 
+// 6-faced cubemap texture
 @interface GLTextureCube : GLTexture
 @end
 

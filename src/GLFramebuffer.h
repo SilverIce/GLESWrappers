@@ -42,7 +42,7 @@ typedef NS_ENUM(GLenum, GLFramebufferAttachment) {
  *  Wraps current bound framebuffer that was created out of our gl wrapper system.
  *  Useful when pure gl code co-works with wrapped one.
  *  Unsafe since it does not own framebuffer.
- *  Returns nil if no framebuffer bound.
+ *  Returns nil if zero (screen) framebuffer bound.
  */
 @interface GLExternalFramebuffer : GLNestedObject
 

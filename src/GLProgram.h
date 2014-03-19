@@ -87,7 +87,7 @@ DECL_UNIFORM_MATRIX_V(GLfloat, f, 4);
 // Creates linked program. otherwise assertion will fail
 + (id)objectWithVertShaderName:(NSString *)vertexShader
                     fragShader:(NSString *)fragmentShader
-          linkedWithAttributes:(NSArray *)attributes;       // NSString (attribute) - NSNumber (attrib. index) array. You may pass nil here.
+          linkedWithAttributes:(NSArray *)attributes;       // NSString (attribute) - NSNumber (attrib. index) array. You can pass nil here.
                                                             // See associateAttributes method for more info
 
 @end
@@ -97,7 +97,8 @@ DECL_UNIFORM_MATRIX_V(GLfloat, f, 4);
 @property (nonatomic, retain)   GLShader  *vertShader;
 @property (nonatomic, retain)   GLShader  *fragShader;
 
-// both fragment and vertex shaders should be attached
+// both fragment and vertex shaders should be attached to link successfully.
+// returns false in case of failure
 - (BOOL)link;
 
 // will check for all the conditions that could lead to an INVALID_OPERATION error when rendering commands are issued

@@ -19,7 +19,7 @@ GLPixelData * GLPixelDataCreateFromImageAtPath(NSString *filePath) {
     size_t height = CGImageGetHeight(image);
     
     
-    GLPixelData *spriteData = (GLPixelData *) calloc(sizeof(GLPixelData) + width*height * 4, 1);
+    GLPixelData *spriteData = (GLPixelData *) calloc(sizeof(GLPixelData) + width * height * 4, 1);
     spriteData->size = (GLSize){width, height};
     spriteData->data = ((GLbyte *)spriteData + sizeof(GLPixelData));
     spriteData->format = GLInternalFormatRGBA;
